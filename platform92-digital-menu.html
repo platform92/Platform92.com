@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Platform 92 Kitchen — Digital Menu</title>
+<meta name="description" content="Platform 92 Kitchen — digital menu">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ---- Platform 92 design tokens (edit here to re-theme the whole menu) ---- */
+    --void:#14110D;         /* base background — near-black, warm charcoal for low-light reading */
+    --surface:#1E1911;      /* card surface */
+    --surface-2:#262016;    /* raised / hover surface */
+    --line:rgba(201,162,39,0.22); /* brass hairline */
+    --ink:#F4ECD8;          /* primary text — cream, high contrast on dark */
+    --ink-dim:#C9BFA8;      /* secondary text */
+    --brass:#C9A227;        /* primary accent — brass rim from the logo */
+    --brass-bright:#E9C766; /* brass hover / highlight */
+    --pine:#20503C;         /* forest green — logo enamel ring */
+    --pine-light:#3A7458;
+    --ember:#B4232A;        /* signal red — matches the brush-stroke headers on the original menu */
+    --ember-bright:#D6444B;
+    --radius-s:10px;
+    --radius-m:16px;
+    --radius-l:26px;
+    --shadow-card: 0 6px 20px rgba(0,0,0,0.35);
+    --shadow-pop: 0 16px 44px rgba(0,0,0,0.55);
+    --display: "Bebas Neue", "Arial Narrow", sans-serif;
+    --serif: "Fraunces", Georgia, serif;
+    --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --maxw: 620px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 700px at 50% -10%, rgba(32,80,60,0.35), transparent 60%),
+      var(--void);
+    color:var(--ink);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+    min-height:100vh;
+  }
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;}
+  ::selection{background:var(--brass);color:#1a1508;}
+  :focus-visible{outline:2px solid var(--brass-bright);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  #app{max-width:var(--maxw);margin:0 auto;position:relative;padding-bottom:96px;}
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:sticky;top:0;z-index:40;
+    background:linear-gradient(180deg, rgba(20,17,13,0.98) 0%, rgba(20,17,13,0.96) 80%, rgba(20,17,13,0.9) 100%);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:14px 16px 10px;
+  }
+  .header-top{display:flex;align-items:center;gap:12px;}
+  .logo-badge{width:56px;height:56px;flex:none;border-radius:50%;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
+  .header-titles{flex:1;min-width:0;}
+  .header-titles .eyebrow{
+    font-family:var(--display);letter-spacing:0.14em;font-size:12px;color:var(--brass-bright);
+    text-transform:uppercase;
+  }
+  .header-titles h1{
+    font-family:var(--serif);font-weight:600;font-size:22px;margin:0;color:var(--ink);
+    letter-spacing:0.01em;
+  }
+  .header-titles .sub{font-size:11.5px;color:var(--ink-dim);margin-top:1px;}
+
+  .lang-row{display:flex;align-items:center;gap:6px;margin-top:12px;flex-wrap:wrap;}
+  .lang-globe{font-size:14px;color:var(--ink-dim);margin-right:2px;flex:none;}
+  .lang-btn{
+    border:1px solid var(--line);background:transparent;color:var(--ink-dim);
+    font-size:12.5px;font-weight:600;letter-spacing:0.02em;padding:6px 11px;border-radius:999px;
+    cursor:pointer;transition:all .15s ease;
+  }
+  .lang-btn:hover{border-color:var(--brass);color:var(--ink);}
+  .lang-btn.active{background:var(--brass);border-color:var(--brass);color:#1a1508;}
+
+  /* ---------- Disclaimer banner ---------- */
+  .disclaimer{
+    display:none;gap:10px;align-items:flex-start;
+    background:rgba(180,35,42,0.14);border:1px solid rgba(180,35,42,0.4);
+    color:var(--ink);border-radius:var(--radius-s);
+    margin:12px 16px 0;padding:10px 12px;font-size:12.5px;
+  }
+  .disclaimer.show{display:flex;}
+  .disclaimer strong{color:var(--brass-bright);}
+  .disclaimer .x{
+    margin-left:auto;background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;
+  }
+
+  /* ---------- Filter bar ---------- */
+  .filter-wrap{padding:14px 16px 4px;}
+  .filter-label{font-family:var(--display);font-size:12.5px;letter-spacing:0.12em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:8px;}
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;}
+  .pill{
+    border:1px solid var(--line);background:var(--surface);color:var(--ink-dim);
+    font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--pine-light);}
+  .pill[aria-pressed="true"]{background:var(--pine);border-color:var(--pine-light);color:#eafff2;}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--brass);opacity:0;}
+  .pill[aria-pressed="true"] .dot{opacity:1;}
+  .clear-filters{
+    background:none;border:none;color:var(--ember-bright);font-size:12.5px;text-decoration:underline;
+    cursor:pointer;padding:6px 2px;display:none;
+  }
+  .clear-filters.show{display:inline-block;}
+
+  /* ---------- Signature / golden-triangle section ---------- */
+  .signature{padding:22px 16px 6px;}
+  .signature .eyebrow{
+    font-family:var(--display);font-size:13px;letter-spacing:0.14em;color:var(--brass-bright);text-transform:uppercase;
+  }
+  .signature h2{font-family:var(--serif);font-size:21px;margin:2px 0 2px;font-weight:600;}
+  .signature .sub{font-size:12.5px;color:var(--ink-dim);margin-bottom:14px;}
+  .tri-grid{
+    display:grid;grid-template-columns:1fr;gap:14px;align-items:stretch;
+  }
+  .tri-grid .dish-card{opacity:0;transform:translateY(10px);animation:riseIn .5s ease forwards;}
+  .tri-grid .dish-card:nth-child(1){animation-delay:.05s;}
+  .tri-grid .dish-card:nth-child(2){animation-delay:.15s;}
+  .tri-grid .dish-card:nth-child(3){animation-delay:.25s;}
+  @keyframes riseIn{to{opacity:1;transform:translateY(0);}}
+  .dish-card.featured-card{border-color:rgba(201,162,39,0.4);}
+  .dish-card.featured-card.role-center{
+    border-color:rgba(201,162,39,0.6);
+    background:linear-gradient(160deg, #2c2415, var(--surface));
+  }
+
+  @media (min-width:560px){
+    .tri-grid{grid-template-columns:repeat(3,1fr);}
+  }
+
+  /* ---------- Category sections ---------- */
+  .menu-main{padding:8px 16px 0;}
+  .cat-section{margin-top:26px;}
+  .cat-header{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;}
+  .cat-header h3{font-family:var(--serif);font-size:20px;font-weight:600;margin:0;color:var(--ink);}
+  .cat-header .stroke{flex:1;height:2px;background:linear-gradient(90deg, var(--ember), transparent);border-radius:2px;}
+  .cat-count{font-size:11.5px;color:var(--ink-dim);}
+
+  .dish-list{display:grid;grid-template-columns:1fr;gap:14px;}
+  @media (min-width:560px){ .dish-list{grid-template-columns:repeat(2,1fr);} }
+  @media (min-width:860px){ .dish-list{grid-template-columns:repeat(3,1fr);} }
+
+  /* uniform photo-forward dish card — used for both the category list and House Favorites */
+  .dish-card{
+    position:relative;display:flex;flex-direction:column;height:100%;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-l);
+    overflow:hidden;cursor:pointer;transition:border-color .15s ease, transform .1s ease;
+    text-align:left;width:100%;color:inherit;
+  }
+  .dish-card:hover{border-color:var(--brass);}
+  .dish-card:active{transform:scale(0.994);}
+  .dish-photo{
+    position:relative;width:100%;aspect-ratio:1/1;flex:none;overflow:hidden;
+    background:radial-gradient(circle at 32% 28%, var(--pine-light), var(--pine));
+  }
+  .dish-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .dish-photo svg{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:34%;height:34%;color:var(--brass-bright);
+  }
+  .dish-body{flex:1;min-width:0;padding:13px 14px 14px;}
+  .dish-body .name{font-family:var(--serif);font-weight:600;font-size:16px;margin:0 0 4px;}
+  .dish-body .desc{font-size:12.5px;color:var(--ink-dim);margin:0;line-height:1.5;}
+  .tag-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px;}
+  .tag-chip{
+    font-size:10.5px;font-weight:700;letter-spacing:0.03em;color:var(--pine-light);
+    background:rgba(58,116,88,0.16);border:1px solid rgba(58,116,88,0.45);
+    padding:2px 7px;border-radius:999px;text-transform:uppercase;
+  }
+  .tag-chip.fish{color:#7fb8d9;background:rgba(70,130,160,0.16);border-color:rgba(70,130,160,0.45);}
+
+  /* the "token" price coin — signature visual element, sits on the photo like a stamped medallion */
+  .coin{
+    position:absolute;bottom:12px;right:12px;
+    width:48px;height:48px;border-radius:50%;flex:none;
+    background:radial-gradient(circle at 32% 28%, var(--brass-bright), var(--brass) 65%, #8a6f1a 100%);
+    color:#1a1508;display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-size:15px;font-weight:400;letter-spacing:0.01em;
+    box-shadow:0 3px 8px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.5);
+    border:2px solid #7d631a;
+  }
+
+  .empty-state{
+    text-align:center;padding:40px 20px;color:var(--ink-dim);font-size:13.5px;
+    border:1px dashed var(--line);border-radius:var(--radius-m);margin-top:12px;
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer{
+    margin-top:40px;padding:22px 16px 30px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--ink-dim);text-align:center;
+  }
+  .site-footer .brand{font-family:var(--serif);color:var(--ink);font-size:15px;margin-bottom:6px;}
+  .site-footer .allergen-note{max-width:440px;margin:14px auto 0;font-size:11px;line-height:1.5;}
+  .site-footer a{color:var(--brass-bright);text-decoration:none;}
+
+  /* ---------- My Picks floating button + sheet ---------- */
+  .picks-fab{
+    position:fixed;right:16px;bottom:16px;z-index:50;
+    background:var(--ember);color:#fff;border:none;border-radius:999px;
+    padding:12px 18px;font-weight:700;font-size:13.5px;box-shadow:var(--shadow-pop);
+    display:flex;align-items:center;gap:8px;cursor:pointer;
+  }
+  .picks-fab .count{
+    background:rgba(255,255,255,0.25);border-radius:50%;width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;font-size:11px;
+  }
+
+  .sheet-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:60;
+    display:none;align-items:flex-end;justify-content:center;
+  }
+  .sheet-overlay.show{display:flex;}
+  .sheet{
+    background:var(--surface-2);width:100%;max-width:var(--maxw);
+    border-radius:22px 22px 0 0;padding:18px 18px 26px;max-height:82vh;overflow-y:auto;
+    border-top:1px solid var(--line);
+    animation:slideUp .22s ease;
+  }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:.6;}to{transform:translateY(0);opacity:1;}}
+  .sheet-handle{width:38px;height:4px;background:var(--line);border-radius:99px;margin:0 auto 14px;}
+  .sheet h3{font-family:var(--serif);margin:0 0 4px;font-size:19px;}
+  .sheet .note{font-size:11.5px;color:var(--ink-dim);margin-bottom:14px;}
+  .pick-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);}
+  .pick-row .name{flex:1;font-size:13.5px;}
+  .pick-row .coin-mini{
+    width:34px;height:34px;border-radius:50%;background:var(--brass);color:#1a1508;
+    display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:12.5px;flex:none;
+  }
+  .pick-row .rm{background:none;border:none;color:var(--ember-bright);font-size:12px;cursor:pointer;padding:4px 6px;}
+  .pick-total{display:flex;justify-content:space-between;padding-top:12px;font-size:14px;font-weight:700;}
+  .sheet-close{
+    margin-top:16px;width:100%;background:var(--brass);color:#1a1508;border:none;
+    padding:12px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;
+  }
+
+  /* ---------- Dish detail modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:70;
+    display:none;align-items:center;justify-content:center;padding:16px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{
+    background:var(--surface-2);max-width:440px;width:100%;border-radius:var(--radius-l);
+    padding:0 0 20px;border:1px solid var(--line);box-shadow:var(--shadow-pop);
+    max-height:88vh;overflow-y:auto;animation:slideUp .2s ease;
+  }
+  .modal-photo{
+    position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;
+    background:radial-gradient(circle at 32% 28%, var(--pine-light), var(--pine));
+    border-radius:var(--radius-l) var(--radius-l) 0 0;
+  }
+  .modal-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .modal-photo svg{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:76px;height:76px;color:var(--brass-bright);
+  }
+  .modal-photo .coin{bottom:14px;right:14px;width:54px;height:54px;font-size:16px;}
+  .modal-top{padding:16px 20px 0;}
+  .modal h3{font-family:var(--serif);font-size:21px;margin:0 0 4px;}
+  .modal-desc{font-size:13.5px;color:var(--ink-dim);margin:14px 20px 4px;line-height:1.6;}
+  .modal .tag-row{margin-top:10px;padding:0 20px;}
+  .pairs-box{
+    margin:16px 20px 0;background:rgba(201,162,39,0.08);border:1px solid var(--line);
+    border-radius:var(--radius-s);padding:12px;
+  }
+  .pairs-box .lbl{font-family:var(--display);font-size:11.5px;letter-spacing:0.1em;color:var(--brass-bright);text-transform:uppercase;margin-bottom:8px;}
+  .pair-chip{
+    display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);
+    border-radius:999px;padding:6px 10px 6px 6px;font-size:12.5px;margin:0 6px 6px 0;cursor:pointer;
+  }
+  .pair-chip .mini-coin{
+    width:22px;height:22px;border-radius:50%;background:var(--brass);color:#1a1508;
+    display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:10px;
+  }
+  .modal-actions{display:flex;gap:10px;margin:18px 20px 0;}
+  .btn{border:none;border-radius:999px;padding:12px 16px;font-weight:700;font-size:13.5px;cursor:pointer;flex:1;}
+  .btn.primary{background:var(--ember);color:#fff;}
+  .btn.primary.added{background:var(--pine);color:#eafff2;}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink-dim);}
+
+  .allergen-inline{font-size:10.5px;color:var(--ink-dim);margin:12px 20px 0;line-height:1.5;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header class="site-header">
+    <div class="header-top">
+      <img class="logo-badge" src="data:image/webp;base64,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" alt="Platform 92 Kitchen">
+      <div class="header-titles">
+        <div class="eyebrow">Vaggeryd</div>
+        <h1>Platform 92 Kitchen</h1>
+        <div class="sub" id="headerSub">Stationsvägen 6A · Digital menu</div>
+      </div>
+    </div>
+    <div class="lang-row" id="langRow"></div>
+  </header>
+
+  <div class="disclaimer" id="disclaimerBox">
+    <span>⚠️</span>
+    <div><strong id="disclaimerStrong"></strong> <span id="disclaimerText"></span></div>
+    <button class="x" id="disclaimerClose" aria-label="Close">✕</button>
+  </div>
+
+  <div class="filter-wrap">
+    <div class="filter-label" id="filterLabel"></div>
+    <div class="filter-bar" id="filterBar"></div>
+  </div>
+
+  <section class="signature">
+    <div class="eyebrow" id="sigEyebrow"></div>
+    <h2 id="sigTitle">Platform 92 Kitchen</h2>
+    <div class="sub" id="sigSub"></div>
+    <div class="tri-grid" id="triGrid"></div>
+  </section>
+
+  <main class="menu-main" id="menuMain"></main>
+
+  <footer class="site-footer">
+    <div class="brand">Platform 92 Kitchen</div>
+    <div>Stationsvägen 6A, Vaggeryd 56730</div>
+    <div><a href="tel:+4636719900">+46 36 719 900</a> · <a href="https://www.platform92.com" target="_blank" rel="noopener">www.platform92.com</a></div>
+    <div id="currencyNote" style="margin-top:8px;"></div>
+    <div class="allergen-note" id="allergenNote"></div>
+  </footer>
+
+</div>
+
+<button class="picks-fab" id="picksFab" style="display:none;">
+  <span id="picksFabLabel">My Picks</span>
+  <span class="count" id="picksCount">0</span>
+</button>
+
+<div class="sheet-overlay" id="sheetOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3 id="sheetTitle"></h3>
+    <div class="note" id="sheetNote"></div>
+    <div id="sheetList"></div>
+    <div class="pick-total" id="sheetTotal" style="display:none;"></div>
+    <button class="sheet-close" id="sheetClose"></button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script>
+(function(){
+
+/* =========================================================================
+   PLATFORM 92 KITCHEN — DIGITAL MENU
+   Single-file, dependency-light (Google Fonts only). No POS / ordering —
+   this is a "view + suggest" menu: filters, translation, and rule-based
+   pairing suggestions all run locally in the guest's browser.
+
+   HOW TO CUSTOMIZE
+   - Prices, descriptions, tags: edit the DISHES array below.
+   - Add a real photo to any dish later: set photo:"https://yoursite/img.jpg"
+     (falls back automatically to the brass icon medallion if empty/broken).
+   - Add/rename categories: edit CATEGORIES + give each dish a matching id.
+   - Change which 3 dishes are the featured "golden triangle" picks: move
+     the featured:"center"/"left"/"right" flags to different dish ids.
+   - AR: each dish has an arModel:null hook reserved for a future Phase 2
+     (see the note Claude gave in chat for why it isn't wired up yet).
+   ========================================================================= */
+
+var LANGS = ["sv","en","de","es","fr"];
+
+var CATEGORIES = ["tallrik","hamburgare","rulle","pommes","kyckling_nuggets","drycker"];
+
+var ICONS = {
+  plate:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/></svg>',
+  burger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 10c0-3.3 3.6-6 8-6s8 2.7 8 6"/><path d="M3.5 10.5h17"/><path d="M4 13.5h16"/><path d="M4.5 13.5c0 2.6 2.2 4.7 7.5 4.7s7.5-2.1 7.5-4.7"/><path d="M4 17h16"/></svg>',
+  wrap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M6 5l13 13"/><path d="M9 4.2c6 0 10.8 4.8 10.8 10.8"/><path d="M4.2 9c0 6 4.8 10.8 10.8 10.8"/><circle cx="6" cy="5" r="1.6"/></svg>',
+  fries:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M5 20V9M9 20V6M13 20V7M17 20V9"/><path d="M3.5 20h17"/></svg>',
+  chicken:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 4c3 0 5 2.4 5 5.2 0 1.7-.8 2.8-1.8 3.8l3.6 5.4a1.6 1.6 0 0 1-2.3 2.2l-4.9-4.6c-2.4-.2-4.6-2.2-4.6-5C4 6.4 6 4 9 4z"/></svg>',
+  drink:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M6 8h12l-1.3 11.2a2 2 0 0 1-2 1.8H9.3a2 2 0 0 1-2-1.8L6 8z"/><path d="M5 8h14"/><path d="M9.5 8 9 4h6l-.5 4"/></svg>',
+  salad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M3.5 13h17"/><path d="M12 13V6"/><path d="M8 13c0-2 1-4 2-5M16 13c0-2-1-4-2-5"/></svg>'
+};
+
+var CAT_ICON = {tallrik:"plate", hamburgare:"burger", rulle:"wrap", pommes:"fries", kyckling_nuggets:"chicken", drycker:"drink"};
+
+/* ---------------------------- UI STRINGS ---------------------------- */
+var UI = {
+  sv:{ langName:"Svenska", disclaimerStrong:"", disclaimerText:"",
+    filterTitle:"Filtrera efter kost", vegan:"Vegansk", vegetarian:"Vegetarisk", glutenFree:"Glutenfri", dairyFree:"Mjölkfri",
+    clearFilters:"Rensa filter", noResults:"Inga rätter matchar dina filter just nu — prova att ta bort ett.",
+    tapForDetails:"Tryck för detaljer", pairsWith:"Passar bra med", myPicks:"Mina val",
+    myPicksNote:"Detta är ingen beställning — visa listan för personalen eller använd den som minneslista.",
+    myPicksEmpty:"Du har inte lagt till något än. Tryck på en rätt och välj \u201dLägg till i mina val\u201d.",
+    addToPicks:"Lägg till i mina val", addedToPicks:"Tillagd ✓", removeFromPicks:"Ta bort", close:"Stäng", done:"Klart",
+    allergenNote:"Kost- och allergiinformationen är vägledande och baseras på standardrecept. Recept kan ändras — berätta alltid för personalen om allvarliga allergier.",
+    currencyNote:"Alla priser visas i svenska kronor (SEK).",
+    signatureEyebrow:"Husets favoriter", signatureSubtitle:"Platform 92:s favoriter, direkt från grillen.",
+    total:"Totalt", subHeader:"Stationsvägen 6A · Digital meny",
+    categories:{tallrik:"Tallrik", hamburgare:"Hamburgare", rulle:"Rulle", pommes:"Pommes frites", kyckling_nuggets:"Kyckling / Nuggets", drycker:"Drycker"}
+  },
+  en:{ langName:"English", disclaimerStrong:"Auto-translated.",
+    disclaimerText:"This menu was machine-translated from Swedish and may not be perfectly worded — ask staff if anything is unclear, especially about allergens.",
+    filterTitle:"Filter by diet", vegan:"Vegan", vegetarian:"Vegetarian", glutenFree:"Gluten-free", dairyFree:"Dairy-free",
+    clearFilters:"Clear filters", noResults:"No dishes match your filters right now — try removing one.",
+    tapForDetails:"Tap for details", pairsWith:"Pairs well with", myPicks:"My Picks",
+    myPicksNote:"This isn't an order — show this list to your server, or just use it to remember what you'd like.",
+    myPicksEmpty:"You haven't added anything yet. Tap a dish and choose 'Add to my picks'.",
+    addToPicks:"Add to my picks", addedToPicks:"Added ✓", removeFromPicks:"Remove", close:"Close", done:"Done",
+    allergenNote:"Diet and allergen info is a best-effort guide based on standard recipes. Recipes can vary — please tell staff about any serious allergy.",
+    currencyNote:"All prices shown in Swedish kronor (SEK).",
+    signatureEyebrow:"House Favorites", signatureSubtitle:"Platform 92 favorites, fresh off the grill.",
+    total:"Total", subHeader:"Stationsvägen 6A · Digital menu",
+    categories:{tallrik:"Plates", hamburgare:"Burgers", rulle:"Wraps", pommes:"Fries", kyckling_nuggets:"Chicken & Nuggets", drycker:"Drinks"}
+  },
+  de:{ langName:"Deutsch", disclaimerStrong:"Automatisch übersetzt.",
+    disclaimerText:"Diese Speisekarte wurde maschinell aus dem Schwedischen übersetzt und ist möglicherweise nicht perfekt formuliert — fragen Sie das Personal, besonders bei Allergenen.",
+    filterTitle:"Nach Ernährung filtern", vegan:"Vegan", vegetarian:"Vegetarisch", glutenFree:"Glutenfrei", dairyFree:"Laktosefrei",
+    clearFilters:"Filter zurücksetzen", noResults:"Aktuell passt kein Gericht zu Ihren Filtern — entfernen Sie ggf. einen Filter.",
+    tapForDetails:"Antippen für Details", pairsWith:"Passt gut zu", myPicks:"Meine Auswahl",
+    myPicksNote:"Dies ist keine Bestellung — zeigen Sie die Liste dem Personal oder nutzen Sie sie als Merkzettel.",
+    myPicksEmpty:"Sie haben noch nichts hinzugefügt. Tippen Sie auf ein Gericht und wählen Sie „Zu meiner Auswahl hinzufügen“.",
+    addToPicks:"Zu meiner Auswahl hinzufügen", addedToPicks:"Hinzugefügt ✓", removeFromPicks:"Entfernen", close:"Schließen", done:"Fertig",
+    allergenNote:"Angaben zu Ernährung und Allergenen basieren auf Standardrezepten und dienen nur zur Orientierung. Rezepte können variieren — informieren Sie das Personal über ernsthafte Allergien.",
+    currencyNote:"Alle Preise in schwedischen Kronen (SEK).",
+    signatureEyebrow:"Hausfavoriten", signatureSubtitle:"Die Favoriten von Platform 92, frisch vom Grill.",
+    total:"Summe", subHeader:"Stationsvägen 6A · Digitale Speisekarte",
+    categories:{tallrik:"Teller", hamburgare:"Burger", rulle:"Wraps", pommes:"Pommes frites", kyckling_nuggets:"Chicken & Nuggets", drycker:"Getränke"}
+  },
+  es:{ langName:"Español", disclaimerStrong:"Traducido automáticamente.",
+    disclaimerText:"Este menú se ha traducido automáticamente del sueco y puede no estar redactado a la perfección — consulta al personal, sobre todo sobre alérgenos.",
+    filterTitle:"Filtrar por dieta", vegan:"Vegano", vegetarian:"Vegetariano", glutenFree:"Sin gluten", dairyFree:"Sin lácteos",
+    clearFilters:"Quitar filtros", noResults:"Ningún plato coincide con tus filtros — prueba a quitar uno.",
+    tapForDetails:"Toca para ver más", pairsWith:"Combina bien con", myPicks:"Mis platos",
+    myPicksNote:"Esto no es un pedido — muestra la lista al personal o úsala solo para recordar lo que te gustaría.",
+    myPicksEmpty:"Todavía no has añadido nada. Toca un plato y elige «Añadir a mis platos».",
+    addToPicks:"Añadir a mis platos", addedToPicks:"Añadido ✓", removeFromPicks:"Quitar", close:"Cerrar", done:"Listo",
+    allergenNote:"La información sobre dieta y alérgenos es orientativa, según recetas estándar. Las recetas pueden variar — informa siempre al personal sobre alergias graves.",
+    currencyNote:"Todos los precios se muestran en coronas suecas (SEK).",
+    signatureEyebrow:"Favoritos de la casa", signatureSubtitle:"Los favoritos de Platform 92, recién salidos de la parrilla.",
+    total:"Total", subHeader:"Stationsvägen 6A · Menú digital",
+    categories:{tallrik:"Platos", hamburgare:"Hamburguesas", rulle:"Wraps", pommes:"Patatas fritas", kyckling_nuggets:"Pollo y nuggets", drycker:"Bebidas"}
+  },
+  fr:{ langName:"Français", disclaimerStrong:"Traduction automatique.",
+    disclaimerText:"Ce menu a été traduit automatiquement du suédois et la formulation peut ne pas être parfaite — n'hésitez pas à demander au personnel, notamment sur les allergènes.",
+    filterTitle:"Filtrer par régime", vegan:"Végétalien", vegetarian:"Végétarien", glutenFree:"Sans gluten", dairyFree:"Sans lactose",
+    clearFilters:"Réinitialiser les filtres", noResults:"Aucun plat ne correspond à vos filtres — essayez d'en retirer un.",
+    tapForDetails:"Toucher pour plus de détails", pairsWith:"Se marie bien avec", myPicks:"Ma sélection",
+    myPicksNote:"Ceci n'est pas une commande — montrez cette liste au personnel, ou utilisez-la simplement comme pense-bête.",
+    myPicksEmpty:"Vous n'avez encore rien ajouté. Touchez un plat et choisissez «Ajouter à ma sélection».",
+    addToPicks:"Ajouter à ma sélection", addedToPicks:"Ajouté ✓", removeFromPicks:"Retirer", close:"Fermer", done:"Terminé",
+    allergenNote:"Les informations sur les régimes et allergènes sont indicatives, basées sur les recettes standards. Les recettes peuvent varier — merci de signaler toute allergie sérieuse au personnel.",
+    currencyNote:"Tous les prix sont indiqués en couronnes suédoises (SEK).",
+    signatureEyebrow:"Coups de cœur de la maison", signatureSubtitle:"Les incontournables de Platform 92, tout juste sortis du grill.",
+    total:"Total", subHeader:"Stationsvägen 6A · Menu numérique",
+    categories:{tallrik:"Plats", hamburgare:"Burgers", rulle:"Wraps", pommes:"Frites", kyckling_nuggets:"Poulet & nuggets", drycker:"Boissons"}
+  }
+};
+
+/* ---------------------------- DISH DATA -----------------------------
+   Every dish below comes directly from the original Platform 92 menu.
+   Nothing has been added or removed — only organized, tagged and translated. */
+var DISHES = [
+  { id:"kyckling_tallrik", category:"tallrik", price:99, photo:"Chicken Plate.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:true,dairyFree:true,fish:false},
+    t:{ sv:{name:"Kyckling med ris eller pommes", desc:"Grillad kyckling serverad med basmatiris eller pommes samt valfri sallad."},
+        en:{name:"Grilled Chicken with Rice or Fries", desc:"Grilled chicken served with basmati rice or fries, plus a salad of your choice."},
+        de:{name:"Gegrilltes Hähnchen mit Reis oder Pommes", desc:"Gegrilltes Hähnchen serviert mit Basmatireis oder Pommes frites sowie einem Salat nach Wahl."},
+        es:{name:"Pollo a la parrilla con arroz o patatas fritas", desc:"Pollo a la parrilla servido con arroz basmati o patatas fritas, más una ensalada a elegir."},
+        fr:{name:"Poulet grillé, riz ou frites", desc:"Poulet grillé servi avec du riz basmati ou des frites, accompagné d'une salade au choix."} } },
+
+  { id:"notkott_tallrik", category:"tallrik", price:99, photo:"Beef Plate.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:true,dairyFree:true,fish:false},
+    t:{ sv:{name:"Nötkött med ris eller pommes", desc:"Kryddat Nötkött serverat med basmatiris eller pommes samt valfri sallad."},
+        en:{name:"Spiced Beef with Rice or Fries", desc:"Spiced beef served with basmati rice or fries, plus a salad of your choice."},
+        de:{name:"Gewürztes Rindfleisch mit Reis oder Pommes", desc:"Gewürztes Rindfleisch serviert mit Basmatireis oder Pommes frites sowie einem Salat nach Wahl."},
+        es:{name:"Ternera especiada con arroz o patatas fritas", desc:"Ternera especiada servida con arroz basmati o patatas fritas, más una ensalada a elegir."},
+        fr:{name:"Bœuf épicé, riz ou frites", desc:"Bœuf épicé servi avec du riz basmati ou des frites, accompagné d'une salade au choix."} } },
+
+  { id:"combo_tallrik", category:"tallrik", price:109, photo:"Beef & Chicken Combo Plate.png", arModel:null, featured:"center",
+    tags:{vegan:false,vegetarian:false,glutenFree:true,dairyFree:true,fish:false},
+    t:{ sv:{name:"Nötkött och kyckling med ris eller pommes (Combo)", desc:"Grillad kyckling och kryddat Nötkött serverat med basmatiris eller pommes samt valfri sallad."},
+        en:{name:"Beef & Chicken Combo with Rice or Fries", desc:"Grilled chicken and spiced beef served together with basmati rice or fries, plus a salad of your choice."},
+        de:{name:"Rind- & Hähnchen-Kombi mit Reis oder Pommes", desc:"Gegrilltes Hähnchen und gewürztes Rindfleisch zusammen serviert mit Basmatireis oder Pommes frites sowie einem Salat nach Wahl."},
+        es:{name:"Combo de ternera y pollo con arroz o patatas fritas", desc:"Pollo a la parrilla y ternera especiada servidos juntos con arroz basmati o patatas fritas, más una ensalada a elegir."},
+        fr:{name:"Combo bœuf et poulet, riz ou frites", desc:"Poulet grillé et bœuf épicé servis ensemble avec du riz basmati ou des frites, accompagnés d'une salade au choix."} } },
+
+  { id:"fisk_tallrik", category:"tallrik", price:119, photo:"Fish Plate.png", arModel:null, featured:"right",
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:true,fish:true},
+    t:{ sv:{name:"Fisk med ris eller pommes", desc:"Panerad fiskfilé serverad med basmatiris eller pommes samt valfri sallad."},
+        en:{name:"Fish with Rice or Fries", desc:"Breaded fish fillet served with basmati rice or fries, plus a salad of your choice."},
+        de:{name:"Fisch mit Reis oder Pommes", desc:"Paniertes Fischfilet serviert mit Basmatireis oder Pommes frites sowie einem Salat nach Wahl."},
+        es:{name:"Pescado con arroz o patatas fritas", desc:"Filete de pescado empanado servido con arroz basmati o patatas fritas, más una ensalada a elegir."},
+        fr:{name:"Poisson, riz ou frites", desc:"Filet de poisson pané servi avec du riz basmati ou des frites, accompagné d'une salade au choix."} } },
+
+  { id:"falafel_tallrik", category:"tallrik", price:79, photo:"Falafel Plate.png", arModel:null,
+    tags:{vegan:true,vegetarian:true,glutenFree:false,dairyFree:true,fish:false},
+    t:{ sv:{name:"Falafel med ris eller pommes", desc:"Krispiga falaflar serverade med basmatiris eller pommes samt valfri sallad."},
+        en:{name:"Falafel with Rice or Fries", desc:"Crispy falafel served with basmati rice or fries, plus a salad of your choice."},
+        de:{name:"Falafel mit Reis oder Pommes", desc:"Knusprige Falafel serviert mit Basmatireis oder Pommes frites sowie einem Salat nach Wahl."},
+        es:{name:"Falafel con arroz o patatas fritas", desc:"Falafel crujiente servido con arroz basmati o patatas fritas, más una ensalada a elegir."},
+        fr:{name:"Falafel, riz ou frites", desc:"Falafel croustillant servi avec du riz basmati ou des frites, accompagné d'une salade au choix."} } },
+
+  { id:"cheeseburgare", category:"hamburgare", price:119, photo:"Cheeseburger.png", arModel:null, featured:"left",
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:false,fish:false},
+    t:{ sv:{name:"Cheeseburgare", desc:"Nötköttsburgare grillad till perfektion och toppad med en smält skiva amerikansk ost, eller utan ost."},
+        en:{name:"Cheeseburger", desc:"Beef patty grilled to perfection, topped with a melted slice of American cheese — or without cheese, if you prefer."},
+        de:{name:"Cheeseburger", desc:"Rinderpatty, perfekt gegrillt und mit einer geschmolzenen Scheibe American Cheese belegt — auf Wunsch auch ohne Käse."},
+        es:{name:"Hamburguesa con queso", desc:"Carne de ternera a la parrilla en su punto, cubierta con una loncha fundida de queso americano — o sin queso, si lo prefieres."},
+        fr:{name:"Cheeseburger", desc:"Steak de bœuf grillé à la perfection, garni d'une tranche fondue de fromage américain — ou sans fromage, selon vos préférences."} } },
+
+  { id:"kyckling_cheeseburgare", category:"hamburgare", price:99, photo:"Crispy Chicken Cheeseburger.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:false,fish:false},
+    t:{ sv:{name:"Krispig kyckling-cheeseburgare", desc:"Kycklingfilé av helt vitt kött, krispigt friterad till gyllene perfektion. Med smält ost eller utan ost."},
+        en:{name:"Crispy Chicken Cheeseburger", desc:"All-white-meat chicken fillet, fried crisp to golden perfection. With melted cheese, or without."},
+        de:{name:"Knuspriger Chicken-Cheeseburger", desc:"Hähnchenfilet aus reinem Brustfleisch, knusprig goldbraun frittiert. Mit geschmolzenem Käse oder ohne."},
+        es:{name:"Cheeseburger de pollo crujiente", desc:"Filete de pollo de pechuga entera, frito hasta quedar crujiente y dorado. Con queso fundido o sin él."},
+        fr:{name:"Cheeseburger poulet croustillant", desc:"Filet de poulet 100% blanc, frit jusqu'à devenir doré et croustillant. Avec fromage fondu, ou sans."} } },
+
+  { id:"mixed_sallad", category:"hamburgare", price:69, photo:"Mixed Salad.png", arModel:null,
+    tags:{vegan:true,vegetarian:true,glutenFree:true,dairyFree:true,fish:false},
+    t:{ sv:{name:"Mixed Sallad", desc:"Fräsch sallad med isbergssallad, gurka, tomat, kikärtor och röda kidneybönor. Serveras med valfri dressing."},
+        en:{name:"Mixed Salad", desc:"Fresh salad with iceberg lettuce, cucumber, tomato, chickpeas and red kidney beans. Served with a dressing of your choice."},
+        de:{name:"Gemischter Salat", desc:"Frischer Salat mit Eisbergsalat, Gurke, Tomate, Kichererbsen und roten Kidneybohnen. Serviert mit einem Dressing nach Wahl."},
+        es:{name:"Ensalada mixta", desc:"Ensalada fresca con lechuga iceberg, pepino, tomate, garbanzos y alubias rojas. Se sirve con el aliño que prefieras."},
+        fr:{name:"Salade mixte", desc:"Salade fraîche à la laitue iceberg, concombre, tomate, pois chiches et haricots rouges. Servie avec la sauce de votre choix."} } },
+
+  { id:"extras", category:"hamburgare", price:19, photo:"extras.jpg", arModel:null,
+    tags:{vegan:false,vegetarian:true,glutenFree:true,dairyFree:false,fish:false},
+    t:{ sv:{name:"Extras", desc:"Extra ost eller dips."},
+        en:{name:"Extras", desc:"Extra cheese or dips."},
+        de:{name:"Extras", desc:"Extra Käse oder Dips."},
+        es:{name:"Extras", desc:"Queso extra o salsas."},
+        fr:{name:"Extras", desc:"Fromage supplémentaire ou sauces."} } },
+
+  { id:"notkott_rulle", category:"rulle", price:109, photo:"Beef Wrap.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:true,fish:false},
+    t:{ sv:{name:"Nötkött rulle", desc:"Kryddat Nötkött i varmt pitabröd med sallad och valfri sås."},
+        en:{name:"Beef Wrap", desc:"Spiced beef in warm pita bread with salad and a sauce of your choice."},
+        de:{name:"Rindfleisch-Wrap", desc:"Gewürztes Rindfleisch im warmen Fladenbrot mit Salat und einer Sauce nach Wahl."},
+        es:{name:"Wrap de ternera", desc:"Ternera especiada en pan de pita caliente con ensalada y la salsa que prefieras."},
+        fr:{name:"Wrap au bœuf", desc:"Bœuf épicé dans un pain pita chaud avec salade et sauce au choix."} } },
+
+  { id:"kyckling_rulle", category:"rulle", price:99, photo:"Chicken wrap.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:true,fish:false},
+    t:{ sv:{name:"Kyckling rulle", desc:"Grillad kyckling i varmt pitabröd med sallad och valfri sås."},
+        en:{name:"Chicken Wrap", desc:"Grilled chicken in warm pita bread with salad and a sauce of your choice."},
+        de:{name:"Hähnchen-Wrap", desc:"Gegrilltes Hähnchen im warmen Fladenbrot mit Salat und einer Sauce nach Wahl."},
+        es:{name:"Wrap de pollo", desc:"Pollo a la parrilla en pan de pita caliente con ensalada y la salsa que prefieras."},
+        fr:{name:"Wrap au poulet", desc:"Poulet grillé dans un pain pita chaud avec salade et sauce au choix."} } },
+
+  { id:"pommes_falafel_rulle", category:"rulle", price:79, photo:"Fries or Falafel Wrap.png", arModel:null,
+    tags:{vegan:true,vegetarian:true,glutenFree:false,dairyFree:true,fish:false},
+    t:{ sv:{name:"Pommes eller falafel rulle", desc:"Krispiga pommes eller falafel med färska grönsaker och valfri sås."},
+        en:{name:"Fries or Falafel Wrap", desc:"Crispy fries or falafel with fresh vegetables and a sauce of your choice."},
+        de:{name:"Pommes- oder Falafel-Wrap", desc:"Knusprige Pommes frites oder Falafel mit frischem Gemüse und einer Sauce nach Wahl."},
+        es:{name:"Wrap de patatas fritas o falafel", desc:"Patatas fritas crujientes o falafel con verduras frescas y la salsa que prefieras."},
+        fr:{name:"Wrap frites ou falafel", desc:"Frites croustillantes ou falafel avec légumes frais et sauce au choix."} } },
+
+  { id:"loaded_pommes", category:"pommes", price:79, photo:"Loaded Fries.png", arModel:null,
+    tags:{vegan:false,vegetarian:true,glutenFree:true,dairyFree:false,fish:false},
+    t:{ sv:{name:"Loaded Pommes med valfri dressing", desc:"Krispiga pommes toppade med valfri dressing."},
+        en:{name:"Loaded Fries with a Dressing of Your Choice", desc:"Crispy fries topped with the dressing of your choice."},
+        de:{name:"Loaded Pommes mit Dressing nach Wahl", desc:"Knusprige Pommes frites, getoppt mit einem Dressing nach Wahl."},
+        es:{name:"Patatas fritas cargadas, aliño a elegir", desc:"Patatas fritas crujientes cubiertas con el aliño que prefieras."},
+        fr:{name:"Frites garnies, sauce au choix", desc:"Frites croustillantes garnies de la sauce de votre choix."} } },
+
+  { id:"pommes_ost", category:"pommes", price:59, photo:"Cheese Fries.png", arModel:null,
+    tags:{vegan:false,vegetarian:true,glutenFree:true,dairyFree:false,fish:false},
+    t:{ sv:{name:"Pommes frites med ost", desc:"Krispiga pommes toppade med smält ost."},
+        en:{name:"Cheese Fries", desc:"Crispy fries topped with melted cheese."},
+        de:{name:"Käse-Pommes", desc:"Knusprige Pommes frites, getoppt mit geschmolzenem Käse."},
+        es:{name:"Patatas fritas con queso", desc:"Patatas fritas crujientes cubiertas con queso fundido."},
+        fr:{name:"Frites au fromage", desc:"Frites croustillantes garnies de fromage fondu."} } },
+
+  { id:"kycklingnuggets", category:"kyckling_nuggets", price:49, photo:"nuggets.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:true,fish:false},
+    t:{ sv:{name:"Kycklingnuggets", desc:"Krispiga nuggets serverade med valfri dippsås."},
+        en:{name:"Chicken Nuggets", desc:"Crispy nuggets served with a dipping sauce of your choice."},
+        de:{name:"Chicken Nuggets", desc:"Knusprige Nuggets serviert mit einer Dip-Sauce nach Wahl."},
+        es:{name:"Nuggets de pollo", desc:"Nuggets crujientes servidos con la salsa para mojar que prefieras."},
+        fr:{name:"Nuggets de poulet", desc:"Nuggets croustillants servis avec une sauce à tremper au choix."} } },
+
+  { id:"kycklingvingar", category:"kyckling_nuggets", price:49, photo:"wings.png", arModel:null,
+    tags:{vegan:false,vegetarian:false,glutenFree:false,dairyFree:true,fish:false},
+    t:{ sv:{name:"Kycklingvingar", desc:"Saftiga och krispiga kycklingvingar med valfri dippsås."},
+        en:{name:"Chicken Wings", desc:"Juicy, crispy chicken wings with a dipping sauce of your choice."},
+        de:{name:"Hähnchenflügel", desc:"Saftige, knusprige Hähnchenflügel mit einer Dip-Sauce nach Wahl."},
+        es:{name:"Alitas de pollo", desc:"Alitas de pollo jugosas y crujientes con la salsa para mojar que prefieras."},
+        fr:{name:"Ailes de poulet", desc:"Ailes de poulet juteuses et croustillantes, sauce à tremper au choix."} } },
+
+  { id:"drycker", category:"drycker", price:29, photo:"coca cola.png", arModel:null,
+    tags:{vegan:true,vegetarian:true,glutenFree:true,dairyFree:true,fish:false},
+    t:{ sv:{name:"Läsk / Kaffe / Te", desc:"Välj mellan iskall läsk, varmt kaffe eller te."},
+        en:{name:"Soft Drink / Coffee / Tea", desc:"Choose between an ice-cold soft drink, hot coffee, or tea."},
+        de:{name:"Softdrink / Kaffee / Tee", desc:"Wählen Sie zwischen einem eiskalten Softdrink, heißem Kaffee oder Tee."},
+        es:{name:"Refresco / Café / Té", desc:"Elige entre un refresco bien frío, café caliente o té."},
+        fr:{name:"Soda / Café / Thé", desc:"Choisissez entre un soda bien frais, un café chaud ou un thé."} } }
+];
+
+/* rule-based pairing suggestions — no AI call, no cart/POS, just a lookup table */
+var PAIRINGS = {
+  cheeseburgare:["pommes_ost","drycker"],
+  kyckling_cheeseburgare:["loaded_pommes","drycker"],
+  combo_tallrik:["drycker"],
+  kyckling_tallrik:["drycker"],
+  notkott_tallrik:["drycker"],
+  fisk_tallrik:["mixed_sallad","drycker"],
+  falafel_tallrik:["drycker"],
+  notkott_rulle:["kycklingnuggets","drycker"],
+  kyckling_rulle:["pommes_ost","drycker"],
+  pommes_falafel_rulle:["drycker"],
+  loaded_pommes:["drycker"],
+  pommes_ost:["drycker"],
+  kycklingnuggets:["pommes_ost","drycker"],
+  kycklingvingar:["loaded_pommes","drycker"],
+  mixed_sallad:["drycker"],
+  extras:[],
+  drycker:[]
+};
+
+/* ------------------------------- STATE ------------------------------- */
+var state = {
+  lang: detectLang(),
+  filters: { vegan:false, vegetarian:false, glutenFree:false, dairyFree:false },
+  picks: [],
+  autoDetected: true
+};
+
+function detectLang(){
+  try{
+    var cands = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "en"];
+    for (var i=0;i<cands.length;i++){
+      var code = (cands[i]||"").slice(0,2).toLowerCase();
+      if (LANGS.indexOf(code) !== -1) return code;
+    }
+  }catch(e){}
+  return "en";
+}
+
+function byId(id){ for(var i=0;i<DISHES.length;i++) if(DISHES[i].id===id) return DISHES[i]; return null; }
+function dish_t(d){ return d.t[state.lang] || d.t.en; }
+function ui(){ return UI[state.lang]; }
+
+/* ------------------------------ RENDERING ------------------------------ */
+function renderAll(){
+  document.documentElement.lang = state.lang;
+  renderLangRow();
+  renderDisclaimer();
+  renderFilterBar();
+  renderSignature();
+  renderMenu();
+  renderFooter();
+  renderPicksFab();
+}
+
+function renderLangRow(){
+  var row = document.getElementById("langRow");
+  var html = '<span class="lang-globe">🌐</span>';
+  LANGS.forEach(function(code){
+    html += '<button class="lang-btn'+(state.lang===code?' active':'')+'" data-lang="'+code+'" aria-pressed="'+(state.lang===code)+'">'+code.toUpperCase()+'</button>';
+  });
+  row.innerHTML = html;
+  document.getElementById("headerSub").textContent = ui().subHeader;
+}
+
+function renderDisclaimer(){
+  var box = document.getElementById("disclaimerBox");
+  if (state.lang === "sv"){ box.classList.remove("show"); return; }
+  document.getElementById("disclaimerStrong").textContent = ui().disclaimerStrong;
+  document.getElementById("disclaimerText").textContent = ui().disclaimerText;
+  box.classList.add("show");
+}
+
+function renderFilterBar(){
+  document.getElementById("filterLabel").textContent = ui().filterTitle;
+  var bar = document.getElementById("filterBar");
+  var defs = [["vegan","vegan"],["vegetarian","vegetarian"],["glutenFree","glutenFree"],["dairyFree","dairyFree"]];
+  var html = "";
+  defs.forEach(function(pair){
+    var key = pair[0];
+    var on = state.filters[key];
+    html += '<button class="pill" data-filter="'+key+'" aria-pressed="'+on+'"><span class="dot"></span>'+ui()[pair[1]]+'</button>';
+  });
+  bar.innerHTML = html;
+  var anyOn = Object.keys(state.filters).some(function(k){return state.filters[k];});
+  var existing = document.querySelector(".clear-filters");
+  if (existing) existing.remove();
+  var clearBtn = document.createElement("button");
+  clearBtn.className = "clear-filters" + (anyOn ? " show" : "");
+  clearBtn.textContent = ui().clearFilters;
+  clearBtn.id = "clearFiltersBtn";
+  document.querySelector(".filter-wrap").appendChild(clearBtn);
+}
+
+function passesFilters(d){
+  var f = state.filters;
+  if (f.vegan && !d.tags.vegan) return false;
+  if (f.vegetarian && !d.tags.vegetarian) return false;
+  if (f.glutenFree && !d.tags.glutenFree) return false;
+  if (f.dairyFree && !d.tags.dairyFree) return false;
+  return true;
+}
+
+function tagChips(d){
+  var chips = "";
+  if (d.tags.vegan) chips += '<span class="tag-chip">'+ui().vegan+'</span>';
+  else if (d.tags.vegetarian) chips += '<span class="tag-chip">'+ui().vegetarian+'</span>';
+  if (d.tags.glutenFree) chips += '<span class="tag-chip">'+ui().glutenFree+'</span>';
+  if (d.tags.dairyFree) chips += '<span class="tag-chip">'+ui().dairyFree+'</span>';
+  if (d.tags.fish) chips += '<span class="tag-chip fish">🐟</span>';
+  return chips;
+}
+
+window.__p92IconFallback = function(imgEl, category){
+  try{ imgEl.parentNode.innerHTML = ICONS[CAT_ICON[category]]; }catch(e){}
+};
+
+function escAttr(s){
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+}
+
+function iconOrPhoto(d, sizeClass){
+  if (d.photo){
+    return '<img src="'+escAttr(d.photo)+'" alt="" onerror="window.__p92IconFallback(this,\''+d.category+'\')">';
+  }
+  return ICONS[CAT_ICON[d.category]];
+}
+
+function renderSignature(){
+  document.getElementById("sigEyebrow").textContent = ui().signatureEyebrow;
+  document.getElementById("sigTitle").textContent = "Platform 92 Kitchen";
+  document.getElementById("sigSub").textContent = ui().signatureSubtitle;
+  var order = {left:1, center:0, right:2};
+  var featured = DISHES.filter(function(d){return d.featured;}).sort(function(a,b){return order[a.featured]-order[b.featured];});
+  var grid = document.getElementById("triGrid");
+  grid.innerHTML = featured.map(function(d){
+    var tt = dish_t(d);
+    return '<button class="dish-card featured-card role-'+d.featured+'" data-id="'+d.id+'" title="'+ui().tapForDetails+'">'
+      + '<div class="dish-photo">'+iconOrPhoto(d)+'<div class="coin">'+d.price+'</div></div>'
+      + '<div class="dish-body"><div class="name">'+tt.name+'</div><div class="desc">'+tt.desc+'</div><div class="tag-row">'+tagChips(d)+'</div></div>'
+      + '</button>';
+  }).join("");
+}
+
+function renderMenu(){
+  var main = document.getElementById("menuMain");
+  var anyVisible = false;
+  var html = "";
+  CATEGORIES.forEach(function(catId){
+    var items = DISHES.filter(function(d){ return d.category===catId && passesFilters(d); });
+    if (!items.length) return;
+    anyVisible = true;
+    html += '<section class="cat-section"><div class="cat-header"><h3>'+ui().categories[catId]+'</h3><div class="stroke"></div><div class="cat-count">'+items.length+'</div></div><div class="dish-list">';
+    items.forEach(function(d){
+      var tt = dish_t(d);
+      html += '<button class="dish-card" data-id="'+d.id+'" title="'+ui().tapForDetails+'">'
+        + '<div class="dish-photo">'+iconOrPhoto(d)+'<div class="coin">'+d.price+'</div></div>'
+        + '<div class="dish-body"><div class="name">'+tt.name+'</div><div class="desc">'+tt.desc+'</div><div class="tag-row">'+tagChips(d)+'</div></div>'
+        + '</button>';
+    });
+    html += '</div></section>';
+  });
+  if (!anyVisible){
+    html = '<div class="empty-state">'+ui().noResults+'</div>';
+  }
+  main.innerHTML = html;
+}
+
+function renderFooter(){
+  document.getElementById("currencyNote").textContent = ui().currencyNote;
+  document.getElementById("allergenNote").textContent = ui().allergenNote;
+}
+
+function renderPicksFab(){
+  var fab = document.getElementById("picksFab");
+  document.getElementById("picksFabLabel").textContent = ui().myPicks;
+  document.getElementById("picksCount").textContent = state.picks.length;
+  fab.style.display = state.picks.length ? "flex" : "none";
+}
+
+/* ------------------------------ MODAL ------------------------------ */
+function openModal(id){
+  var d = byId(id);
+  if (!d) return;
+  var tt = dish_t(d);
+  var already = state.picks.indexOf(id) !== -1;
+  var suggestions = (PAIRINGS[id]||[]).map(byId).filter(Boolean);
+  var pairsHtml = "";
+  if (suggestions.length){
+    pairsHtml = '<div class="pairs-box"><div class="lbl">'+ui().pairsWith+'</div>' +
+      suggestions.map(function(s){
+        var st = dish_t(s);
+        return '<span class="pair-chip" data-goto="'+s.id+'"><span class="mini-coin">'+s.price+'</span>'+st.name+'</span>';
+      }).join("") + '</div>';
+  }
+  var modal = document.getElementById("modalBody");
+  modal.innerHTML =
+    '<div class="modal-photo">'+iconOrPhoto(d)+'<div class="coin">'+d.price+'</div></div>' +
+    '<div class="modal-top"><h3>'+tt.name+'</h3></div>' +
+    '<div class="modal-desc">'+tt.desc+'</div>' +
+    '<div class="tag-row">'+tagChips(d)+'</div>' +
+    pairsHtml +
+    '<div class="modal-actions">' +
+      '<button class="btn primary'+(already?' added':'')+'" id="addPickBtn">'+(already?ui().addedToPicks:ui().addToPicks)+'</button>' +
+      '<button class="btn ghost" id="closeModalBtn">'+ui().close+'</button>' +
+    '</div>' +
+    '<div class="allergen-inline">'+ui().allergenNote+'</div>';
+
+  document.getElementById("addPickBtn").onclick = function(){
+    var idx = state.picks.indexOf(id);
+    if (idx === -1) state.picks.push(id); else state.picks.splice(idx,1);
+    renderPicksFab();
+    openModal(id);
+  };
+  document.getElementById("closeModalBtn").onclick = closeModal;
+  modal.querySelectorAll(".pair-chip").forEach(function(chip){
+    chip.onclick = function(){ openModal(chip.getAttribute("data-goto")); };
+  });
+  document.getElementById("modalOverlay").classList.add("show");
+}
+function closeModal(){ document.getElementById("modalOverlay").classList.remove("show"); }
+
+/* ------------------------------ MY PICKS SHEET ------------------------------ */
+function openSheet(){
+  document.getElementById("sheetTitle").textContent = ui().myPicks;
+  document.getElementById("sheetNote").textContent = ui().myPicksNote;
+  document.getElementById("sheetClose").textContent = ui().done;
+  var list = document.getElementById("sheetList");
+  var totalBox = document.getElementById("sheetTotal");
+  if (!state.picks.length){
+    list.innerHTML = '<div class="empty-state" style="margin-top:4px;">'+ui().myPicksEmpty+'</div>';
+    totalBox.style.display = "none";
+  } else {
+    var total = 0;
+    list.innerHTML = state.picks.map(function(id){
+      var d = byId(id); var tt = dish_t(d); total += d.price;
+      return '<div class="pick-row"><div class="coin-mini">'+d.price+'</div><div class="name">'+tt.name+'</div><button class="rm" data-id="'+id+'">'+ui().removeFromPicks+'</button></div>';
+    }).join("");
+    totalBox.style.display = "flex";
+    totalBox.innerHTML = '<span>'+ui().total+'</span><span>'+total+'</span>';
+    list.querySelectorAll(".rm").forEach(function(btn){
+      btn.onclick = function(){
+        var idx = state.picks.indexOf(btn.getAttribute("data-id"));
+        if (idx !== -1) state.picks.splice(idx,1);
+        renderPicksFab(); openSheet();
+      };
+    });
+  }
+  document.getElementById("sheetOverlay").classList.add("show");
+}
+function closeSheet(){ document.getElementById("sheetOverlay").classList.remove("show"); }
+
+/* ------------------------------ EVENTS ------------------------------ */
+document.addEventListener("click", function(e){
+  var langBtn = e.target.closest(".lang-btn");
+  if (langBtn){ state.lang = langBtn.getAttribute("data-lang"); state.autoDetected=false; renderAll(); return; }
+
+  var filterPill = e.target.closest(".pill[data-filter]");
+  if (filterPill){
+    var key = filterPill.getAttribute("data-filter");
+    state.filters[key] = !state.filters[key];
+    renderFilterBar(); renderMenu(); return;
+  }
+
+  if (e.target.id === "clearFiltersBtn" || e.target.closest("#clearFiltersBtn")){
+    Object.keys(state.filters).forEach(function(k){ state.filters[k]=false; });
+    renderFilterBar(); renderMenu(); return;
+  }
+
+  if (e.target.id === "disclaimerClose"){ document.getElementById("disclaimerBox").classList.remove("show"); return; }
+
+  var dishCard = e.target.closest(".dish-card");
+  if (dishCard){ openModal(dishCard.getAttribute("data-id")); return; }
+
+  if (e.target.id === "picksFab" || e.target.closest("#picksFab")){ openSheet(); return; }
+  if (e.target.id === "sheetClose" || e.target === document.getElementById("sheetOverlay")){ closeSheet(); return; }
+  if (e.target.id === "modalOverlay"){ closeModal(); return; }
+});
+
+renderAll();
+})();
+</script>
+</body>
+</html>

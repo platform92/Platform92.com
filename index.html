@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform 92 Kitchen — Vaggeryd</title>
+<meta name="description" content="Platform 92 Kitchen i Vaggeryd. Grillad kyckling, nötkött, falafel, rullar och pommes. Beställ online, betala kontant vid leverans.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='93' fill='%2314110D' stroke='%23C9A227' stroke-width='14'/%3E%3Ctext x='100' y='134' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='108' fill='%23F4ECD8'%3E92%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ============================================================
+   PLATFORM 92 KITCHEN — design tokens locked to the brand standard
+   Void / Brass / Pine / Ember / Ink — do not introduce new hues.
+   ============================================================ */
+:root{
+  --void:#14110D; --surface:#1E1911; --surface-2:#262016; --surface-3:#2E2519;
+  --line:rgba(201,162,39,0.22); --line-strong:rgba(201,162,39,0.4);
+  --ink:#F4ECD8; --ink-dim:#C9BFA8; --ink-faint:#8a8168;
+  --brass:#C9A227; --brass-bright:#E9C766;
+  --pine:#20503C; --pine-light:#3A7458;
+  --ember:#B4232A; --ember-bright:#D6444B;
+  --display:"Bebas Neue","Arial Narrow",sans-serif;
+  --serif:"Fraunces",Georgia,serif;
+  --body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --maxw:1180px;
+  --radius:16px;
+  --nav-h:64px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+html{-webkit-tap-highlight-color:transparent;}
+body{margin:0;background:var(--void);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+h1,h2,h3{margin:0;}
+p{margin:0;}
+img,svg{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+::selection{background:var(--brass);color:#1a1508;}
+:focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px;}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px;}
+.eyebrow{font-family:var(--display);font-size:12.5px;letter-spacing:.16em;color:var(--brass);text-transform:uppercase;}
+
+/* rail-tie divider, straight from the brand standard */
+.ties{height:14px;margin:0 auto;max-width:var(--maxw);background-image:linear-gradient(90deg, var(--line) 0 2px, transparent 2px 100%),repeating-linear-gradient(90deg, var(--line-strong) 0 3px, transparent 3px 26px);background-position:0 6px, 0 0;background-size:100% 2px, 100% 14px;background-repeat:no-repeat, repeat-x;opacity:.6;}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--display);letter-spacing:.06em;font-size:15px;padding:13px 22px;border-radius:999px;border:1px solid transparent;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;text-decoration:none;white-space:nowrap;}
+.btn:active{transform:scale(.97);}
+.btn-brass{background:var(--brass);color:#1a1508;}
+.btn-brass:hover{background:var(--brass-bright);box-shadow:0 6px 22px rgba(201,162,39,.28);}
+.btn-outline{background:transparent;color:var(--ink);border-color:var(--line-strong);}
+.btn-outline:hover{border-color:var(--brass);color:var(--brass-bright);}
+.btn-ember{background:var(--ember);color:#fff;}
+.btn-ember:hover{background:var(--ember-bright);}
+.btn-ghost{background:transparent;color:var(--ink-dim);border:none;}
+.btn-ghost:hover{color:var(--ink);}
+.btn-sm{padding:8px 14px;font-size:12.5px;}
+.btn-block{width:100%;}
+.btn[disabled]{opacity:.4;pointer-events:none;}
+
+/* ---------- nav ---------- */
+.topnav{position:sticky;top:0;z-index:100;background:rgba(20,17,13,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.topnav-inner{display:flex;align-items:center;gap:16px;height:var(--nav-h);}
+.brandmark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex:none;}
+.brandmark svg{width:36px;height:36px;flex:none;}
+.brandmark .name{font-family:var(--serif);font-weight:700;font-size:17px;line-height:1.15;display:block;}
+.brandmark .sub{font-family:var(--display);font-size:9.5px;letter-spacing:.2em;color:var(--brass-bright);text-transform:uppercase;display:block;}
+.navlinks{display:flex;gap:2px;margin-inline-start:18px;}
+.navlinks a{font-family:var(--display);font-size:12.5px;letter-spacing:.06em;color:var(--ink-dim);text-decoration:none;padding:9px 13px;border-radius:999px;text-transform:uppercase;transition:all .15s ease;}
+.navlinks a:hover{color:var(--ink);background:var(--surface);}
+.nav-right{margin-inline-start:auto;display:flex;align-items:center;gap:10px;}
+.langswitch{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;}
+.langswitch button{background:transparent;border:none;color:var(--ink-faint);font-family:var(--display);font-size:11.5px;letter-spacing:.05em;padding:6px 10px;border-radius:999px;transition:all .15s ease;}
+.langswitch button.active{background:var(--brass);color:#1a1508;}
+.langswitch button:not(.active):hover{color:var(--ink);}
+.cart-chip{position:relative;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:9px 14px;color:var(--ink);}
+.cart-chip:hover{border-color:var(--brass);}
+.cart-chip svg{width:17px;height:17px;color:var(--brass-bright);flex:none;}
+.cart-chip .count{position:absolute;top:-6px;inset-inline-end:-6px;background:var(--ember);color:#fff;font-family:var(--display);font-size:11px;min-width:18px;height:18px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+.cart-chip .count.zero{display:none;}
+.cart-chip .amount{font-family:var(--display);font-size:13px;letter-spacing:.03em;}
+.hamburger{display:none;background:none;border:none;color:var(--ink);padding:8px;}
+.hamburger svg{width:22px;height:22px;}
+@media (max-width:860px){.navlinks{display:none;}.hamburger{display:flex;}}
+.mobilenav{position:fixed;inset:var(--nav-h) 0 0 0;background:var(--void);z-index:99;padding:24px 20px;display:none;flex-direction:column;gap:2px;overflow-y:auto;}
+.mobilenav.open{display:flex;}
+.mobilenav a{font-family:var(--display);font-size:20px;letter-spacing:.04em;color:var(--ink);text-decoration:none;padding:16px 6px;border-bottom:1px solid var(--line);text-transform:uppercase;}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:56px 0 48px;overflow:hidden;}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 50% -10%, rgba(32,80,60,.35), transparent 60%);pointer-events:none;}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:34px;align-items:center;}
+@media(min-width:920px){.hero-inner{grid-template-columns:1.15fr .85fr;}}
+.hero-eyebrow{margin-bottom:14px;}
+.hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(36px,6vw,62px);line-height:1.05;letter-spacing:-.01em;margin-bottom:18px;}
+.hero .sub{font-size:17px;color:var(--ink-dim);max-width:520px;margin-bottom:28px;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.board{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:20px 22px 16px;box-shadow:0 24px 70px rgba(0,0,0,.5);}
+.board-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--line);}
+.board-head .dot{width:8px;height:8px;border-radius:50%;background:var(--pine-light);box-shadow:0 0 8px var(--pine-light);flex:none;}
+.board-head span{font-family:var(--display);font-size:11px;letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;}
+.board-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;font-family:var(--display);letter-spacing:.06em;font-size:15px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.board-row:last-child{border-bottom:none;}
+.board-row .k{color:var(--ink-faint);font-size:12px;}
+.board-row .v{color:var(--brass-bright);display:inline-block;}
+@media (prefers-reduced-motion:no-preference){
+  .board-row .v.flip{animation:boardflip .5s ease;}
+  @keyframes boardflip{0%{transform:translateY(0);opacity:1;}45%{transform:translateY(-55%);opacity:0;}55%{transform:translateY(55%);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+}
+
+/* ---------- section numbering (echoes the brand-standard doc) ---------- */
+.section-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+.section-num{font-family:var(--display);font-size:13.5px;color:var(--brass);letter-spacing:.09em;}
+.section-head h2{font-family:var(--serif);font-weight:700;font-size:clamp(26px,4vw,38px);}
+
+/* ---------- about ---------- */
+.about{padding:56px 0;}
+.about-inner{display:grid;grid-template-columns:1fr;gap:26px;margin-top:22px;}
+@media(min-width:820px){.about-inner{grid-template-columns:auto 1fr;align-items:center;}}
+.about-mark{width:110px;height:110px;flex:none;}
+.about p{color:var(--ink-dim);font-size:16.5px;max-width:640px;}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.chip{font-family:var(--display);font-size:11.5px;letter-spacing:.06em;color:var(--brass-bright);background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.35);padding:7px 13px;border-radius:999px;text-transform:uppercase;}
+
+/* ---------- menu ---------- */
+.menu-section{padding:56px 0 20px;}
+.menu-sub{color:var(--ink-dim);margin-top:8px;margin-bottom:28px;font-size:15.5px;}
+.cattabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:26px;scrollbar-width:none;}
+.cattabs::-webkit-scrollbar{display:none;}
+.cattab{flex:none;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-family:var(--display);font-size:13px;letter-spacing:.05em;color:var(--ink-dim);text-transform:uppercase;transition:all .15s ease;}
+.cattab svg{width:18px;height:18px;color:var(--ink-faint);flex:none;}
+.cattab.active{background:var(--pine);border-color:var(--pine-light);color:var(--ink);}
+.cattab.active svg{color:var(--brass-bright);}
+.cattab:hover:not(.active){border-color:var(--brass);color:var(--ink);}
+.menu-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+@media(min-width:680px){.menu-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:1040px){.menu-grid{grid-template-columns:1fr 1fr 1fr;}}
+@media (prefers-reduced-motion:no-preference){
+  .menu-grid.flip .dish{animation:dishflip .32s ease backwards;}
+  @keyframes dishflip{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
+}
+.dish{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s ease, transform .15s ease;}
+.dish:hover{border-color:var(--brass);transform:translateY(-2px);}
+.dish-media{position:relative;width:100%;aspect-ratio:4/3;background:var(--surface-2);overflow:hidden;flex:none;}
+.dish-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.dish-media .dish-icon-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg, var(--surface-2), var(--surface-3));}
+.dish-media .dish-icon-fallback svg{width:46px;height:46px;color:var(--brass-bright);opacity:.55;}
+.dish-price-badge{position:absolute;bottom:9px;right:9px;background:rgba(20,17,13,.82);backdrop-filter:blur(4px);color:var(--brass-bright);font-family:var(--display);font-size:14px;letter-spacing:.03em;padding:5px 11px;border-radius:999px;border:1px solid var(--line-strong);}
+[dir="rtl"] .dish-price-badge{right:auto;left:9px;}
+.dish-body{padding:15px 18px 18px;display:flex;flex-direction:column;gap:9px;flex:1;}
+.dish-name{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.2;}
+.dish-desc{color:var(--ink-dim);font-size:13.8px;line-height:1.5;flex:1;}
+.dish-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px;}
+.stepper{display:flex;align-items:center;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;}
+.stepper button{background:var(--surface-2);color:var(--ink);border:none;width:30px;height:30px;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;}
+.stepper button:hover{background:var(--surface-3);color:var(--brass-bright);}
+.stepper .qty{width:24px;text-align:center;font-family:var(--display);font-size:14px;}
+.dish-add{font-family:var(--display);font-size:12.5px;letter-spacing:.05em;background:var(--brass);color:#1a1508;border:none;border-radius:999px;padding:9px 16px;text-transform:uppercase;transition:all .15s ease;}
+.dish-add:hover{background:var(--brass-bright);}
+.dish-add.added{background:var(--pine-light);color:#eafff2;}
+
+/* ---------- cart drawer ---------- */
+.overlay{position:fixed;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(2px);z-index:150;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+.overlay.open{opacity:1;pointer-events:auto;}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(440px,100%);background:var(--void);border-inline-start:1px solid var(--line-strong);z-index:151;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;}
+[dir="rtl"] .drawer{transform:translateX(-100%);}
+.drawer.open{transform:translateX(0);}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line);flex:none;}
+.drawer-head h3{font-family:var(--display);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);}
+.drawer-close{background:none;border:none;color:var(--ink-dim);padding:6px;}
+.drawer-close svg{width:20px;height:20px;}
+.drawer-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.drawer-foot{padding:16px 20px 20px;border-top:1px solid var(--line);background:var(--surface);flex:none;}
+.cart-empty-msg{color:var(--ink-faint);text-align:center;padding:40px 10px;font-size:14px;}
+.cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+.cart-item-icon{width:28px;height:28px;flex:none;color:var(--brass-bright);}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-family:var(--serif);font-weight:600;font-size:15px;}
+.cart-item-price{color:var(--ink-faint);font-size:12.5px;margin-top:2px;}
+.cart-item-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.cart-item-remove{background:none;border:none;color:var(--ink-faint);font-size:11.5px;text-decoration:underline;padding:2px;}
+.cart-item-remove:hover{color:var(--ember-bright);}
+.cart-subtotal-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
+.cart-subtotal-row .lbl{font-family:var(--display);font-size:13px;letter-spacing:.06em;color:var(--ink-dim);text-transform:uppercase;}
+.cart-subtotal-row .val{font-family:var(--display);font-size:22px;color:var(--brass-bright);}
+.checkout-form{display:none;flex-direction:column;gap:14px;margin-top:18px;padding-top:18px;border-top:1px dashed var(--line);}
+.checkout-form.open{display:flex;}
+.ordertype{display:flex;gap:8px;}
+.ordertype button{flex:1;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:12px;font-family:var(--display);font-size:12.5px;letter-spacing:.05em;color:var(--ink-dim);text-transform:uppercase;}
+.ordertype button.active{background:var(--pine);border-color:var(--pine-light);color:var(--ink);}
+.delivery-note{font-size:12px;color:var(--ink-faint);margin:-4px 0 0;line-height:1.5;}
+.delivery-incentive{background:rgba(58,116,88,.16);border:1px solid rgba(58,116,88,.4);color:var(--pine-light);font-family:var(--display);font-size:12.5px;letter-spacing:.03em;padding:9px 12px;border-radius:10px;text-align:center;margin-bottom:12px;}
+#deliveryFeeRow[hidden]{display:none;}
+.delivery-incentive.achieved{background:rgba(201,162,39,.14);border-color:rgba(201,162,39,.4);color:var(--brass-bright);}
+.min-order-warning{color:var(--ember-bright);font-size:12px;text-align:center;margin:-6px 0 0;}
+.phone-order-box{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);text-align:center;}
+.phone-order-desc{font-size:12px;color:var(--ink-faint);margin:0 0 10px;line-height:1.5;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-family:var(--display);font-size:11.5px;letter-spacing:.07em;color:var(--ink-faint);text-transform:uppercase;}
+.field input, .field textarea{background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;padding:11px 13px;color:var(--ink);font-family:var(--body);font-size:16px;width:100%;}
+.field input:focus, .field textarea:focus{border-color:var(--brass);outline:none;}
+.field textarea{resize:vertical;min-height:60px;}
+.paymethod{display:flex;gap:8px;}
+.paymethod button{flex:1;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:11px;font-family:var(--display);font-size:12px;letter-spacing:.05em;color:var(--ink-dim);text-transform:uppercase;}
+.paymethod button.active{background:var(--brass);border-color:var(--brass);color:#1a1508;}
+.pay-panel{background:rgba(201,162,39,.07);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;}
+.pay-panel[hidden]{display:none;}
+.pay-instructions{font-size:13px;color:var(--ink-dim);margin:0;line-height:1.5;}
+.qr-box{display:flex;justify-content:center;padding:6px;}
+.qr-box img, .qr-box canvas{background:#fff;padding:8px;border-radius:8px;}
+.bank-details{font-size:14px;color:var(--ink);display:flex;flex-direction:column;gap:6px;}
+.bank-details span{color:var(--ink-faint);font-size:12px;}
+.field-error{color:var(--ember-bright);font-size:12px;display:none;}
+.field-warning{color:var(--ember-bright);font-size:12.5px;display:none;line-height:1.4;}
+.field.error input, .field.error textarea{border-color:var(--ember);}
+.field.error .field-error{display:block;}
+.field.outofrange input{border-color:var(--ember);}
+.field.outofrange .field-warning{display:block;}
+
+/* ---------- ticket / confirmation ---------- */
+.ticket-overlay{position:fixed;inset:0;background:rgba(10,8,5,.72);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.ticket-overlay.open{display:flex;}
+.ticket{position:relative;background:var(--surface);border:1px solid var(--line-strong);border-radius:20px;max-width:380px;width:100%;padding:28px 24px 24px;box-shadow:0 30px 90px rgba(0,0,0,.6);margin:auto;}
+.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:26px;height:26px;background:var(--void);border-radius:50%;transform:translateY(-50%);}
+.ticket::before{left:-13px;}
+.ticket::after{right:-13px;}
+.ticket-perf{border-top:2px dashed var(--line-strong);margin:16px 0;}
+.ticket-head{text-align:center;}
+.ticket-head .mark{width:54px;height:54px;margin:0 auto 10px;}
+.ticket-head h3{font-family:var(--display);font-size:14px;letter-spacing:.1em;color:var(--brass-bright);text-transform:uppercase;}
+.ticket-num{font-family:var(--serif);font-weight:700;font-size:32px;text-align:center;margin:8px 0 4px;}
+.ticket-sub{text-align:center;color:var(--ink-faint);font-size:11.5px;font-family:var(--display);letter-spacing:.08em;text-transform:uppercase;}
+.ticket-lines{font-size:13.5px;color:var(--ink-dim);margin:4px 0;max-height:150px;overflow-y:auto;}
+.ticket-lines div{display:flex;justify-content:space-between;gap:10px;padding:4px 0;}
+.ticket-total{display:flex;justify-content:space-between;font-family:var(--display);font-size:16px;color:var(--ink);padding-top:10px;border-top:1px solid var(--line);}
+.ticket-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.ticket-note{font-size:11.5px;color:var(--ink-faint);text-align:center;margin-top:14px;font-family:var(--display);letter-spacing:.06em;text-transform:uppercase;}
+.ticket-close{position:absolute;top:14px;inset-inline-end:14px;background:none;border:none;color:var(--ink-faint);}
+.ticket-close svg{width:18px;height:18px;}
+
+/* ---------- footer ---------- */
+.footer{padding:54px 0 30px;}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:32px;}
+@media(min-width:760px){.footer-grid{grid-template-columns:1.2fr 1fr 1fr;}}
+.footer h4{font-family:var(--display);font-size:12px;letter-spacing:.1em;color:var(--brass-bright);text-transform:uppercase;margin-bottom:12px;}
+.footer p{font-size:14px;color:var(--ink-dim);line-height:1.8;}
+.footer a{font-size:14px;color:var(--ink-dim);text-decoration:none;line-height:1.9;display:inline-block;}
+.footer a:hover{color:var(--brass-bright);}
+.footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.footer-brand svg{width:38px;height:38px;flex:none;}
+.footer-brand .name{font-family:var(--serif);font-weight:700;font-size:19px;}
+.footer-tagline{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink);text-align:center;padding:24px 0;border-top:1px dashed var(--line);margin-top:36px;}
+.footer-bottom{text-align:center;color:var(--ink-faint);font-size:12px;padding-top:6px;}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<a id="top"></a>
+<nav class="topnav">
+  <div class="topnav-inner wrap">
+    <a href="#top" class="brandmark" aria-label="Platform 92 Kitchen">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="100" cy="100" r="93" fill="#14110D" stroke="#C9A227" stroke-width="14"/><text x="100" y="134" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="700" font-size="108" fill="#F4ECD8">92</text></svg>
+      <span>
+        <span class="name">Platform 92</span>
+        <span class="sub">Kitchen</span>
+      </span>
+    </a>
+    <div class="navlinks">
+      <a href="#menu" data-i18n="nav_menu">Meny</a>
+      <a href="#" class="js-open-cart" data-i18n="nav_order">Beställ</a>
+      <a href="#about" data-i18n="nav_about">Om oss</a>
+      <a href="#contact" data-i18n="nav_contact">Kontakt</a>
+    </div>
+    <div class="nav-right">
+      <div class="langswitch" role="group" aria-label="Language / Språk">
+        <button data-lang="sv" class="active">SV</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="ar">AR</button>
+      </div>
+      <button class="cart-chip" id="cartOpenBtn" aria-label="Open cart" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/></svg>
+        <span class="amount" id="cartAmount">0 kr</span>
+        <span class="count zero" id="cartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="mobilenav" id="mobileNav">
+  <a href="#menu" data-i18n="nav_menu">Meny</a>
+  <a href="#" class="js-open-cart" data-i18n="nav_order">Beställ</a>
+  <a href="#about" data-i18n="nav_about">Om oss</a>
+  <a href="#contact" data-i18n="nav_contact">Kontakt</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow hero-eyebrow">VAGGERYD · PLATFORM 92</div>
+      <h1 data-i18n="hero_headline">En perrong. Alla välkomna.</h1>
+      <p class="sub" data-i18n="hero_sub">Grillad kyckling, varmt bröd, vilken sås du vill. Ät här, ta det med dig, eller hinn med tåget.</p>
+      <div class="hero-ctas">
+        <a href="#menu" class="btn btn-brass" data-i18n="hero_cta_menu">Se menyn</a>
+        <button class="btn btn-outline js-open-cart" data-i18n="hero_cta_order">Beställ nu</button>
+      </div>
+    </div>
+    <div class="board" aria-hidden="true">
+      <div class="board-head"><span class="dot"></span><span>Live</span></div>
+      <div class="board-row"><span class="k" data-i18n="board_r1_k">LINJE</span><span class="v">VAGGERYD</span></div>
+      <div class="board-row"><span class="k" data-i18n="board_r2_k">KÖK</span><span class="v">PLATFORM 92</span></div>
+      <div class="board-row"><span class="k" data-i18n="board_r3_k">SERVERAR</span><span class="v" id="boardServes" data-i18n="board_r3_v">ALLA</span></div>
+    </div>
+  </div>
+</section>
+<div class="ties"></div>
+
+<!-- ============ ABOUT ============ -->
+<section class="about wrap" id="about">
+  <div class="section-head"><span class="section-num">PLATFORM 01</span><h2 data-i18n="about_headline">Ingen krångel. Bara mat.</h2></div>
+  <div class="about-inner">
+    <svg class="about-mark" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="100" cy="100" r="93" fill="none" stroke="#20503C" stroke-width="3"/><circle cx="100" cy="100" r="80" fill="none" stroke="#C9A227" stroke-width="10"/><text x="100" y="132" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="700" font-size="88" fill="#F4ECD8">92</text></svg>
+    <div>
+      <p data-i18n="about_body">Vi valde inte ett land — vi valde en perrong.</p>
+      <div class="chiprow">
+        <span class="chip" data-i18n="chip1">Rakt på sak</span>
+        <span class="chip" data-i18n="chip2">Alla brytningar välkomna</span>
+        <span class="chip" data-i18n="chip3">Snabbt</span>
+        <span class="chip" data-i18n="chip4">Varmt, inte fint</span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="ties"></div>
+
+<!-- ============ MENU ============ -->
+<section class="wrap menu-section" id="menu">
+  <div class="section-head"><span class="section-num">PLATFORM 02</span><h2 data-i18n="menu_headline">Menyn</h2></div>
+  <p class="menu-sub" data-i18n="menu_sub">Sex kategorier. Ingen krångel.</p>
+  <div class="cattabs" id="catTabs" role="tablist"></div>
+  <div class="menu-grid" id="menuGrid"></div>
+</section>
+<div class="ties"></div>
+
+<!-- ============ CART / CHECKOUT ============ -->
+<div class="overlay" id="cartOverlay"></div>
+<aside class="drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Cart">
+  <div class="drawer-head">
+    <h3 data-i18n="cart_label">Din korg</h3>
+    <button class="drawer-close" id="cartCloseBtn" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body">
+    <div id="cartItemsList"></div>
+    <form class="checkout-form" id="checkoutForm">
+      <div class="ordertype" id="orderType">
+        <button type="button" data-type="delivery" class="active" data-i18n="order_delivery">Leverans</button>
+        <button type="button" data-type="pickup" data-i18n="order_pickup">Avhämtning</button>
+      </div>
+      <p class="delivery-note" id="deliveryAreaNote" data-i18n="delivery_area_note">Vi levererar bara inom Vaggeryd, ca 10 minuters bilväg.</p>
+      <div class="field" id="fieldAddress">
+        <label data-i18n="field_address">Adress</label>
+        <input type="text" id="custAddress" autocomplete="street-address">
+        <div class="field-error" data-i18n="field_required">Det här behövs.</div>
+      </div>
+      <div class="field" id="fieldPostcode">
+        <label data-i18n="postcode_label">Postnummer</label>
+        <input type="text" id="custPostcode" autocomplete="postal-code" inputmode="numeric" placeholder="567 20" maxlength="6">
+        <div class="field-error" data-i18n="field_required">Det här behövs.</div>
+        <div class="field-warning" id="postcodeWarning" data-i18n="out_of_range_msg">Tyvärr, den adressen ligger utanför vårt leveransområde.</div>
+      </div>
+      <div class="field" id="fieldName">
+        <label data-i18n="field_name">Namn</label>
+        <input type="text" id="custName" autocomplete="name">
+        <div class="field-error" data-i18n="field_required">Det här behövs.</div>
+      </div>
+      <div class="field" id="fieldPhone">
+        <label data-i18n="field_phone">Telefon</label>
+        <input type="tel" id="custPhone" autocomplete="tel" inputmode="tel">
+        <div class="field-error" data-i18n="field_required">Det här behövs.</div>
+      </div>
+
+      <div class="field">
+        <label data-i18n="payment_label">Betalningssätt</label>
+        <div class="paymethod" id="payMethod">
+          <button type="button" data-method="swish" class="active">Swish</button>
+          <button type="button" data-method="bank" data-i18n="payment_bank">Bank</button>
+        </div>
+      </div>
+
+      <div class="pay-panel" id="payPanelSwish">
+        <p class="pay-instructions" data-i18n="swish_instructions">Öppnar Swish-appen med rätt belopp ifyllt.</p>
+        <a href="#" class="btn btn-brass btn-block" id="swishPayBtn" data-i18n="swish_pay_btn">Betala med Swish</a>
+        <div class="qr-box" id="swishQrBox" aria-hidden="true"></div>
+      </div>
+      <div class="pay-panel" id="payPanelBank" hidden>
+        <p class="pay-instructions" data-i18n="bank_instructions">Överför beloppet till kontot nedan.</p>
+        <div class="bank-details">
+          <div><span data-i18n="bank_account_label">Bankgiro</span>: <strong id="bankAccountNum">—</strong></div>
+          <div><span data-i18n="bank_holder_label">Kontoinnehavare</span>: <strong id="bankHolderName">—</strong></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label data-i18n="field_notes">Anteckningar (valfritt)</label>
+        <textarea id="custNotes"></textarea>
+      </div>
+      <p style="font-size:12px;color:var(--ink-faint);margin:0;" data-i18n="required_note">Namn och telefon behövs så vi kan bekräfta.</p>
+    </form>
+  </div>
+  <div class="drawer-foot">
+    <div class="delivery-incentive" id="deliveryIncentive" hidden></div>
+    <div class="cart-subtotal-row" id="deliveryFeeRow" hidden>
+      <span class="lbl" data-i18n="delivery_fee_label">Leveransavgift</span>
+      <span class="val" id="deliveryFeeVal">49 kr</span>
+    </div>
+    <div class="cart-subtotal-row">
+      <span class="lbl" data-i18n="cart_subtotal">Delsumma</span>
+      <span class="val" id="drawerSubtotal">0 kr</span>
+    </div>
+    <p class="min-order-warning" id="minOrderWarning" hidden data-i18n="delivery_min_alert">Minsta beställning för leverans är 150 kr.</p>
+    <button class="btn btn-brass btn-block" id="cartActionBtn">Gå till beställning</button>
+    <button class="btn btn-ghost btn-block" id="cartClearBtn" data-i18n="cart_clear" style="margin-top:2px;">Töm korgen</button>
+    <div class="phone-order-box">
+      <p class="phone-order-desc" data-i18n="phone_order_desc">Svårt att beställa online? Vi kan skicka en faktura till ditt telefonnummer.</p>
+      <a href="#" class="btn btn-outline btn-block btn-sm" id="phoneOrderBtn" data-i18n="phone_order_btn">Begär faktura via SMS</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ CONFIRMATION TICKET ============ -->
+<div class="ticket-overlay" id="ticketOverlay">
+  <div class="ticket" role="dialog" aria-modal="true" aria-label="Order confirmation">
+    <button class="ticket-close" id="ticketCloseBtn" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="ticket-head">
+      <svg class="mark" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="100" cy="100" r="93" fill="#14110D" stroke="#C9A227" stroke-width="14"/><text x="100" y="134" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="700" font-size="108" fill="#F4ECD8">92</text></svg>
+      <h3 data-i18n="confirmation_headline">Din biljett</h3>
+    </div>
+    <div class="ticket-num" id="ticketOrderNum">P92-0000</div>
+    <div class="ticket-sub" id="ticketOrderMeta"></div>
+    <div class="ticket-perf"></div>
+    <div class="ticket-lines" id="ticketLines"></div>
+    <div class="ticket-total"><span data-i18n="cart_subtotal">Delsumma</span><span id="ticketTotalVal">0 kr</span></div>
+    <div class="ticket-perf"></div>
+    <p style="font-size:13px;color:var(--ink-dim);text-align:center;margin:0 0 10px;" data-i18n="confirmation_note">Så här slutför du betalningen, eller ring oss om något är oklart.</p>
+    <div id="ticketPayPanel"></div>
+    <div class="ticket-actions">
+      <a href="#" class="btn btn-outline btn-block" id="ticketCallBtn" data-i18n="call_us">Ring restaurangen</a>
+      <button type="button" class="btn btn-ghost btn-block" id="ticketNewOrderBtn" data-i18n="new_order">Ny beställning</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer wrap" id="contact">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="100" cy="100" r="93" fill="#14110D" stroke="#C9A227" stroke-width="14"/><text x="100" y="134" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="700" font-size="108" fill="#F4ECD8">92</text></svg>
+        <span class="name">Platform 92 Kitchen</span>
+      </div>
+      <p>Stationsvägen 6A<br>Vaggeryd</p>
+    </div>
+    <div>
+      <h4 data-i18n="nav_contact">Kontakt</h4>
+      <p><a href="tel:+4636719900">+46 36 719 900</a></p>
+      <p><a href="https://www.platform92.com" rel="noopener">platform92.com</a></p>
+    </div>
+    <div>
+      <h4 data-i18n="nav_menu">Meny</h4>
+      <p>
+        <a href="#menu" data-i18n="menu_headline">Menyn</a><br>
+        <a href="#" class="js-open-cart" data-i18n="nav_order">Beställ</a><br>
+        <a href="#about" data-i18n="nav_about">Om oss</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-tagline" data-i18n="footer_tagline">Lagad med kärlek, i Vaggeryd.</div>
+  <div class="footer-bottom">Platform 92 Kitchen · Vaggeryd, Sverige</div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   TRANSLATIONS — sv is the source of truth (default language).
+   en / ar are switchable. Category names follow the brand
+   standard's fixed English mapping (Plates, Burgers, Wraps,
+   Fries, Chicken & Nuggets, Drinks) word-for-word.
+   ============================================================ */
+var STR = {
+  sv:{
+    nav_menu:"Meny", nav_order:"Beställ", nav_about:"Om oss", nav_contact:"Kontakt",
+    cart_label:"Din korg",
+    hero_headline:"En perrong. Alla välkomna.",
+    hero_sub:"Grillad kyckling, varmt bröd, vilken sås du vill. Ät här, ta det med dig, eller hinn med tåget.",
+    hero_cta_menu:"Se menyn", hero_cta_order:"Beställ nu",
+    board_r1_k:"LINJE", board_r2_k:"KÖK", board_r3_k:"SERVERAR", board_r3_v:"ALLA", board_r3_v2:"DIG OCKSÅ",
+    about_headline:"Ingen krångel. Bara mat.",
+    about_body:"God mat, lagad med omtanke. Tack för att du är här.",
+    chip1:"Rakt på sak", chip2:"Alla brytningar välkomna", chip3:"Snabbt", chip4:"Varmt, inte fint",
+    menu_headline:"Menyn", menu_sub:"Sex kategorier. Ingen krångel.",
+    add_to_cart:"Lägg till",
+    cart_empty:"Din korg är tom.",
+    cart_subtotal:"Delsumma", cart_checkout:"Gå till beställning", cart_clear:"Töm korgen",
+    checkout_headline:"Slutför din beställning",
+    order_delivery:"Leverans", order_pickup:"Avhämtning",
+    field_name:"Namn", field_phone:"Telefon", field_address:"Adress",
+    field_notes:"Anteckningar (valfritt)", field_required:"Det här behövs.",
+    payment_label:"Betalningssätt",
+    payment_swish:"Swish", payment_bank:"Bank",
+    swish_pay_btn:"Betala med Swish", swish_instructions:"Öppnar Swish-appen med rätt belopp ifyllt. På dator: skanna QR-koden med telefonen.",
+    bank_instructions:"Överför beloppet till kontot nedan och märk betalningen med ditt beställningsnummer. Vi bekräftar innan vi börjar.",
+    bank_account_label:"Bankgiro", bank_holder_label:"Kontoinnehavare",
+    postcode_label:"Postnummer",
+    delivery_area_note:"Vi levererar bara inom Vaggeryd, ca 10 minuters bilväg. Utanför det? Skriv gärna en annan adress eller välj avhämtning.",
+    out_of_range_msg:"Tyvärr, den adressen ligger utanför vårt leveransområde. Kolla gärna våra andra leveranspartners!",
+    delivery_fee_label:"Leveransavgift", free_delivery_label:"Gratis leverans",
+    delivery_min_alert:"Minsta beställning för leverans är 150 kr (inkl. leveransavgift).",
+    delivery_incentive:"Lägg till {x} kr till för gratis leverans!",
+    phone_order_title:"Beställ via telefon", phone_order_desc:"Svårt att beställa online? Vi kan skicka en faktura till ditt telefonnummer.",
+    phone_order_btn:"Begär faktura via SMS",
+    submit_order:"Skicka beställningen", required_note:"Namn och telefon behövs så vi kan bekräfta.",
+    confirmation_headline:"Din biljett", confirmation_note:"Så här slutför du betalningen, eller ring oss om något är oklart.",
+    call_us:"Ring restaurangen", new_order:"Ny beställning",
+    ticket_delivery_to:"Levereras till", ticket_pickup_at:"Hämtas på",
+    order_delivery_word:"Leverans", order_pickup_word:"Avhämtning",
+    empty_cart_alert:"Lägg till något från menyn först.",
+    aria_open_cart:"Öppna korgen", aria_close:"Stäng", aria_menu:"Meny",
+    footer_tagline:"Lagad med kärlek, i Vaggeryd."
+  },
+  en:{
+    nav_menu:"Menu", nav_order:"Order", nav_about:"About", nav_contact:"Contact",
+    cart_label:"Your cart",
+    hero_headline:"One platform. Everyone welcome.",
+    hero_sub:"Grilled chicken, warm bread, whatever sauce you want. Eat here, take it with you, or catch your train.",
+    hero_cta_menu:"See the menu", hero_cta_order:"Order now",
+    board_r1_k:"LINE", board_r2_k:"KITCHEN", board_r3_k:"SERVES", board_r3_v:"EVERYONE", board_r3_v2:"YOU TOO",
+    about_headline:"No fuss. Just food.",
+    about_body:"Good food, made with care. Thank you for being here.",
+    chip1:"Straight talk", chip2:"Every accent welcome", chip3:"Fast", chip4:"Warm, not fancy",
+    menu_headline:"The menu", menu_sub:"Six categories. No fuss.",
+    add_to_cart:"Add",
+    cart_empty:"Your cart is empty.",
+    cart_subtotal:"Subtotal", cart_checkout:"Go to checkout", cart_clear:"Clear cart",
+    checkout_headline:"Finish your order",
+    order_delivery:"Delivery", order_pickup:"Pickup",
+    field_name:"Name", field_phone:"Phone", field_address:"Address",
+    field_notes:"Notes (optional)", field_required:"This is needed.",
+    payment_label:"Payment method",
+    payment_swish:"Swish", payment_bank:"Bank",
+    swish_pay_btn:"Pay with Swish", swish_instructions:"Opens the Swish app with the amount filled in. On desktop: scan the QR code with your phone.",
+    bank_instructions:"Transfer the amount to the account below and mark the payment with your order number. We'll confirm before we start.",
+    bank_account_label:"Bank giro", bank_holder_label:"Account holder",
+    postcode_label:"Postal code",
+    delivery_area_note:"We only deliver within Vaggeryd, about a 10-minute drive. Outside that? Try a different address or choose pickup.",
+    out_of_range_msg:"Sorry, that address is outside our delivery area. Please check other delivery partners!",
+    delivery_fee_label:"Delivery fee", free_delivery_label:"Free delivery",
+    delivery_min_alert:"Minimum order for delivery is 150 kr (incl. delivery fee).",
+    delivery_incentive:"Add {x} more kr for free delivery!",
+    phone_order_title:"Order by phone", phone_order_desc:"Having trouble ordering online? We can send you an invoice by SMS.",
+    phone_order_btn:"Request invoice by SMS",
+    submit_order:"Send the order", required_note:"Name and phone are needed so we can confirm.",
+    confirmation_headline:"Your ticket", confirmation_note:"Here's how to finish paying, or call us if anything's unclear.",
+    call_us:"Call the restaurant", new_order:"New order",
+    ticket_delivery_to:"Delivered to", ticket_pickup_at:"Pickup at",
+    order_delivery_word:"Delivery", order_pickup_word:"Pickup",
+    empty_cart_alert:"Add something from the menu first.",
+    aria_open_cart:"Open cart", aria_close:"Close", aria_menu:"Menu",
+    footer_tagline:"Made with love, in Vaggeryd."
+  },
+  ar:{
+    nav_menu:"القائمة", nav_order:"اطلب", nav_about:"من نحن", nav_contact:"تواصل",
+    cart_label:"سلتك",
+    hero_headline:"رصيف واحد. الجميع مُرحَّب به.",
+    hero_sub:"دجاج مشوي، خبز دافئ، أي صلصة تريدها. كُل هنا، خذها معك، أو الحق بقطارك.",
+    hero_cta_menu:"شاهد القائمة", hero_cta_order:"اطلب الآن",
+    board_r1_k:"الخط", board_r2_k:"المطبخ", board_r3_k:"يخدم", board_r3_v:"الجميع", board_r3_v2:"أنت أيضًا",
+    about_headline:"بلا تعقيد. طعام فقط.",
+    about_body:"طعام لذيذ، مُحضَّر بعناية. شكرًا لوجودك هنا.",
+    chip1:"كلام واضح", chip2:"كل اللهجات مُرحَّب بها", chip3:"سريع", chip4:"دافئ، لا فخم",
+    menu_headline:"القائمة", menu_sub:"ست فئات. بلا تعقيد.",
+    add_to_cart:"أضف",
+    cart_empty:"سلتك فارغة.",
+    cart_subtotal:"المجموع الفرعي", cart_checkout:"المتابعة للطلب", cart_clear:"إفراغ السلة",
+    checkout_headline:"أكمل طلبك",
+    order_delivery:"توصيل", order_pickup:"استلام",
+    field_name:"الاسم", field_phone:"الهاتف", field_address:"العنوان",
+    field_notes:"ملاحظات (اختياري)", field_required:"هذا الحقل مطلوب.",
+    payment_label:"طريقة الدفع",
+    payment_swish:"Swish", payment_bank:"تحويل بنكي",
+    swish_pay_btn:"ادفع عبر Swish", swish_instructions:"سيفتح تطبيق Swish مع المبلغ معبأ مسبقًا. على الكمبيوتر: امسح رمز الاستجابة السريعة بهاتفك.",
+    bank_instructions:"حوّل المبلغ إلى الحساب أدناه واذكر رقم طلبك عند التحويل. سنؤكد قبل أن نبدأ.",
+    bank_account_label:"رقم الحساب البنكي", bank_holder_label:"صاحب الحساب",
+    postcode_label:"الرمز البريدي",
+    delivery_area_note:"نوصل فقط داخل فاغريد، على بعد حوالي 10 دقائق بالسيارة. خارج هذا النطاق؟ جرّب عنوانًا آخر أو اختر الاستلام.",
+    out_of_range_msg:"عذرًا، هذا العنوان خارج منطقة التوصيل لدينا. يُرجى مراجعة شركاء توصيل آخرين!",
+    delivery_fee_label:"رسم التوصيل", free_delivery_label:"توصيل مجاني",
+    delivery_min_alert:"أقل طلب للتوصيل هو 150 كرونة (شامل رسم التوصيل).",
+    delivery_incentive:"أضف {x} كرونة إضافية لتوصيل مجاني!",
+    phone_order_title:"اطلب عبر الهاتف", phone_order_desc:"هل تجد صعوبة في الطلب عبر الإنترنت؟ يمكننا إرسال فاتورة إلى رقم هاتفك.",
+    phone_order_btn:"اطلب فاتورة عبر SMS",
+    submit_order:"أرسل الطلب", required_note:"الاسم والهاتف مطلوبان لتأكيد الطلب.",
+    confirmation_headline:"تذكرتك", confirmation_note:"هكذا تُكمل الدفع، أو اتصل بنا إذا كان هناك أي غموض.",
+    call_us:"اتصل بالمطعم", new_order:"طلب جديد",
+    ticket_delivery_to:"التوصيل إلى", ticket_pickup_at:"الاستلام من",
+    order_delivery_word:"توصيل", order_pickup_word:"استلام",
+    empty_cart_alert:"أضف شيئًا من القائمة أولاً.",
+    aria_open_cart:"افتح السلة", aria_close:"إغلاق", aria_menu:"القائمة",
+    footer_tagline:"صُنع بحب، في فاغريد."
+  }
+};
+
+/* ============================================================
+   MENU DATA — categories and dishes exactly as on the fixed
+   printed menu. Category order, names, dishes and prices are
+   fixed everywhere; only the language of the copy changes.
+   ============================================================ */
+var ICONS = {
+  plate:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/>',
+  burger:'<path d="M4 10c0-3.3 3.6-6 8-6s8 2.7 8 6"/><path d="M3.5 10.5h17"/><path d="M4 13.5h16"/><path d="M4.5 13.5c0 2.6 2.2 4.7 7.5 4.7s7.5-2.1 7.5-4.7"/><path d="M4 17h16"/>',
+  wrap:'<path d="M6 5l13 13"/><path d="M9 4.2c6 0 10.8 4.8 10.8 10.8"/><path d="M4.2 9c0 6 4.8 10.8 10.8 10.8"/><circle cx="6" cy="5" r="1.6"/>',
+  fries:'<path d="M5 20V9M9 20V6M13 20V7M17 20V9"/><path d="M3.5 20h17"/>',
+  chicken:'<path d="M9 4c3 0 5 2.4 5 5.2 0 1.7-.8 2.8-1.8 3.8l3.6 5.4a1.6 1.6 0 0 1-2.3 2.2l-4.9-4.6c-2.4-.2-4.6-2.2-4.6-5C4 6.4 6 4 9 4z"/>',
+  drink:'<path d="M6 8h12l-1.3 11.2a2 2 0 0 1-2 1.8H9.3a2 2 0 0 1-2-1.8L6 8z"/><path d="M5 8h14"/><path d="M9.5 8 9 4h6l-.5 4"/>'
+};
+
+var CATEGORIES = [
+  { id:"plates",  icon:"plate",   name:{ sv:"Tallrik", en:"Plates", ar:"أطباق" } },
+  { id:"burgers", icon:"burger",  name:{ sv:"Hamburgare", en:"Burgers", ar:"برجر" } },
+  { id:"wraps",   icon:"wrap",    name:{ sv:"Rulle", en:"Wraps", ar:"لفائف" } },
+  { id:"fries",   icon:"fries",   name:{ sv:"Pommes frites", en:"Fries", ar:"بطاطس مقلية" } },
+  { id:"chicken", icon:"chicken", name:{ sv:"Kyckling / Nuggets", en:"Chicken & Nuggets", ar:"دجاج ونجتس" } },
+  { id:"drinks",  icon:"drink",   name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } }
+];
+
+var MENU = [
+  { id:"p1", cat:"plates", price:99, image:"Chicken Plate", name:{sv:"Kyckling med ris eller pommes",en:"Chicken with rice or fries",ar:"دجاج مع أرز أو بطاطس"},
+    desc:{sv:"Grillad kyckling serverad med basmatiris eller pommes samt valfri sallad.",en:"Grilled chicken served with basmati rice or fries, plus a salad of your choice.",ar:"دجاج مشوي يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
+  { id:"p2", cat:"plates", price:99, image:"Beef Plate", name:{sv:"Nötkött med ris eller pommes",en:"Beef with rice or fries",ar:"لحم بقري مع أرز أو بطاطس"},
+    desc:{sv:"Kryddat nötkött serverat med basmatiris eller pommes samt valfri sallad.",en:"Spiced beef served with basmati rice or fries, plus a salad of your choice.",ar:"لحم بقري متبّل يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
+  { id:"p3", cat:"plates", price:109, image:"Beef & Chicken Combo Plate", name:{sv:"Nötkött och kyckling (Combo)",en:"Beef and chicken (Combo)",ar:"لحم بقري ودجاج (كومبو)"},
+    desc:{sv:"Grillad kyckling och kryddat nötkött med basmatiris eller pommes samt valfri sallad.",en:"Grilled chicken and spiced beef with basmati rice or fries, plus a salad of your choice.",ar:"دجاج مشوي ولحم بقري متبّل مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
+  { id:"p4", cat:"plates", price:119, image:"Fish Plate", name:{sv:"Fisk med ris eller pommes",en:"Fish with rice or fries",ar:"سمك مع أرز أو بطاطس"},
+    desc:{sv:"Panerad fiskfilé serverad med basmatiris eller pommes samt valfri sallad.",en:"Breaded fish fillet served with basmati rice or fries, plus a salad of your choice.",ar:"فيليه سمك مقرمش يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
+  { id:"p5", cat:"plates", price:79, image:"Falafel Plate", name:{sv:"Falafel med ris eller pommes",en:"Falafel with rice or fries",ar:"فلافل مع أرز أو بطاطس"},
+    desc:{sv:"Krispiga falaflar serverade med basmatiris eller pommes samt valfri sallad.",en:"Crispy falafel served with basmati rice or fries, plus a salad of your choice.",ar:"فلافل مقرمشة تُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
+
+  { id:"b1", cat:"burgers", price:119, image:"Cheeseburger", name:{sv:"Cheeseburgare",en:"Cheeseburger",ar:"تشيز برجر"},
+    desc:{sv:"Nötköttsburgare grillad till perfektion, toppad med en smält skiva amerikansk ost. Eller utan ost.",en:"Beef patty grilled to perfection, topped with a melted slice of American cheese. Or without cheese.",ar:"قرص لحم بقري مشوي بإتقان مع شريحة جبن أمريكي ذائب، أو بدون جبن."}},
+  { id:"b2", cat:"burgers", price:99, image:"Crispy Chicken Cheeseburger", name:{sv:"Krispig kyckling-cheeseburgare",en:"Crispy chicken cheeseburger",ar:"برجر دجاج مقرمش بالجبن"},
+    desc:{sv:"Kycklingfilé av helt vitt kött, krispigt friterad till gyllene perfektion. Med smält ost eller utan.",en:"All-white-meat chicken fillet, fried crispy to golden perfection. With melted cheese or without.",ar:"فيليه دجاج أبيض بالكامل، مقلي حتى يصبح مقرمشًا وذهبيًا. مع جبن ذائب أو بدونه."}},
+  { id:"b3", cat:"burgers", price:69, image:"Mixed Salad", name:{sv:"Mixed Sallad",en:"Mixed Salad",ar:"سلطة مشكلة"},
+    desc:{sv:"Fräsch sallad med isbergssallad, gurka, tomat, kikärtor och röda kidneybönor. Serveras med valfri dressing.",en:"Crisp salad with iceberg lettuce, cucumber, tomato, chickpeas and red kidney beans. Served with a dressing of your choice.",ar:"سلطة طازجة بالخس الأيسبرغ، الخيار، الطماطم، الحمص وحبوب الفاصولياء الحمراء، مع صلصة حسب اختيارك."}},
+  { id:"b4", cat:"burgers", price:19, name:{sv:"Extras",en:"Extras",ar:"إضافات"},
+    desc:{sv:"Extra ost eller dips.",en:"Extra cheese or dips.",ar:"جبن إضافي أو صلصات."}},
+
+  { id:"w1", cat:"wraps", price:109, image:"Beef Wrap", name:{sv:"Nötkött rulle",en:"Beef wrap",ar:"لفائف لحم بقري"},
+    desc:{sv:"Kryddat nötkött i varmt pitabröd med sallad och valfri sås.",en:"Spiced beef in warm pita bread with salad and a sauce of your choice.",ar:"لحم بقري متبّل في خبز البيتا الدافئ مع سلطة وصلصة حسب اختيارك."}},
+  { id:"w2", cat:"wraps", price:99, image:"Chicken wrap", name:{sv:"Kyckling rulle",en:"Chicken wrap",ar:"لفائف دجاج"},
+    desc:{sv:"Grillad kyckling i varmt pitabröd med sallad och valfri sås.",en:"Grilled chicken in warm pita bread with salad and a sauce of your choice.",ar:"دجاج مشوي في خبز البيتا الدافئ مع سلطة وصلصة حسب اختيارك."}},
+  { id:"w3", cat:"wraps", price:79, image:"Fries or Falafel Wrap", name:{sv:"Pommes eller falafel rulle",en:"Fries or falafel wrap",ar:"لفائف بطاطس أو فلافل"},
+    desc:{sv:"Krispiga pommes eller falafel med färska grönsaker och valfri sås.",en:"Crispy fries or falafel with fresh vegetables and a sauce of your choice.",ar:"بطاطس مقرمشة أو فلافل مع خضروات طازجة وصلصة حسب اختيارك."}},
+
+  { id:"f1", cat:"fries", price:79, image:"Loaded Fries", name:{sv:"Loaded Pommes",en:"Loaded fries",ar:"بطاطس محمّلة"},
+    desc:{sv:"Krispiga pommes toppade med valfri dressing.",en:"Crispy fries topped with a dressing of your choice.",ar:"بطاطس مقرمشة مغطاة بصلصة حسب اختيارك."}},
+  { id:"f2", cat:"fries", price:59, image:"Cheese Fries", name:{sv:"Pommes frites med ost",en:"Cheese fries",ar:"بطاطس بالجبن"},
+    desc:{sv:"Krispiga pommes toppade med smält ost.",en:"Crispy fries topped with melted cheese.",ar:"بطاطس مقرمشة مغطاة بجبن ذائب."}},
+
+  { id:"c1", cat:"chicken", price:49, image:"nuggets", name:{sv:"Kycklingnuggets",en:"Chicken nuggets",ar:"ناغتس دجاج"},
+    desc:{sv:"Krispiga nuggets serverade med valfri dippsås.",en:"Crispy nuggets served with a dipping sauce of your choice.",ar:"قطع دجاج مقرمشة تُقدَّم مع صلصة غمس حسب اختيارك."}},
+  { id:"c2", cat:"chicken", price:49, image:"wings", name:{sv:"Kycklingvingar",en:"Chicken wings",ar:"أجنحة دجاج"},
+    desc:{sv:"Saftiga och krispiga kycklingvingar med valfri dippsås.",en:"Juicy, crispy chicken wings with a dipping sauce of your choice.",ar:"أجنحة دجاج طرية ومقرمشة مع صلصة غمس حسب اختيارك."}},
+
+  { id:"d1", cat:"drinks", price:29, image:"coca cola", name:{sv:"Läsk / Kaffe / Te",en:"Soda / Coffee / Tea",ar:"مشروب غازي / قهوة / شاي"},
+    desc:{sv:"Välj mellan iskall läsk, varmt kaffe eller te.",en:"Choose between ice-cold soda, hot coffee or tea.",ar:"اختر بين مشروب غازي بارد، قهوة ساخنة أو شاي."}}
+];
+
+/* ============================================================
+   APP STATE + LOGIC
+   ============================================================ */
+var state = { lang:"sv", cart:{}, activeCat:CATEGORIES[0].id, orderType:"delivery", paymentMethod:"swish" };
+var RESTAURANT_TEL = "+4636719900";
+
+/* ---- Payment config ---- */
+var SWISH_NUMBER = "1231860709"; // Platform 92 Kitchen's Swish number
+var BANK_ACCOUNT = "5360-1746";
+var BANK_HOLDER  = "Platform 92 Kitchen";
+
+/* ---- Order notification (Formspree) ---- */
+var ORDER_NOTIFY_ENDPOINT = "https://formspree.io/f/xjybbglr"; // Real endpoint provided by user
+
+/* ---- Delivery fee config ---- */
+var DELIVERY_FEE = 49; // 49 SEK
+var MIN_ORDER_FOR_DELIVERY = 150; // Minimum 150 SEK to qualify for delivery
+var FREE_DELIVERY_THRESHOLD = 300; // 300 SEK and above = free delivery
+
+/* ---- Delivery radius: Vaggeryd town postcodes (~10 min drive). Add/remove as needed. ---- */
+var ALLOWED_POSTCODES = ["56701","56720","56721","56722","56723","56724","56730","56731","56732","56733","56791","56792"];
+function normalizePostcode(raw){
+  return (raw||"").replace(/[^0-9]/g,"").slice(0,5);
+}
+function isPostcodeAllowed(raw){
+  var pc = normalizePostcode(raw);
+  if(pc.length<5) return false;
+  return ALLOWED_POSTCODES.indexOf(pc)!==-1;
+}
+
+function detectLang(){
+  try{
+    var qp = new URLSearchParams(location.search).get("lang");
+    if(qp && STR[qp]) return qp;
+  }catch(e){}
+  return "sv"; // Platform 92 Kitchen is a Swedish kitchen — Swedish is always the starting language.
+}
+function t(key){
+  var d = STR[state.lang] || STR.sv;
+  return d[key]!==undefined ? d[key] : (STR.sv[key]||key);
+}
+function fmt(n){ return n+" kr"; }
+function findItem(id){ return MENU.filter(function(m){return m.id===id;})[0]; }
+function findCat(id){ return CATEGORIES.filter(function(c){return c.id===id;})[0]; }
+function cartCount(){
+  return Object.keys(state.cart).reduce(function(sum,id){return sum+state.cart[id];},0);
+}
+function cartTotal(){
+  return Object.keys(state.cart).reduce(function(sum,id){
+    var item=findItem(id); return sum + (item?item.price*state.cart[id]:0);
+  },0);
+}
+function deliveryFee(){
+  if(state.orderType!=="delivery") return 0;
+  var sub = cartTotal();
+  if(sub===0) return 0;
+  return sub>=FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+}
+function grandTotal(){
+  return cartTotal()+deliveryFee();
+}
+function meetsMinOrder(){
+  if(state.orderType!=="delivery") return true;
+  var sub = cartTotal();
+  if(sub===0) return true;
+  return (sub+deliveryFee())>=MIN_ORDER_FOR_DELIVERY;
+}
+
+/* ---------- DOM refs ---------- */
+var catTabsEl = document.getElementById("catTabs");
+var menuGridEl = document.getElementById("menuGrid");
+var cartOverlay = document.getElementById("cartOverlay");
+var cartDrawer = document.getElementById("cartDrawer");
+var checkoutForm = document.getElementById("checkoutForm");
+var cartActionBtn = document.getElementById("cartActionBtn");
+var orderTypeWrap = document.getElementById("orderType");
+var payMethodWrap = document.getElementById("payMethod");
+var ticketOverlay = document.getElementById("ticketOverlay");
+var mobileNav = document.getElementById("mobileNav");
+var hamburgerBtn = document.getElementById("hamburgerBtn");
+var fieldPostcodeEl = document.getElementById("fieldPostcode");
+var custPostcodeInput = document.getElementById("custPostcode");
+
+/* ---------- render: language ---------- */
+function applyLang(){
+  document.documentElement.lang = state.lang;
+  document.documentElement.dir = state.lang==="ar" ? "rtl" : "ltr";
+  var nodes = document.querySelectorAll("[data-i18n]");
+  for(var i=0;i<nodes.length;i++){
+    nodes[i].textContent = t(nodes[i].getAttribute("data-i18n"));
+  }
+  var langBtns = document.querySelectorAll(".langswitch button");
+  for(var j=0;j<langBtns.length;j++){
+    langBtns[j].classList.toggle("active", langBtns[j].getAttribute("data-lang")===state.lang);
+  }
+  cartActionBtn.textContent = cartActionBtn.dataset.mode==="submit" ? t("submit_order") : t("cart_checkout");
+  renderCatTabs();
+  renderMenu();
+  renderCart();
+  updateOrderTypeUI();
+  renderPayPanel();
+}
+
+/* ---------- render: category tabs ---------- */
+function renderCatTabs(){
+  catTabsEl.innerHTML = "";
+  CATEGORIES.forEach(function(c){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "cattab" + (c.id===state.activeCat ? " active":"");
+    b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", c.id===state.activeCat ? "true":"false");
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[c.icon]+'</svg><span>'+c.name[state.lang]+'</span>';
+    b.addEventListener("click", function(catId){
+      return function(){
+        if(state.activeCat===catId) return;
+        state.activeCat = catId;
+        renderCatTabs();
+        renderMenu();
+      };
+    }(c.id));
+    catTabsEl.appendChild(b);
+  });
+}
+
+/* ---------- render: menu grid ---------- */
+function renderMenu(){
+  menuGridEl.innerHTML = "";
+  var items = MENU.filter(function(m){return m.cat===state.activeCat;});
+  items.forEach(function(item){
+    var qty = state.cart[item.id]||0;
+    var cat = findCat(item.cat);
+    var card = document.createElement("div");
+    card.className = "dish";
+    var iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[cat.icon]+'</svg>';
+    var mediaHtml;
+    if(item.image){
+      var imgSrc = encodeURIComponent(item.image)+".png";
+      mediaHtml =
+        '<img src="'+imgSrc+'" alt="'+item.name[state.lang]+'" loading="lazy" '+
+        'onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">'+
+        '<div class="dish-icon-fallback" style="display:none;">'+iconSvg+'</div>';
+    } else {
+      mediaHtml = '<div class="dish-icon-fallback">'+iconSvg+'</div>';
+    }
+    card.innerHTML =
+      '<div class="dish-media">'+
+        mediaHtml+
+        '<span class="dish-price-badge">'+fmt(item.price)+'</span>'+
+      '</div>'+
+      '<div class="dish-body">'+
+        '<h3 class="dish-name">'+item.name[state.lang]+'</h3>'+
+        '<p class="dish-desc">'+item.desc[state.lang]+'</p>'+
+        '<div class="dish-foot">'+
+          '<div class="stepper">'+
+            '<button type="button" class="qty-minus" aria-label="-">\u2212</button>'+
+            '<span class="qty">'+qty+'</span>'+
+            '<button type="button" class="qty-plus" aria-label="+">+</button>'+
+          '</div>'+
+          '<button type="button" class="dish-add">'+t("add_to_cart")+'</button>'+
+        '</div>'+
+      '</div>';
+    var qtyEl = card.querySelector(".qty");
+    var addBtn = card.querySelector(".dish-add");
+    card.querySelector(".qty-minus").addEventListener("click", function(){
+      if(!state.cart[item.id]) return;
+      state.cart[item.id]--;
+      if(state.cart[item.id]<=0) delete state.cart[item.id];
+      qtyEl.textContent = state.cart[item.id]||0;
+      renderCart();
+    });
+    card.querySelector(".qty-plus").addEventListener("click", function(){
+      state.cart[item.id] = (state.cart[item.id]||0)+1;
+      qtyEl.textContent = state.cart[item.id];
+      renderCart();
+    });
+    addBtn.addEventListener("click", function(){
+      state.cart[item.id] = (state.cart[item.id]||0)+1;
+      qtyEl.textContent = state.cart[item.id];
+      renderCart();
+      pulseCart();
+      var label = addBtn.textContent;
+      addBtn.classList.add("added");
+      addBtn.textContent = "\u2713";
+      setTimeout(function(){ addBtn.classList.remove("added"); addBtn.textContent = t("add_to_cart"); }, 650);
+    });
+    menuGridEl.appendChild(card);
+  });
+  if(window.matchMedia("(prefers-reduced-motion: no-preference)").matches){
+    menuGridEl.classList.remove("flip");
+    void menuGridEl.offsetWidth;
+    menuGridEl.classList.add("flip");
+  }
+}
+
+/* ---------- render: cart ---------- */
+function renderCart(){
+  var count = cartCount();
+  var sub = cartTotal();
+  var fee = deliveryFee();
+  var total = sub+fee;
+  document.getElementById("cartAmount").textContent = fmt(total);
+  var countEl = document.getElementById("cartCount");
+  countEl.textContent = count;
+  countEl.classList.toggle("zero", count===0);
+  document.getElementById("drawerSubtotal").textContent = fmt(total);
+
+  var feeRow = document.getElementById("deliveryFeeRow");
+  if(state.orderType==="delivery" && sub>0){
+    feeRow.hidden = false;
+    document.getElementById("deliveryFeeVal").textContent = fee===0 ? t("free_delivery_label") : fmt(fee);
+  } else {
+    feeRow.hidden = true;
+  }
+
+  var incentiveEl = document.getElementById("deliveryIncentive");
+  if(state.orderType==="delivery" && sub>0){
+    incentiveEl.hidden = false;
+    if(sub>=FREE_DELIVERY_THRESHOLD){
+      incentiveEl.classList.add("achieved");
+      incentiveEl.textContent = "\u2713 " + t("free_delivery_label") + "!";
+    } else {
+      incentiveEl.classList.remove("achieved");
+      var remaining = FREE_DELIVERY_THRESHOLD - sub;
+      incentiveEl.textContent = t("delivery_incentive").replace("{x}", remaining);
+    }
+  } else {
+    incentiveEl.hidden = true;
+  }
+
+  var minWarnEl = document.getElementById("minOrderWarning");
+  minWarnEl.hidden = meetsMinOrder();
+
+  var list = document.getElementById("cartItemsList");
+  list.innerHTML = "";
+  var ids = Object.keys(state.cart);
+  if(ids.length===0){
+    list.innerHTML = '<div class="cart-empty-msg">'+t("cart_empty")+'</div>';
+  } else {
+    ids.forEach(function(id){
+      var item = findItem(id); if(!item) return;
+      var qty = state.cart[id];
+      var cat = findCat(item.cat);
+      var row = document.createElement("div");
+      row.className = "cart-item";
+      row.innerHTML =
+        '<svg class="cart-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[cat.icon]+'</svg>'+
+        '<div class="cart-item-info">'+
+          '<div class="cart-item-name">'+item.name[state.lang]+'</div>'+
+          '<div class="cart-item-price">'+qty+' \u00d7 '+fmt(item.price)+' = '+fmt(item.price*qty)+'</div>'+
+        '</div>'+
+        '<div class="cart-item-side"><div class="stepper">'+
+          '<button type="button" class="ci-minus" aria-label="-">\u2212</button>'+
+          '<span class="qty">'+qty+'</span>'+
+          '<button type="button" class="ci-plus" aria-label="+">+</button>'+
+        '</div></div>';
+      row.querySelector(".ci-minus").addEventListener("click", function(){
+        state.cart[id]--; if(state.cart[id]<=0) delete state.cart[id];
+        renderCart(); renderMenu();
+      });
+      row.querySelector(".ci-plus").addEventListener("click", function(){
+        state.cart[id]++;
+        renderCart(); renderMenu();
+      });
+      list.appendChild(row);
+    });
+  }
+  cartActionBtn.disabled = count===0 || !meetsMinOrder();
+  if(count===0) hideCheckoutForm();
+  if(typeof refreshSwishPanel==="function" && state.paymentMethod==="swish") refreshSwishPanel();
+}
+
+function pulseCart(){
+  var chip = document.getElementById("cartOpenBtn");
+  chip.style.transform = "scale(1.08)";
+  setTimeout(function(){ chip.style.transform=""; }, 160);
+}
+
+/* ---------- cart drawer open/close ---------- */
+function openCart(){
+  cartOverlay.classList.add("open");
+  cartDrawer.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeCart(){
+  cartOverlay.classList.remove("open");
+  cartDrawer.classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("cartOpenBtn").addEventListener("click", openCart);
+document.getElementById("cartCloseBtn").addEventListener("click", closeCart);
+cartOverlay.addEventListener("click", function(){ closeCart(); });
+
+var openCartLinks = document.querySelectorAll(".js-open-cart");
+for(var k=0;k<openCartLinks.length;k++){
+  openCartLinks[k].addEventListener("click", function(e){
+    e.preventDefault();
+    closeMobileNav();
+    openCart();
+    if(cartCount()>0) showCheckoutForm();
+  });
+}
+
+/* ---------- checkout form ---------- */
+function showCheckoutForm(){
+  checkoutForm.classList.add("open");
+  cartActionBtn.dataset.mode = "submit";
+  cartActionBtn.textContent = t("submit_order");
+}
+function hideCheckoutForm(){
+  checkoutForm.classList.remove("open");
+  cartActionBtn.dataset.mode = "checkout";
+  cartActionBtn.textContent = t("cart_checkout");
+}
+cartActionBtn.addEventListener("click", function(){
+  if(cartCount()===0){ alert(t("empty_cart_alert")); return; }
+  if(cartActionBtn.dataset.mode==="submit"){ submitOrder(); }
+  else { showCheckoutForm(); }
+});
+document.getElementById("cartClearBtn").addEventListener("click", function(){
+  state.cart = {};
+  renderCart(); renderMenu(); hideCheckoutForm();
+});
+
+/* ---------- phone order (manual invoice request, for people who find the online form hard) ---------- */
+(function initPhoneOrderLink(){
+  var body = "Hej Platform 92! Jag vill bestalla via telefon - kan ni ringa mig och skicka en faktura till mitt nummer?";
+  var ua = navigator.userAgent||"";
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  var sep = isIOS ? "&" : "?";
+  document.getElementById("phoneOrderBtn").setAttribute("href", "sms:"+RESTAURANT_TEL+sep+"body="+encodeURIComponent(body));
+})();
+
+/* ---------- order type (delivery / pickup) ---------- */
+var orderTypeBtns = orderTypeWrap.querySelectorAll("button");
+for(var m=0;m<orderTypeBtns.length;m++){
+  orderTypeBtns[m].addEventListener("click", function(){
+    state.orderType = this.getAttribute("data-type");
+    updateOrderTypeUI();
+  });
+}
+function updateOrderTypeUI(){
+  var btns = orderTypeWrap.querySelectorAll("button");
+  for(var n=0;n<btns.length;n++){
+    btns[n].classList.toggle("active", btns[n].getAttribute("data-type")===state.orderType);
+  }
+  var isDelivery = state.orderType==="delivery";
+  document.getElementById("fieldAddress").style.display = isDelivery ? "flex":"none";
+  fieldPostcodeEl.style.display = isDelivery ? "flex":"none";
+  document.getElementById("deliveryAreaNote").style.display = isDelivery ? "block":"none";
+  if(!isDelivery){
+    fieldPostcodeEl.classList.remove("outofrange","error");
+  } else {
+    checkPostcodeRange();
+  }
+  renderCart();
+  if(state.paymentMethod==="swish") refreshSwishPanel();
+}
+
+/* ---------- postcode range check (live, as the customer types) ---------- */
+function checkPostcodeRange(){
+  var val = custPostcodeInput.value.trim();
+  if(val.length===0){ fieldPostcodeEl.classList.remove("outofrange"); return true; }
+  var ok = isPostcodeAllowed(val);
+  fieldPostcodeEl.classList.toggle("outofrange", !ok);
+  return ok;
+}
+custPostcodeInput.addEventListener("input", checkPostcodeRange);
+
+/* ---------- payment method (Swish / Card / Bank) ---------- */
+var payMethodBtns = payMethodWrap.querySelectorAll("button");
+for(var pm=0; pm<payMethodBtns.length; pm++){
+  payMethodBtns[pm].addEventListener("click", function(){
+    state.paymentMethod = this.getAttribute("data-method");
+    renderPayPanel();
+  });
+}
+function renderPayPanel(){
+  var btns = payMethodWrap.querySelectorAll("button");
+  for(var i=0;i<btns.length;i++){
+    btns[i].classList.toggle("active", btns[i].getAttribute("data-method")===state.paymentMethod);
+  }
+  document.getElementById("payPanelSwish").hidden = state.paymentMethod!=="swish";
+  document.getElementById("payPanelBank").hidden = state.paymentMethod!=="bank";
+  document.getElementById("bankAccountNum").textContent = BANK_ACCOUNT;
+  document.getElementById("bankHolderName").textContent = BANK_HOLDER;
+  if(state.paymentMethod==="swish") refreshSwishPanel();
+}
+function buildSwishUrl(amount, message){
+  return "https://app.swish.nu/1/p/sw/?sw="+encodeURIComponent(SWISH_NUMBER)+"&amt="+encodeURIComponent(amount)+"&cur=SEK&msg="+encodeURIComponent(message);
+}
+function refreshSwishPanel(){
+  var total = grandTotal();
+  var msg = "Platform 92 order";
+  var url = buildSwishUrl(total>0?total:1, msg);
+  var btn = document.getElementById("swishPayBtn");
+  btn.setAttribute("href", url);
+  var qrBox = document.getElementById("swishQrBox");
+  qrBox.innerHTML = "";
+  try{
+    if(window.QRCode){
+      new QRCode(qrBox, { text:url, width:150, height:150, correctLevel:QRCode.CorrectLevel.M });
+    }
+  }catch(e){ /* QR lib unavailable (e.g. offline) — the tap-to-pay link above still works on mobile */ }
+}
+
+/* ---------- validation ---------- */
+function setFieldError(fieldId, hasError){
+  document.getElementById(fieldId).classList.toggle("error", hasError);
+}
+function validateForm(){
+  var ok = true;
+  var name = document.getElementById("custName").value.trim();
+  var phone = document.getElementById("custPhone").value.trim();
+  var address = document.getElementById("custAddress").value.trim();
+  var postcode = custPostcodeInput.value.trim();
+  setFieldError("fieldName", name.length===0); if(name.length===0) ok=false;
+  setFieldError("fieldPhone", phone.length<4); if(phone.length<4) ok=false;
+  if(state.orderType==="delivery"){
+    setFieldError("fieldAddress", address.length===0); if(address.length===0) ok=false;
+    setFieldError("fieldPostcode", postcode.length===0); if(postcode.length===0) ok=false;
+    if(postcode.length>0 && !checkPostcodeRange()) ok=false;
+  } else {
+    setFieldError("fieldAddress", false);
+    setFieldError("fieldPostcode", false);
+    fieldPostcodeEl.classList.remove("outofrange");
+  }
+  return ok;
+}
+
+/* ---------- order number ---------- */
+function genOrderNumber(){
+  var d = new Date();
+  function pad(x){ return String(x).length<2 ? "0"+x : ""+x; }
+  var stamp = pad(d.getHours())+pad(d.getMinutes());
+  var rand = Math.floor(10+Math.random()*89);
+  return "P92-"+stamp+rand;
+}
+
+/* ---------- automatic order notification to the restaurant ---------- */
+function notifyRestaurant(payload){
+  if(!ORDER_NOTIFY_ENDPOINT) return; // not configured yet — see the TODO near the top of this script
+  try{
+    fetch(ORDER_NOTIFY_ENDPOINT, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+      body: JSON.stringify(payload)
+    }).catch(function(){ /* network hiccup — the ticket + call button still let the customer reach us */ });
+  }catch(e){}
+}
+
+/* ---------- build the payment panel shown on the confirmation ticket ---------- */
+function renderTicketPayPanel(orderNum, total){
+  var el = document.getElementById("ticketPayPanel");
+  if(state.paymentMethod==="swish"){
+    var url = buildSwishUrl(total, "Order "+orderNum);
+    el.innerHTML =
+      '<div class="pay-panel">'+
+        '<p class="pay-instructions">'+t("swish_instructions")+'</p>'+
+        '<a href="'+url+'" class="btn btn-brass btn-block">'+t("swish_pay_btn")+'</a>'+
+        '<div class="qr-box" id="ticketQrBox"></div>'+
+      '</div>';
+    var qrBox = document.getElementById("ticketQrBox");
+    try{
+      if(window.QRCode) new QRCode(qrBox, { text:url, width:150, height:150, correctLevel:QRCode.CorrectLevel.M });
+    }catch(e){}
+  } else {
+    el.innerHTML =
+      '<div class="pay-panel">'+
+        '<p class="pay-instructions">'+t("bank_instructions")+'</p>'+
+        '<div class="bank-details">'+
+          '<div><span>'+t("bank_account_label")+'</span>: <strong>'+BANK_ACCOUNT+'</strong></div>'+
+          '<div><span>'+t("bank_holder_label")+'</span>: <strong>'+BANK_HOLDER+'</strong></div>'+
+          '<div><span>'+t("cart_subtotal")+'</span>: <strong>'+fmt(total)+'</strong> \u00b7 <span>'+orderNum+'</span></div>'+
+        '</div>'+
+      '</div>';
+  }
+}
+
+/* ---------- submit order -> notify + ticket ---------- */
+function submitOrder(){
+  if(!validateForm()) return;
+  var name = document.getElementById("custName").value.trim();
+  var phone = document.getElementById("custPhone").value.trim();
+  var address = document.getElementById("custAddress").value.trim();
+  var postcode = custPostcodeInput.value.trim();
+  var notes = document.getElementById("custNotes").value.trim();
+  var orderNum = genOrderNumber();
+  var sub = cartTotal();
+  var fee = deliveryFee();
+  var total = sub+fee;
+  var ids = Object.keys(state.cart);
+  var payMethod = state.paymentMethod;
+
+  document.getElementById("ticketOrderNum").textContent = orderNum;
+  var metaParts = [ state.orderType==="delivery" ? t("order_delivery_word") : t("order_pickup_word") ];
+  if(state.orderType==="delivery" && address) metaParts.push(address);
+  document.getElementById("ticketOrderMeta").textContent = metaParts.join(" \u00b7 ");
+
+  var linesEl = document.getElementById("ticketLines");
+  linesEl.innerHTML = "";
+  var plainLines = [];
+  ids.forEach(function(id){
+    var item = findItem(id); if(!item) return;
+    var qty = state.cart[id];
+    var row = document.createElement("div");
+    row.innerHTML = "<span>"+qty+"\u00d7 "+item.name[state.lang]+"</span><span>"+fmt(item.price*qty)+"</span>";
+    linesEl.appendChild(row);
+    plainLines.push(qty+"x "+item.name.sv+" \u2014 "+fmt(item.price*qty));
+  });
+  if(state.orderType==="delivery"){
+    var feeRow = document.createElement("div");
+    feeRow.innerHTML = "<span>"+t("delivery_fee_label")+"</span><span>"+(fee===0?t("free_delivery_label"):fmt(fee))+"</span>";
+    linesEl.appendChild(feeRow);
+    plainLines.push(t("delivery_fee_label")+": "+(fee===0?t("free_delivery_label"):fmt(fee)));
+  }
+  document.getElementById("ticketTotalVal").textContent = fmt(total);
+  renderTicketPayPanel(orderNum, total);
+  document.getElementById("ticketCallBtn").setAttribute("href", "tel:"+RESTAURANT_TEL);
+
+  // fire the automatic notification to the restaurant (email via ORDER_NOTIFY_ENDPOINT once configured)
+  notifyRestaurant({
+    order_number: orderNum,
+    order_type: state.orderType,
+    address: state.orderType==="delivery" ? (address+" ("+postcode+")") : "Avhämtning — Stationsvägen 6A",
+    name: name, phone: phone,
+    payment_method: payMethod,
+    items: plainLines.join(" | "),
+    subtotal: fmt(sub),
+    delivery_fee: fee===0 ? "Free/0kr" : fmt(fee),
+    total: fmt(total),
+    notes: notes || "-"
+  });
+
+  // order is confirmed at this point — clear the cart and form so it can't be resent by accident
+  state.cart = {};
+  document.getElementById("custName").value = "";
+  document.getElementById("custPhone").value = "";
+  document.getElementById("custAddress").value = "";
+  custPostcodeInput.value = "";
+  fieldPostcodeEl.classList.remove("outofrange");
+  document.getElementById("custNotes").value = "";
+  state.paymentMethod = "swish";
+  hideCheckoutForm();
+  renderCart();
+  renderMenu();
+  renderPayPanel();
+
+  closeCart();
+  openTicket();
+}
+
+/* ---------- ticket modal ---------- */
+function openTicket(){ ticketOverlay.classList.add("open"); document.body.style.overflow="hidden"; }
+function closeTicket(){ ticketOverlay.classList.remove("open"); document.body.style.overflow=""; }
+document.getElementById("ticketCloseBtn").addEventListener("click", closeTicket);
+ticketOverlay.addEventListener("click", function(e){ if(e.target===ticketOverlay) closeTicket(); });
+document.getElementById("ticketNewOrderBtn").addEventListener("click", function(){
+  closeTicket();
+  var menuEl = document.getElementById("menu");
+  if(menuEl) menuEl.scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* ---------- mobile nav ---------- */
+function closeMobileNav(){
+  mobileNav.classList.remove("open");
+  hamburgerBtn.setAttribute("aria-expanded","false");
+}
+hamburgerBtn.addEventListener("click", function(){
+  var open = mobileNav.classList.toggle("open");
+  hamburgerBtn.setAttribute("aria-expanded", open?"true":"false");
+});
+var mobileNavLinks = mobileNav.querySelectorAll("a");
+for(var p=0;p<mobileNavLinks.length;p++){
+  mobileNavLinks[p].addEventListener("click", function(){
+    if(this.getAttribute("href")!=="#") closeMobileNav();
+  });
+}
+
+/* ---------- escape key ---------- */
+document.addEventListener("keydown", function(e){
+  if(e.key==="Escape"){ closeCart(); closeTicket(); closeMobileNav(); }
+});
+
+/* ---------- language switch ---------- */
+var langBtns2 = document.querySelectorAll(".langswitch button");
+for(var q=0;q<langBtns2.length;q++){
+  langBtns2[q].addEventListener("click", function(){
+    state.lang = this.getAttribute("data-lang");
+    applyLang();
+  });
+}
+
+/* ---------- ambient departure-board flicker (decorative, respects reduced motion) ---------- */
+(function boardCycle(){
+  if(!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+  var el = document.getElementById("boardServes");
+  var toggled = false;
+  setInterval(function(){
+    toggled = !toggled;
+    el.classList.remove("flip");
+    void el.offsetWidth;
+    el.classList.add("flip");
+    el.textContent = toggled ? t("board_r3_v2") : t("board_r3_v");
+  }, 4200);
+})();
+
+/* ---------- init ---------- */
+state.lang = detectLang();
+applyLang();
+})();
+</script>
+</body>
+</html>

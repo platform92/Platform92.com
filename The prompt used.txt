@@ -1,0 +1,33 @@
+Prompt 1 — for Foodora
+
+Foodora's own guidelines specify menu item images must be landscape, can't carry text/watermarks/branding over the food, can't be cropped items, and raw/uncooked food shots aren't accepted (only prepared, cooked dishes).
+
+A professional food photograph of {X}, shot in landscape orientation, single dish centered in frame with the entire plate visible and generous margin on all sides. Simple, uncluttered background — warm dark wood or brushed brass surface, not stark white or grey. Warm 2700K lighting, soft golden glow, no harsh flash or cold studio-white look. No text, no watermark, no logo overlay, no people in frame. Dish fully cooked and plated, appetizing and true-to-ingredient color. Photorealistic, high resolution, natural editorial food photography style.
+
+Prompt 2 — for your digital menu (circular thumbnail)
+
+Your menu displays these as small circles (46–64px) on a near-black card with a brass ring border — so the image needs to read clearly cropped tight into a circle, with the dish filling nearly the whole frame and minimal background, since the corners get cut off.
+
+A professional food photograph of {X}, shot top-down or a tight 3/4 angle, in a square 1:1 crop. The dish fills at least 85% of the frame edge-to-edge, minimal to no visible background — just enough to suggest a dark, warm surface with soft brass-toned highlights, since the outer edges will be cropped into a circle. Warm 2700K lighting, deep shadows fading toward void-black, no bright white background. Bold, high-contrast subject that stays legible and recognizable even at small (46px) thumbnail size. No text, no watermark, no people. Photorealistic, crisp detail on the food itself.
+
+
+Chicken Plate - Chicken Platter (Kycklingtallrik) - 90%
+Beef Plate - Lamb Platter (Lammtallrik) - 70% (closest platter, but protein differs — beef vs. lamb)
+Beef & Chicken Combo Plate - Combo Platter (Kombotallrik) - 80% (same combo concept, second protein differs — beef vs. lamb)
+Fish Plate - Falafel Platter (Falafeltallrik) - 40% (no fish option exists on Shah's menu — weakest match, format-only)
+Falafel Plate - Falafel Platter (Falafeltallrik) - 95%
+Mixed Salad - Salads (Sallader) - 65% (Shah's version includes a protein choice; yours doesn't)
+Cheeseburger - Philly Cheesesteak (Philly Cheesesteak) - 35% (no burger category at all on Shah's menu — closest is a bread+meat+cheese sandwich)
+Crispy Chicken Cheeseburger - Chicken Sandwich (Kycklingsmörgås) - 55%
+Beef Wrap - Lamb Gyros (Lammgyros) - 75% (same wrap format, protein differs)
+Chicken Wrap - Chicken Gyros (Kycklinggyros) - 90%
+Fries or Falafel Wrap - Falafel Gyros (Falafelgyros) - 60%
+Loaded Fries - Pommes (Pommes) - 50% (Shah's fries are plain, no "loaded" version)
+Cheese Fries - Pommes (Pommes) - 45% (same gap — no cheese-topped fries option)
+Chicken Nuggets - Chicken Nuggets 6st (Kycklingnuggets 6st) - 95%
+Chicken Wings - Hot Wings 6st (Heta Vingar 6st) - 85%
+Coca-Cola - Coca-Cola Original Taste 33cl (Coca-Cola Original Taste 33cl) - 100%
+Fanta - Fanta Orange 33cl (Fanta Orange 33cl) - 90%
+Pepsi - No match - 15% (Shah's doesn't carry Pepsi at all — only Coca-Cola-brand products, Ramlösa, Palestine Cola, MER)
+Coffee - No match - 0% (no coffee anywhere on Shah's drinks list)
+Tea - No match - 0% (no tea anywhere on Shah's drinks list)
