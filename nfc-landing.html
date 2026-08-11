@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Platform 92 Kitchen</title>
+<meta name="description" content="Platform 92 Kitchen — menu, Instagram, TikTok, and reviews.">
+<meta name="theme-color" content="#14110D">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --void: #14110D;
+    --brass: #C9A227;
+    --brass-bright: #E0BB43;
+    --pine: #20503C;
+    --ember: #B4232A;
+    --ink: #F4ECD8;
+    --ink-dim: #C9BFA8;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: var(--void);
+  }
+
+  body{
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse 520px 380px at 50% 6%, rgba(201,162,39,0.16), transparent 65%),
+      radial-gradient(ellipse 600px 500px at 85% 95%, rgba(32,80,60,0.20), transparent 60%),
+      var(--void);
+    min-height: 100dvh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px 32px;
+  }
+
+  main.card{
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ---------- language switcher ---------- */
+
+  .lang-switch{
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px 7px 11px;
+    border: 1px solid rgba(244,236,216,0.18);
+    border-radius: 20px;
+    background: rgba(244,236,216,0.03);
+    margin-bottom: 22px;
+    color: var(--ink-dim);
+  }
+  .lang-switch svg{ flex-shrink: 0; }
+  .lang-switch svg.chevron{ opacity: 0.7; }
+
+  .lang-switch select{
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 2px;
+    cursor: pointer;
+  }
+  .lang-switch select:focus-visible{
+    outline: 1px solid var(--brass);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  .lang-switch select option{
+    background: var(--void);
+    color: var(--ink);
+  }
+
+  /* ---------- mark ---------- */
+
+  .mark-wrap{
+    position: relative;
+    width: 108px;
+    height: 108px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+
+  .mark-glow{
+    position: absolute;
+    inset: -34px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,187,67,0.38) 0%, rgba(224,187,67,0.10) 45%, transparent 72%);
+    animation: bulb 3.2s ease-in-out infinite;
+    filter: blur(2px);
+  }
+
+  @keyframes bulb{
+    0%, 100%{ opacity: 0.55; transform: scale(0.97); }
+    50%{ opacity: 1; transform: scale(1.04); }
+  }
+
+  .mark{
+    position: relative;
+    width: 108px;
+    height: 108px;
+  }
+
+  .mark text{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 66px;
+    fill: var(--brass-bright);
+  }
+
+  /* ---------- header text ---------- */
+
+  .eyebrow{
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.32em;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin: 0 0 10px;
+    text-transform: uppercase;
+  }
+
+  h1.wordmark{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1.1;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+
+  h1.wordmark em{
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ink-dim);
+  }
+
+  .tagline{
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    margin: 0 0 24px;
+    max-width: 30ch;
+  }
+
+  .rail{
+    width: 100%;
+    height: 8px;
+    margin-bottom: 26px;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(201,162,39,0.55) 0px,
+      rgba(201,162,39,0.55) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: 14px 2px;
+    position: relative;
+  }
+  .rail::before, .rail::after{
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: rgba(201,162,39,0.28);
+  }
+  .rail::before{ top: 1px; }
+  .rail::after{ bottom: 1px; }
+
+  /* ---------- primary CTA ---------- */
+
+  a.btn-primary{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    background: var(--brass);
+    color: var(--void);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 17px 18px;
+    border-radius: 6px;
+    box-shadow: 0 10px 28px -12px rgba(201,162,39,0.55);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    margin-bottom: 34px;
+  }
+  a.btn-primary:hover,
+  a.btn-primary:focus-visible{
+    background: var(--brass-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px -12px rgba(224,187,67,0.65);
+  }
+  a.btn-primary:active{ transform: translateY(0); }
+  a.btn-primary svg{ flex-shrink: 0; }
+  a.btn-primary .arrow{ margin-left: auto; }
+
+  /* ---------- divider ---------- */
+
+  .divider{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .divider span{
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.28em;
+    font-size: 12px;
+    color: var(--ink-dim);
+    white-space: nowrap;
+  }
+  .divider::before, .divider::after{
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: rgba(244,236,216,0.16);
+  }
+
+  /* ---------- link rows ---------- */
+
+  nav.links{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  a.link-row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid rgba(244,236,216,0.14);
+    background: rgba(244,236,216,0.02);
+    border-radius: 6px;
+    padding: 14px 16px;
+    min-height: 44px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  a.link-row:hover,
+  a.link-row:focus-visible{
+    border-color: var(--brass);
+    background: rgba(201,162,39,0.07);
+  }
+  a.link-row svg{ flex-shrink: 0; color: var(--brass-bright); }
+  a.link-row .label{
+    font-weight: 600;
+    font-size: 15px;
+  }
+  a.link-row .handle{
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+
+  footer{
+    font-size: 12px;
+    color: var(--ink-dim);
+    line-height: 1.7;
+  }
+  footer strong{
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .mark-glow{ animation: none; opacity: 0.85; }
+  }
+</style>
+</head>
+<body>
+
+<main class="card">
+
+  <div class="lang-switch">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9s1.3-6.4 3.8-9z"/>
+    </svg>
+    <select id="langSelect" aria-label="Language / Språk">
+      <option value="sv" selected>Svenska</option>
+      <option value="en">English</option>
+      <option value="no">Norsk</option>
+      <option value="da">Dansk</option>
+      <option value="fi">Suomi</option>
+      <option value="de">Deutsch</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+      <option value="it">Italiano</option>
+      <option value="nl">Nederlands</option>
+      <option value="pl">Polski</option>
+    </select>
+    <svg class="chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </div>
+
+  <div class="mark-wrap">
+    <div class="mark-glow" aria-hidden="true"></div>
+    <svg class="mark" viewBox="0 0 200 200" role="img" aria-label="Platform 92 mark">
+      <circle cx="100" cy="100" r="93" fill="var(--void)" stroke="var(--brass)" stroke-width="14"/>
+      <text x="100" y="124" text-anchor="middle">92</text>
+    </svg>
+  </div>
+
+  <p class="eyebrow">Vaggeryd · Platform 92</p>
+  <h1 class="wordmark">Platform 92 <em>Kitchen</em></h1>
+  <p class="tagline" id="tagline">En perrong. Alla välkomna.</p>
+
+  <div class="rail" aria-hidden="true"></div>
+
+  <a class="btn-primary" href="digitalmenu.html">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <circle cx="12" cy="12" r="4.3"/>
+    </svg>
+    <span id="btnLabel">Se menyn</span>
+    <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </svg>
+  </a>
+
+  <div class="divider" aria-hidden="true"><span id="dividerLabel">Hitta oss</span></div>
+
+  <nav class="links">
+
+    <a class="link-row" href="https://www.instagram.com/platform.92" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="5"/>
+        <circle cx="12" cy="12" r="4.2"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="label">Instagram</span>
+      <span class="handle">@platform.92</span>
+    </a>
+
+    <a class="link-row" href="https://www.tiktok.com/@platform_92" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 4v10.2a3.3 3.3 0 1 1-2.6-3.23"/>
+        <path d="M14 4c.6 2.6 2.3 4.2 5 4.6"/>
+      </svg>
+      <span class="label">TikTok</span>
+      <span class="handle">@platform_92</span>
+    </a>
+
+    <a class="link-row" href="https://g.page/r/CQpqq0I1o_ywEBM/review" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.8z"/>
+      </svg>
+      <span class="label" id="reviewLabel">Lämna en recension</span>
+      <span class="handle">Google</span>
+    </a>
+
+  </nav>
+
+  <footer>
+    <strong>Platform 92 Kitchen</strong><br>
+    Stationsvägen 6A · Vaggeryd
+  </footer>
+
+</main>
+
+<script>
+  var translations = {
+    sv: { tagline: "En perrong. Alla välkomna.",           btn: "Se menyn",        divider: "Hitta oss",      review: "Lämna en recension" },
+    en: { tagline: "One platform. Everyone welcome.",       btn: "View the menu",   divider: "Find us",        review: "Leave a review" },
+    no: { tagline: "Én perrong. Alle velkommen.",            btn: "Se menyen",       divider: "Finn oss",       review: "Legg igjen en anmeldelse" },
+    da: { tagline: "Én perron. Alle velkomne.",              btn: "Se menuen",       divider: "Find os",        review: "Skriv en anmeldelse" },
+    fi: { tagline: "Yksi laituri. Kaikki tervetulleita.",     btn: "Katso ruokalista", divider: "Löydä meidät",  review: "Jätä arvostelu" },
+    de: { tagline: "Ein Bahnsteig. Alle willkommen.",         btn: "Zur Speisekarte", divider: "Findet uns",     review: "Bewertung hinterlassen" },
+    fr: { tagline: "Un quai. Tout le monde est le bienvenu.", btn: "Voir le menu",    divider: "Nous trouver",   review: "Laisser un avis" },
+    es: { tagline: "Un andén. Todos son bienvenidos.",        btn: "Ver el menú",     divider: "Encuéntranos",   review: "Dejar una reseña" },
+    it: { tagline: "Un binario. Tutti benvenuti.",            btn: "Vedi il menù",    divider: "Dove siamo",     review: "Lascia una recensione" },
+    nl: { tagline: "Eén perron. Iedereen welkom.",            btn: "Bekijk het menu", divider: "Vind ons",       review: "Laat een review achter" },
+    pl: { tagline: "Jeden peron. Wszyscy mile widziani.",     btn: "Zobacz menu",     divider: "Znajdź nas",     review: "Zostaw opinię" }
+  };
+
+  function setLanguage(code){
+    var t = translations[code] || translations.sv;
+    document.getElementById('tagline').textContent = t.tagline;
+    document.getElementById('btnLabel').textContent = t.btn;
+    document.getElementById('dividerLabel').textContent = t.divider;
+    document.getElementById('reviewLabel').textContent = t.review;
+    document.documentElement.lang = code;
+  }
+
+  document.getElementById('langSelect').addEventListener('change', function(e){
+    setLanguage(e.target.value);
+  });
+</script>
+
+</body>
+</html>
