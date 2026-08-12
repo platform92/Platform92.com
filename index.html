@@ -84,6 +84,17 @@ a{color:inherit;}
 .cart-chip .count{position:absolute;top:-6px;inset-inline-end:-6px;background:var(--ember);color:#fff;font-family:var(--display);font-size:11px;min-width:18px;height:18px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
 .cart-chip .count.zero{display:none;}
 .cart-chip .amount{font-family:var(--display);font-size:13px;letter-spacing:.03em;}
+.status-pill{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:8px 13px;}
+.status-pill .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--pine-light);box-shadow:0 0 7px var(--pine-light);}
+.status-pill .dot.closed{background:var(--ember);box-shadow:0 0 7px var(--ember);}
+.status-pill span.txt{font-family:var(--display);font-size:11.5px;letter-spacing:.05em;color:var(--ink-dim);text-transform:uppercase;}
+@media(max-width:480px){.status-pill span.txt{display:none;}.status-pill{padding:8px;}}
+.closed-banner{background:rgba(180,35,42,.15);border-bottom:1px solid rgba(180,35,42,.4);}
+.closed-banner[hidden]{display:none;}
+.closed-banner-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 20px;text-align:center;padding:10px 20px;font-size:13px;color:var(--ink);}
+.closed-banner-inner strong.title{color:var(--ember-bright);font-family:var(--display);letter-spacing:.05em;font-size:13px;text-transform:uppercase;}
+.closed-banner-inner .countdown{font-family:var(--display);letter-spacing:.03em;color:var(--ember-bright);}
+.dish-add:disabled, .stepper button:disabled{opacity:.4;pointer-events:none;}
 .hamburger{display:none;background:none;border:none;color:var(--ink);padding:8px;}
 .hamburger svg{width:22px;height:22px;}
 @media (max-width:860px){.navlinks{display:none;}.hamburger{display:flex;}}
@@ -100,9 +111,13 @@ a{color:inherit;}
 .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(36px,6vw,62px);line-height:1.05;letter-spacing:-.01em;margin-bottom:18px;}
 .hero .sub{font-size:17px;color:var(--ink-dim);max-width:520px;margin-bottom:28px;}
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
-.board{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:20px 22px 16px;box-shadow:0 24px 70px rgba(0,0,0,.5);}
+.station-cluster{display:flex;flex-direction:column;align-items:center;gap:18px;}
+.vintage-clock{width:118px;height:118px;flex:none;filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));}
+.vintage-clock .hand{transition:transform .12s cubic-bezier(.4,2.2,.6,1);}
+.board{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:20px 22px 16px;box-shadow:0 24px 70px rgba(0,0,0,.5);width:100%;}
 .board-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--line);}
 .board-head .dot{width:8px;height:8px;border-radius:50%;background:var(--pine-light);box-shadow:0 0 8px var(--pine-light);flex:none;}
+.board-head .dot.closed{background:var(--ember);box-shadow:0 0 8px var(--ember);}
 .board-head span{font-family:var(--display);font-size:11px;letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;}
 .board-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;font-family:var(--display);letter-spacing:.06em;font-size:15px;padding:9px 0;border-bottom:1px dashed var(--line);}
 .board-row:last-child{border-bottom:none;}
@@ -198,6 +213,10 @@ a{color:inherit;}
 #deliveryFeeRow[hidden]{display:none;}
 .delivery-incentive.achieved{background:rgba(201,162,39,.14);border-color:rgba(201,162,39,.4);color:var(--brass-bright);}
 .min-order-warning{color:var(--ember-bright);font-size:12px;text-align:center;margin:-6px 0 0;}
+.cart-closed-notice{background:rgba(180,35,42,.14);border:1px solid rgba(180,35,42,.4);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;text-align:center;}
+.cart-closed-notice strong{font-family:var(--display);font-size:12.5px;letter-spacing:.05em;color:var(--ember-bright);text-transform:uppercase;}
+.cart-closed-notice span{font-size:12.5px;color:var(--ink-dim);line-height:1.4;}
+#cartActionBtn[hidden]{display:none;}
 .phone-order-box{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);text-align:center;}
 .phone-order-desc{font-size:12px;color:var(--ink-faint);margin:0 0 10px;line-height:1.5;}
 .field{display:flex;flex-direction:column;gap:6px;}
@@ -282,6 +301,10 @@ a{color:inherit;}
       <a href="#contact" data-i18n="nav_contact">Kontakt</a>
     </div>
     <div class="nav-right">
+      <div class="status-pill" id="navStatusPill" aria-live="polite">
+        <span class="dot" id="navStatusDot"></span>
+        <span class="txt" id="navStatusText">ÖPPET</span>
+      </div>
       <div class="langswitch" role="group" aria-label="Language / Språk">
         <button data-lang="sv" class="active">SV</button>
         <button data-lang="en">EN</button>
@@ -305,6 +328,14 @@ a{color:inherit;}
   <a href="#contact" data-i18n="nav_contact">Kontakt</a>
 </div>
 
+<div class="closed-banner" id="closedBanner" hidden>
+  <div class="wrap closed-banner-inner">
+    <strong class="title" data-i18n="closed_banner_title">Vi är stängda just nu</strong>
+    <span data-i18n="closed_banner_hours">Vi tar emot beställningar 11:00–21:00, alla dagar.</span>
+    <span><span data-i18n="opens_in">Öppnar om</span> <strong class="countdown" id="countdownText">00:00:00</strong></span>
+  </div>
+</div>
+
 <!-- ============ HERO ============ -->
 <section class="hero">
   <div class="wrap hero-inner">
@@ -317,11 +348,22 @@ a{color:inherit;}
         <button class="btn btn-outline js-open-cart" data-i18n="hero_cta_order">Beställ nu</button>
       </div>
     </div>
-    <div class="board" aria-hidden="true">
-      <div class="board-head"><span class="dot"></span><span>Live</span></div>
-      <div class="board-row"><span class="k" data-i18n="board_r1_k">LINJE</span><span class="v">VAGGERYD</span></div>
-      <div class="board-row"><span class="k" data-i18n="board_r2_k">KÖK</span><span class="v">PLATFORM 92</span></div>
-      <div class="board-row"><span class="k" data-i18n="board_r3_k">SERVERAR</span><span class="v" id="boardServes" data-i18n="board_r3_v">ALLA</span></div>
+    <div class="station-cluster">
+      <svg class="vintage-clock" id="vintageClock" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="100" cy="100" r="94" fill="#1E1911" stroke="#C9A227" stroke-width="6"/>
+        <circle cx="100" cy="100" r="82" fill="none" stroke="#3A7458" stroke-width="1.5"/>
+        <g id="clockTicks" stroke="#C9BFA8"></g>
+        <line class="hand" id="clockHourHand" x1="100" y1="100" x2="100" y2="62" stroke="#F4ECD8" stroke-width="5.5" stroke-linecap="round"/>
+        <line class="hand" id="clockMinuteHand" x1="100" y1="100" x2="100" y2="38" stroke="#F4ECD8" stroke-width="3.5" stroke-linecap="round"/>
+        <line class="hand" id="clockSecondHand" x1="100" y1="114" x2="100" y2="30" stroke="#B4232A" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="6" fill="#C9A227"/>
+      </svg>
+      <div class="board" aria-hidden="true">
+        <div class="board-head"><span class="dot" id="boardStatusDot"></span><span id="boardStatusText">Live</span></div>
+        <div class="board-row"><span class="k" data-i18n="board_r1_k">LINJE</span><span class="v">VAGGERYD</span></div>
+        <div class="board-row"><span class="k" data-i18n="board_r2_k">KÖK</span><span class="v">PLATFORM 92</span></div>
+        <div class="board-row"><span class="k" data-i18n="board_r3_k">SERVERAR</span><span class="v" id="boardServes" data-i18n="board_r3_v">ALLA</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -426,6 +468,10 @@ a{color:inherit;}
       <span class="val" id="drawerSubtotal">0 kr</span>
     </div>
     <p class="min-order-warning" id="minOrderWarning" hidden data-i18n="delivery_min_alert">Minsta beställning för leverans är 150 kr.</p>
+    <div class="cart-closed-notice" id="cartClosedNotice" hidden>
+      <strong data-i18n="closed_banner_title">Vi är stängda just nu</strong>
+      <span data-i18n="cart_closed_notice">Vi tar tyvärr inte emot beställningar just nu. Vi öppnar igen kl 11:00 varje dag.</span>
+    </div>
     <button class="btn btn-brass btn-block" id="cartActionBtn">Gå till beställning</button>
     <button class="btn btn-ghost btn-block" id="cartClearBtn" data-i18n="cart_clear" style="margin-top:2px;">Töm korgen</button>
     <div class="phone-order-box">
@@ -470,7 +516,7 @@ a{color:inherit;}
       </div>
       <p>Stationsvägen 6A<br>Vaggeryd</p>
       <div class="social-row">
-        <a class="social-link" href="https://instagram.com/platform.92" target="_blank" rel="noopener">
+        <a class="social-link" href="https://instagram.com/platform92" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"/></svg>
           Instagram
         </a>
@@ -555,7 +601,13 @@ var STR = {
     empty_cart_alert:"Lägg till något från menyn först.",
     aria_open_cart:"Öppna korgen", aria_close:"Stäng", aria_menu:"Meny",
     footer_tagline:"Lagad med kärlek, i Vaggeryd.",
-    nfc_link_label:"Digital meny & länkar"
+    nfc_link_label:"Digital meny & länkar",
+    status_open_label:"ÖPPET", status_closed_label:"STÄNGT",
+    closed_banner_title:"Vi är stängda just nu",
+    closed_banner_hours:"Vi tar emot beställningar 11:00–21:00, alla dagar.",
+    opens_in:"Öppnar om",
+    closed_add_label:"Stängt",
+    cart_closed_notice:"Vi tar tyvärr inte emot beställningar just nu. Vi öppnar igen kl 11:00 varje dag."
   },
   en:{
     nav_menu:"Menu", nav_order:"Order", nav_about:"About", nav_contact:"Contact",
@@ -598,7 +650,13 @@ var STR = {
     empty_cart_alert:"Add something from the menu first.",
     aria_open_cart:"Open cart", aria_close:"Close", aria_menu:"Menu",
     footer_tagline:"Made with love, in Vaggeryd.",
-    nfc_link_label:"Digital menu & links"
+    nfc_link_label:"Digital menu & links",
+    status_open_label:"OPEN", status_closed_label:"CLOSED",
+    closed_banner_title:"We're closed right now",
+    closed_banner_hours:"We take orders 11:00–21:00, every day.",
+    opens_in:"Opens in",
+    closed_add_label:"Closed",
+    cart_closed_notice:"Sorry, we're not taking orders right now. We reopen at 11:00 every day."
   },
   ar:{
     nav_menu:"القائمة", nav_order:"اطلب", nav_about:"من نحن", nav_contact:"تواصل",
@@ -641,7 +699,13 @@ var STR = {
     empty_cart_alert:"أضف شيئًا من القائمة أولاً.",
     aria_open_cart:"افتح السلة", aria_close:"إغلاق", aria_menu:"القائمة",
     footer_tagline:"صُنع بحب، في فاغريد.",
-    nfc_link_label:"القائمة الرقمية والروابط"
+    nfc_link_label:"القائمة الرقمية والروابط",
+    status_open_label:"مفتوح", status_closed_label:"مغلق",
+    closed_banner_title:"نحن مغلقون الآن",
+    closed_banner_hours:"نستقبل الطلبات من 11:00 حتى 21:00، كل يوم.",
+    opens_in:"يفتح خلال",
+    closed_add_label:"مغلق",
+    cart_closed_notice:"عذرًا، لا نستقبل الطلبات حاليًا. نفتح مجددًا الساعة 11:00 كل يوم."
   }
 };
 
@@ -740,6 +804,99 @@ function isPostcodeAllowed(raw){
   return ALLOWED_POSTCODES.indexOf(pc)!==-1;
 }
 
+/* ============================================================
+   ORDERING HOURS — 11:00 to 21:00, every day, Swedish time.
+   Uses Europe/Stockholm specifically (not the visitor's device
+   clock) so a tourist with a different timezone still sees the
+   restaurant's real status, not their own local time.
+   ============================================================ */
+var OPEN_HOUR = 11;
+var CLOSE_HOUR = 21;
+var wasOpenLast = null; // tracks state so we only re-render menu/cart when status actually flips
+
+function getStockholmParts(){
+  var now = new Date();
+  var fmt = new Intl.DateTimeFormat("en-GB", {
+    timeZone:"Europe/Stockholm", hour12:false,
+    hour:"2-digit", minute:"2-digit", second:"2-digit"
+  });
+  var parts = fmt.formatToParts(now);
+  var map = {};
+  parts.forEach(function(p){ map[p.type]=p.value; });
+  return { hour:parseInt(map.hour,10), minute:parseInt(map.minute,10), second:parseInt(map.second,10) };
+}
+function isOpenNow(){
+  var t = getStockholmParts();
+  return t.hour>=OPEN_HOUR && t.hour<CLOSE_HOUR;
+}
+function secondsUntilOpen(){
+  var t = getStockholmParts();
+  var current = t.hour*3600+t.minute*60+t.second;
+  var target = OPEN_HOUR*3600;
+  if(current<target) return target-current;
+  return (24*3600-current)+target;
+}
+function formatCountdown(totalSeconds){
+  var h = Math.floor(totalSeconds/3600);
+  var m = Math.floor((totalSeconds%3600)/60);
+  var s = totalSeconds%60;
+  function pad(x){ return x<10 ? "0"+x : ""+x; }
+  return pad(h)+":"+pad(m)+":"+pad(s);
+}
+
+/* ---------- vintage railway clock (pure showpiece, ticks real Stockholm time) ---------- */
+function initClockTicks(){
+  var g = document.getElementById("clockTicks");
+  if(!g) return;
+  var html = "";
+  for(var i=0;i<12;i++){
+    var deg = i*30;
+    var major = (i%3===0);
+    var r1 = major ? 74 : 80;
+    var r2 = 90;
+    var w = major ? 3 : 1.4;
+    html += '<line x1="100" y1="'+(100-r1)+'" x2="100" y2="'+(100-r2)+'" stroke-width="'+w+'" transform="rotate('+deg+' 100 100)"/>';
+  }
+  g.innerHTML = html;
+}
+function updateVintageClock(){
+  var t = getStockholmParts();
+  var h = t.hour%12;
+  var hourDeg = (h+t.minute/60)*30;
+  var minDeg = (t.minute+t.second/60)*6;
+  var secDeg = t.second*6;
+  var hourHand = document.getElementById("clockHourHand");
+  var minHand = document.getElementById("clockMinuteHand");
+  var secHand = document.getElementById("clockSecondHand");
+  if(hourHand) hourHand.setAttribute("transform","rotate("+hourDeg+" 100 100)");
+  if(minHand) minHand.setAttribute("transform","rotate("+minDeg+" 100 100)");
+  if(secHand) secHand.setAttribute("transform","rotate("+secDeg+" 100 100)");
+}
+
+/* ---------- open/closed status: nav pill, board dot, closed banner, ordering gate ---------- */
+function updateOpenStatus(){
+  var open = isOpenNow();
+  var dot1 = document.getElementById("navStatusDot");
+  var txt1 = document.getElementById("navStatusText");
+  var dot2 = document.getElementById("boardStatusDot");
+  var txt2 = document.getElementById("boardStatusText");
+  var banner = document.getElementById("closedBanner");
+  if(dot1) dot1.classList.toggle("closed", !open);
+  if(dot2) dot2.classList.toggle("closed", !open);
+  if(txt1) txt1.textContent = open ? t("status_open_label") : t("status_closed_label");
+  if(txt2) txt2.textContent = open ? t("status_open_label") : t("status_closed_label");
+  if(banner) banner.hidden = open;
+  if(!open){
+    var cd = document.getElementById("countdownText");
+    if(cd) cd.textContent = formatCountdown(secondsUntilOpen());
+  }
+  if(wasOpenLast!==open){
+    wasOpenLast = open;
+    if(typeof renderMenu==="function") renderMenu();
+    if(typeof renderCart==="function") renderCart();
+  }
+}
+
 function detectLang(){
   try{
     var qp = new URLSearchParams(location.search).get("lang");
@@ -811,6 +968,7 @@ function applyLang(){
   renderCart();
   updateOrderTypeUI();
   renderPayPanel();
+  if(typeof updateOpenStatus==="function") updateOpenStatus();
 }
 
 /* ---------- render: category tabs ---------- */
@@ -838,6 +996,7 @@ function renderCatTabs(){
 /* ---------- render: menu grid ---------- */
 function renderMenu(){
   menuGridEl.innerHTML = "";
+  var open = isOpenNow();
   var items = MENU.filter(function(m){return m.cat===state.activeCat;});
   items.forEach(function(item){
     var qty = state.cart[item.id]||0;
@@ -855,6 +1014,8 @@ function renderMenu(){
     } else {
       mediaHtml = '<div class="dish-icon-fallback">'+iconSvg+'</div>';
     }
+    var addLabel = open ? t("add_to_cart") : t("closed_add_label");
+    var disabledAttr = open ? "" : " disabled";
     card.innerHTML =
       '<div class="dish-media">'+
         mediaHtml+
@@ -865,11 +1026,11 @@ function renderMenu(){
         '<p class="dish-desc">'+item.desc[state.lang]+'</p>'+
         '<div class="dish-foot">'+
           '<div class="stepper">'+
-            '<button type="button" class="qty-minus" aria-label="-">\u2212</button>'+
+            '<button type="button" class="qty-minus" aria-label="-"'+disabledAttr+'>\u2212</button>'+
             '<span class="qty">'+qty+'</span>'+
-            '<button type="button" class="qty-plus" aria-label="+">+</button>'+
+            '<button type="button" class="qty-plus" aria-label="+"'+disabledAttr+'>+</button>'+
           '</div>'+
-          '<button type="button" class="dish-add">'+t("add_to_cart")+'</button>'+
+          '<button type="button" class="dish-add"'+disabledAttr+'>'+addLabel+'</button>'+
         '</div>'+
       '</div>';
     var qtyEl = card.querySelector(".qty");
@@ -977,6 +1138,10 @@ function renderCart(){
       list.appendChild(row);
     });
   }
+  var closedNotice = document.getElementById("cartClosedNotice");
+  var openNow = isOpenNow();
+  closedNotice.hidden = openNow;
+  cartActionBtn.hidden = !openNow;
   cartActionBtn.disabled = count===0 || !meetsMinOrder();
   if(count===0) hideCheckoutForm();
 }
@@ -1172,6 +1337,7 @@ function renderTicketPayPanel(orderNum, total){
 
 /* ---------- submit order -> notify + ticket ---------- */
 function submitOrder(){
+  if(!isOpenNow()){ renderCart(); return; } // safety net — never process an order while closed
   if(!validateForm()) return;
   var name = document.getElementById("custName").value.trim();
   var phone = document.getElementById("custPhone").value.trim();
@@ -1305,6 +1471,13 @@ for(var q=0;q<langBtns2.length;q++){
 /* ---------- init ---------- */
 state.lang = detectLang();
 applyLang();
+initClockTicks();
+updateVintageClock();
+updateOpenStatus();
+setInterval(function(){
+  updateVintageClock();
+  updateOpenStatus();
+}, 1000);
 })();
 </script>
 </body>
