@@ -190,7 +190,7 @@ a{color:inherit;}
 .drawer-close{background:none;border:none;color:var(--ink-dim);padding:6px;}
 .drawer-close svg{width:20px;height:20px;}
 .drawer-body{flex:1;overflow-y:auto;padding:16px 20px;}
-.drawer-foot{padding:16px 20px 20px;border-top:1px solid var(--line);background:var(--surface);flex:none;}
+.drawer-foot{padding:12px 20px 16px;border-top:1px solid var(--line);background:var(--surface);flex:none;}
 .cart-empty-msg{color:var(--ink-faint);text-align:center;padding:40px 10px;font-size:14px;}
 .cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
 .cart-item-icon{width:28px;height:28px;flex:none;color:var(--brass-bright);}
@@ -200,25 +200,30 @@ a{color:inherit;}
 .cart-item-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
 .cart-item-remove{background:none;border:none;color:var(--ink-faint);font-size:11.5px;text-decoration:underline;padding:2px;}
 .cart-item-remove:hover{color:var(--ember-bright);}
-.cart-subtotal-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
-.cart-subtotal-row .lbl{font-family:var(--display);font-size:13px;letter-spacing:.06em;color:var(--ink-dim);text-transform:uppercase;}
-.cart-subtotal-row .val{font-family:var(--display);font-size:22px;color:var(--brass-bright);}
+.foot-total-row{display:flex;align-items:baseline;justify-content:space-between;}
+.foot-total-row .lbl{font-family:var(--display);font-size:12px;letter-spacing:.06em;color:var(--ink-dim);text-transform:uppercase;}
+.foot-total-row .val{font-family:var(--display);font-size:21px;color:var(--brass-bright);}
+.foot-fee-note{font-size:11.5px;color:var(--ink-faint);text-align:right;margin-top:1px;}
+.foot-fee-note.free{color:var(--pine-light);}
 .checkout-form{display:none;flex-direction:column;gap:14px;margin-top:18px;padding-top:18px;border-top:1px dashed var(--line);}
 .checkout-form.open{display:flex;}
 .ordertype{display:flex;gap:8px;}
 .ordertype button{flex:1;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:12px;font-family:var(--display);font-size:12.5px;letter-spacing:.05em;color:var(--ink-dim);text-transform:uppercase;}
 .ordertype button.active{background:var(--pine);border-color:var(--pine-light);color:var(--ink);}
 .delivery-note{font-size:12px;color:var(--ink-faint);margin:-4px 0 0;line-height:1.5;}
-.delivery-incentive{background:rgba(58,116,88,.16);border:1px solid rgba(58,116,88,.4);color:var(--pine-light);font-family:var(--display);font-size:12.5px;letter-spacing:.03em;padding:9px 12px;border-radius:10px;text-align:center;margin-bottom:12px;}
-#deliveryFeeRow[hidden]{display:none;}
+.delivery-incentive{background:rgba(58,116,88,.16);border:1px solid rgba(58,116,88,.4);color:var(--pine-light);font-family:var(--display);font-size:12.5px;letter-spacing:.03em;padding:9px 12px;border-radius:10px;text-align:center;margin:14px 0 0;}
 .delivery-incentive.achieved{background:rgba(201,162,39,.14);border-color:rgba(201,162,39,.4);color:var(--brass-bright);}
-.min-order-warning{color:var(--ember-bright);font-size:12px;text-align:center;margin:-6px 0 0;}
-.cart-closed-notice{background:rgba(180,35,42,.14);border:1px solid rgba(180,35,42,.4);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;text-align:center;}
-.cart-closed-notice strong{font-family:var(--display);font-size:12.5px;letter-spacing:.05em;color:var(--ember-bright);text-transform:uppercase;}
-.cart-closed-notice span{font-size:12.5px;color:var(--ink-dim);line-height:1.4;}
+.min-order-warning{color:var(--ember-bright);font-size:11.5px;text-align:center;margin:8px 0 0;}
+.cart-closed-notice{background:rgba(180,35,42,.14);border:1px solid rgba(180,35,42,.4);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;gap:2px;text-align:center;margin-top:8px;}
+#cartClosedNotice[hidden]{display:none;}
+.cart-closed-notice strong{font-family:var(--display);font-size:11px;letter-spacing:.05em;color:var(--ember-bright);text-transform:uppercase;}
+.cart-closed-notice span{font-size:11.5px;color:var(--ink-dim);line-height:1.3;}
+#cartActionBtn{margin-top:10px;}
 #cartActionBtn[hidden]{display:none;}
-.phone-order-box{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);text-align:center;}
-.phone-order-desc{font-size:12px;color:var(--ink-faint);margin:0 0 10px;line-height:1.5;}
+.foot-links{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+.link-btn{background:none;border:none;color:var(--ink-faint);text-decoration:underline;font-size:11.5px;padding:4px;cursor:pointer;font-family:var(--body);}
+.link-btn:hover{color:var(--ink);}
+.foot-sep{color:var(--ink-faint);font-size:11px;}
 .field{display:flex;flex-direction:column;gap:6px;}
 .field label{font-family:var(--display);font-size:11.5px;letter-spacing:.07em;color:var(--ink-faint);text-transform:uppercase;}
 .field input, .field textarea{background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;padding:11px 13px;color:var(--ink);font-family:var(--body);font-size:16px;width:100%;}
@@ -407,6 +412,7 @@ a{color:inherit;}
   </div>
   <div class="drawer-body">
     <div id="cartItemsList"></div>
+    <div class="delivery-incentive" id="deliveryIncentive" hidden></div>
     <form class="checkout-form" id="checkoutForm">
       <div class="ordertype" id="orderType">
         <button type="button" data-type="delivery" class="active" data-i18n="order_delivery">Leverans</button>
@@ -458,25 +464,21 @@ a{color:inherit;}
     </form>
   </div>
   <div class="drawer-foot">
-    <div class="delivery-incentive" id="deliveryIncentive" hidden></div>
-    <div class="cart-subtotal-row" id="deliveryFeeRow" hidden>
-      <span class="lbl" data-i18n="delivery_fee_label">Leveransavgift</span>
-      <span class="val" id="deliveryFeeVal">49 kr</span>
-    </div>
-    <div class="cart-subtotal-row">
+    <div class="foot-total-row">
       <span class="lbl" data-i18n="cart_subtotal">Delsumma</span>
       <span class="val" id="drawerSubtotal">0 kr</span>
     </div>
+    <div class="foot-fee-note" id="feeNote" hidden></div>
     <p class="min-order-warning" id="minOrderWarning" hidden data-i18n="delivery_min_alert">Minsta beställning för leverans är 150 kr.</p>
     <div class="cart-closed-notice" id="cartClosedNotice" hidden>
       <strong data-i18n="closed_banner_title">Vi är stängda just nu</strong>
       <span data-i18n="cart_closed_notice">Vi tar tyvärr inte emot beställningar just nu. Vi öppnar igen kl 11:00 varje dag.</span>
     </div>
     <button class="btn btn-brass btn-block" id="cartActionBtn">Gå till beställning</button>
-    <button class="btn btn-ghost btn-block" id="cartClearBtn" data-i18n="cart_clear" style="margin-top:2px;">Töm korgen</button>
-    <div class="phone-order-box">
-      <p class="phone-order-desc" data-i18n="phone_order_desc">Svårt att beställa online? Vi kan skicka en faktura till ditt telefonnummer.</p>
-      <a href="#" class="btn btn-outline btn-block btn-sm" id="phoneOrderBtn" data-i18n="phone_order_btn">Begär faktura via SMS</a>
+    <div class="foot-links">
+      <button type="button" class="link-btn" id="cartClearBtn" data-i18n="cart_clear">Töm korgen</button>
+      <span class="foot-sep">·</span>
+      <a href="#" class="link-btn" id="phoneOrderBtn" data-i18n="phone_order_compact">Beställ via telefon istället</a>
     </div>
   </div>
 </aside>
@@ -591,8 +593,7 @@ var STR = {
     delivery_fee_label:"Leveransavgift", free_delivery_label:"Gratis leverans",
     delivery_min_alert:"Minsta beställning för leverans är 150 kr (inkl. leveransavgift).",
     delivery_incentive:"Lägg till {x} kr till för gratis leverans!",
-    phone_order_title:"Beställ via telefon", phone_order_desc:"Svårt att beställa online? Vi kan skicka en faktura till ditt telefonnummer.",
-    phone_order_btn:"Begär faktura via SMS",
+    phone_order_compact:"Beställ via telefon istället",
     submit_order:"Skicka beställningen", required_note:"Namn och telefon behövs så vi kan bekräfta.",
     confirmation_headline:"Din biljett", confirmation_note:"Så här slutför du betalningen, eller ring oss om något är oklart.",
     call_us:"Ring restaurangen", new_order:"Ny beställning",
@@ -640,8 +641,7 @@ var STR = {
     delivery_fee_label:"Delivery fee", free_delivery_label:"Free delivery",
     delivery_min_alert:"Minimum order for delivery is 150 kr (incl. delivery fee).",
     delivery_incentive:"Add {x} more kr for free delivery!",
-    phone_order_title:"Order by phone", phone_order_desc:"Having trouble ordering online? We can send you an invoice by SMS.",
-    phone_order_btn:"Request invoice by SMS",
+    phone_order_compact:"Order by phone instead",
     submit_order:"Send the order", required_note:"Name and phone are needed so we can confirm.",
     confirmation_headline:"Your ticket", confirmation_note:"Here's how to finish paying, or call us if anything's unclear.",
     call_us:"Call the restaurant", new_order:"New order",
@@ -689,8 +689,7 @@ var STR = {
     delivery_fee_label:"رسم التوصيل", free_delivery_label:"توصيل مجاني",
     delivery_min_alert:"أقل طلب للتوصيل هو 150 كرونة (شامل رسم التوصيل).",
     delivery_incentive:"أضف {x} كرونة إضافية لتوصيل مجاني!",
-    phone_order_title:"اطلب عبر الهاتف", phone_order_desc:"هل تجد صعوبة في الطلب عبر الإنترنت؟ يمكننا إرسال فاتورة إلى رقم هاتفك.",
-    phone_order_btn:"اطلب فاتورة عبر SMS",
+    phone_order_compact:"اطلب عبر الهاتف بدلاً من ذلك",
     submit_order:"أرسل الطلب", required_note:"الاسم والهاتف مطلوبان لتأكيد الطلب.",
     confirmation_headline:"تذكرتك", confirmation_note:"هكذا تُكمل الدفع، أو اتصل بنا إذا كان هناك أي غموض.",
     call_us:"اتصل بالمطعم", new_order:"طلب جديد",
@@ -1078,12 +1077,18 @@ function renderCart(){
   countEl.classList.toggle("zero", count===0);
   document.getElementById("drawerSubtotal").textContent = fmt(total);
 
-  var feeRow = document.getElementById("deliveryFeeRow");
+  var feeNote = document.getElementById("feeNote");
   if(state.orderType==="delivery" && sub>0){
-    feeRow.hidden = false;
-    document.getElementById("deliveryFeeVal").textContent = fee===0 ? t("free_delivery_label") : fmt(fee);
+    feeNote.hidden = false;
+    if(fee===0){
+      feeNote.textContent = "\u2713 " + t("free_delivery_label");
+      feeNote.classList.add("free");
+    } else {
+      feeNote.textContent = "+"+fmt(fee)+" "+t("delivery_fee_label").toLowerCase();
+      feeNote.classList.remove("free");
+    }
   } else {
-    feeRow.hidden = true;
+    feeNote.hidden = true;
   }
 
   var incentiveEl = document.getElementById("deliveryIncentive");
@@ -1272,16 +1277,42 @@ function validateForm(){
   var phone = document.getElementById("custPhone").value.trim();
   var address = document.getElementById("custAddress").value.trim();
   var postcode = custPostcodeInput.value.trim();
-  setFieldError("fieldName", name.length===0); if(name.length===0) ok=false;
-  setFieldError("fieldPhone", phone.length<4); if(phone.length<4) ok=false;
+  var addressInvalid = false, postcodeInvalid = false;
   if(state.orderType==="delivery"){
-    setFieldError("fieldAddress", address.length===0); if(address.length===0) ok=false;
-    setFieldError("fieldPostcode", postcode.length===0); if(postcode.length===0) ok=false;
-    if(postcode.length>0 && !checkPostcodeRange()) ok=false;
+    addressInvalid = address.length===0;
+    postcodeInvalid = postcode.length===0 || (postcode.length>0 && !checkPostcodeRange());
+    setFieldError("fieldAddress", addressInvalid); if(addressInvalid) ok=false;
+    setFieldError("fieldPostcode", postcodeInvalid); if(postcodeInvalid) ok=false;
   } else {
     setFieldError("fieldAddress", false);
     setFieldError("fieldPostcode", false);
     fieldPostcodeEl.classList.remove("outofrange");
+  }
+  var nameInvalid = name.length===0;
+  var phoneInvalid = phone.length<4;
+  setFieldError("fieldName", nameInvalid); if(nameInvalid) ok=false;
+  setFieldError("fieldPhone", phoneInvalid); if(phoneInvalid) ok=false;
+
+  if(!ok){
+    // scroll to whichever invalid field appears first in the form, not just first-checked
+    var order = [
+      ["fieldAddress", addressInvalid], ["fieldPostcode", postcodeInvalid],
+      ["fieldName", nameInvalid], ["fieldPhone", phoneInvalid]
+    ];
+    for(var i=0;i<order.length;i++){
+      if(order[i][1]){
+        var el = document.getElementById(order[i][0]);
+        if(el){
+          checkoutForm.classList.add("open");
+          cartActionBtn.dataset.mode = "submit";
+          cartActionBtn.textContent = t("submit_order");
+          el.scrollIntoView({behavior:"smooth", block:"center"});
+          var input = el.querySelector("input, textarea");
+          if(input) setTimeout(function(inp){ return function(){ inp.focus({preventScroll:true}); }; }(input), 300);
+        }
+        break;
+      }
+    }
   }
   return ok;
 }
@@ -1478,6 +1509,9 @@ setInterval(function(){
   updateVintageClock();
   updateOpenStatus();
 }, 1000);
+document.addEventListener("visibilitychange", function(){
+  if(!document.hidden){ updateVintageClock(); updateOpenStatus(); }
+});
 })();
 </script>
 </body>
