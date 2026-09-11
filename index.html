@@ -170,6 +170,10 @@ a{color:inherit;}
 .dish-body{padding:15px 18px 18px;display:flex;flex-direction:column;gap:9px;flex:1;}
 .dish-name{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.2;}
 .dish-desc{color:var(--ink-dim);font-size:13.8px;line-height:1.5;flex:1;}
+.dish-options{display:flex;flex-wrap:wrap;gap:6px;}
+.dish-opt{background:var(--surface-2);border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;font-family:var(--display);font-size:11px;letter-spacing:.03em;color:var(--ink-dim);text-transform:uppercase;transition:all .15s ease;}
+.dish-opt.active{background:var(--brass);border-color:var(--brass);color:#1a1508;}
+.dish-opt:hover:not(.active){border-color:var(--brass);color:var(--ink);}
 .dish-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px;}
 .stepper{display:flex;align-items:center;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;}
 .stepper button{background:var(--surface-2);color:var(--ink);border:none;width:30px;height:30px;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;}
@@ -516,9 +520,9 @@ a{color:inherit;}
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="100" cy="100" r="93" fill="#14110D" stroke="#C9A227" stroke-width="14"/><text x="100" y="134" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="700" font-size="108" fill="#F4ECD8">92</text></svg>
         <span class="name">Platform 92 Kitchen</span>
       </div>
-      <p>Stationsgatan 6A<br>Vaggeryd</p>
+      <p>Stationsvägen 6A<br>Vaggeryd</p>
       <div class="social-row">
-        <a class="social-link" href="https://instagram.com/platform.92" target="_blank" rel="noopener">
+        <a class="social-link" href="https://instagram.com/platform92" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"/></svg>
           Instagram
         </a>
@@ -731,32 +735,58 @@ var CATEGORIES = [
   { id:"drinks",  icon:"drink",   name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } }
 ];
 
+/* ---------------------------------------------------------------
+   OPTION SETS — every place the menu text said "X eller Y" is now
+   a real selectable choice, tracked per order, not just wording.
+   --------------------------------------------------------------- */
+var OPT_STARCH = { key:"starch", choices:[
+  {id:"rice",  label:{sv:"Ris",en:"Rice",ar:"أرز"}},
+  {id:"fries", label:{sv:"Pommes",en:"Fries",ar:"بطاطس"}}
+]};
+var OPT_CHEESE = { key:"cheese", choices:[
+  {id:"with",    label:{sv:"Med ost",en:"With cheese",ar:"مع جبن"}},
+  {id:"without", label:{sv:"Utan ost",en:"No cheese",ar:"بدون جبن"}}
+]};
+var OPT_EXTRA = { key:"extra", choices:[
+  {id:"cheese", label:{sv:"Ost",en:"Cheese",ar:"جبن"}},
+  {id:"dips",   label:{sv:"Dips",en:"Dips",ar:"صلصات"}}
+]};
+var OPT_WRAPFILL = { key:"fill", choices:[
+  {id:"fries",   label:{sv:"Pommes",en:"Fries",ar:"بطاطس"}},
+  {id:"falafel", label:{sv:"Falafel",en:"Falafel",ar:"فلافل"}}
+]};
+var OPT_DRINK = { key:"drink", choices:[
+  {id:"soda",   label:{sv:"Läsk",en:"Soda",ar:"مشروب غازي"}},
+  {id:"coffee", label:{sv:"Kaffe",en:"Coffee",ar:"قهوة"}},
+  {id:"tea",    label:{sv:"Te",en:"Tea",ar:"شاي"}}
+]};
+
 var MENU = [
-  { id:"p1", cat:"plates", price:99, image:"Chicken Plate", name:{sv:"Kyckling med ris eller pommes",en:"Chicken with rice or fries",ar:"دجاج مع أرز أو بطاطس"},
+  { id:"p1", cat:"plates", price:99, image:"Chicken Plate", options:OPT_STARCH, name:{sv:"Kyckling med ris eller pommes",en:"Chicken with rice or fries",ar:"دجاج مع أرز أو بطاطس"},
     desc:{sv:"Grillad kyckling serverad med basmatiris eller pommes samt valfri sallad.",en:"Grilled chicken served with basmati rice or fries, plus a salad of your choice.",ar:"دجاج مشوي يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
-  { id:"p2", cat:"plates", price:99, image:"Beef Plate", name:{sv:"Nötkött med ris eller pommes",en:"Beef with rice or fries",ar:"لحم بقري مع أرز أو بطاطس"},
+  { id:"p2", cat:"plates", price:99, image:"Beef Plate", options:OPT_STARCH, name:{sv:"Nötkött med ris eller pommes",en:"Beef with rice or fries",ar:"لحم بقري مع أرز أو بطاطس"},
     desc:{sv:"Kryddat nötkött serverat med basmatiris eller pommes samt valfri sallad.",en:"Spiced beef served with basmati rice or fries, plus a salad of your choice.",ar:"لحم بقري متبّل يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
-  { id:"p3", cat:"plates", price:109, image:"Beef & Chicken Combo Plate", name:{sv:"Nötkött och kyckling (Combo)",en:"Beef and chicken (Combo)",ar:"لحم بقري ودجاج (كومبو)"},
+  { id:"p3", cat:"plates", price:109, image:"Beef & Chicken Combo Plate", options:OPT_STARCH, name:{sv:"Nötkött och kyckling (Combo)",en:"Beef and chicken (Combo)",ar:"لحم بقري ودجاج (كومبو)"},
     desc:{sv:"Grillad kyckling och kryddat nötkött med basmatiris eller pommes samt valfri sallad.",en:"Grilled chicken and spiced beef with basmati rice or fries, plus a salad of your choice.",ar:"دجاج مشوي ولحم بقري متبّل مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
-  { id:"p4", cat:"plates", price:119, image:"Fish Plate", name:{sv:"Fisk med ris eller pommes",en:"Fish with rice or fries",ar:"سمك مع أرز أو بطاطس"},
+  { id:"p4", cat:"plates", price:119, image:"Fish Plate", options:OPT_STARCH, name:{sv:"Fisk med ris eller pommes",en:"Fish with rice or fries",ar:"سمك مع أرز أو بطاطس"},
     desc:{sv:"Panerad fiskfilé serverad med basmatiris eller pommes samt valfri sallad.",en:"Breaded fish fillet served with basmati rice or fries, plus a salad of your choice.",ar:"فيليه سمك مقرمش يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
-  { id:"p5", cat:"plates", price:79, image:"Falafel Plate", name:{sv:"Falafel med ris eller pommes",en:"Falafel with rice or fries",ar:"فلافل مع أرز أو بطاطس"},
+  { id:"p5", cat:"plates", price:79, image:"Falafel Plate", options:OPT_STARCH, name:{sv:"Falafel med ris eller pommes",en:"Falafel with rice or fries",ar:"فلافل مع أرز أو بطاطس"},
     desc:{sv:"Krispiga falaflar serverade med basmatiris eller pommes samt valfri sallad.",en:"Crispy falafel served with basmati rice or fries, plus a salad of your choice.",ar:"فلافل مقرمشة تُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
 
-  { id:"b1", cat:"burgers", price:119, image:"Cheeseburger", name:{sv:"Cheeseburgare",en:"Cheeseburger",ar:"تشيز برجر"},
+  { id:"b1", cat:"burgers", price:119, image:"Cheeseburger", options:OPT_CHEESE, name:{sv:"Cheeseburgare",en:"Cheeseburger",ar:"تشيز برجر"},
     desc:{sv:"Nötköttsburgare grillad till perfektion, toppad med en smält skiva amerikansk ost. Eller utan ost.",en:"Beef patty grilled to perfection, topped with a melted slice of American cheese. Or without cheese.",ar:"قرص لحم بقري مشوي بإتقان مع شريحة جبن أمريكي ذائب، أو بدون جبن."}},
-  { id:"b2", cat:"burgers", price:99, image:"Crispy Chicken Cheeseburger", name:{sv:"Krispig kyckling-cheeseburgare",en:"Crispy chicken cheeseburger",ar:"برجر دجاج مقرمش بالجبن"},
+  { id:"b2", cat:"burgers", price:99, image:"Crispy Chicken Cheeseburger", options:OPT_CHEESE, name:{sv:"Krispig kyckling-cheeseburgare",en:"Crispy chicken cheeseburger",ar:"برجر دجاج مقرمش بالجبن"},
     desc:{sv:"Kycklingfilé av helt vitt kött, krispigt friterad till gyllene perfektion. Med smält ost eller utan.",en:"All-white-meat chicken fillet, fried crispy to golden perfection. With melted cheese or without.",ar:"فيليه دجاج أبيض بالكامل، مقلي حتى يصبح مقرمشًا وذهبيًا. مع جبن ذائب أو بدونه."}},
   { id:"b3", cat:"burgers", price:69, image:"Mixed Salad", name:{sv:"Mixed Sallad",en:"Mixed Salad",ar:"سلطة مشكلة"},
     desc:{sv:"Fräsch sallad med isbergssallad, gurka, tomat, kikärtor och röda kidneybönor. Serveras med valfri dressing.",en:"Crisp salad with iceberg lettuce, cucumber, tomato, chickpeas and red kidney beans. Served with a dressing of your choice.",ar:"سلطة طازجة بالخس الأيسبرغ، الخيار، الطماطم، الحمص وحبوب الفاصولياء الحمراء، مع صلصة حسب اختيارك."}},
-  { id:"b4", cat:"burgers", price:19, name:{sv:"Extras",en:"Extras",ar:"إضافات"},
+  { id:"b4", cat:"burgers", price:19, options:OPT_EXTRA, name:{sv:"Extras",en:"Extras",ar:"إضافات"},
     desc:{sv:"Extra ost eller dips.",en:"Extra cheese or dips.",ar:"جبن إضافي أو صلصات."}},
 
   { id:"w1", cat:"wraps", price:109, image:"Beef Wrap", name:{sv:"Nötkött rulle",en:"Beef wrap",ar:"لفائف لحم بقري"},
     desc:{sv:"Kryddat nötkött i varmt pitabröd med sallad och valfri sås.",en:"Spiced beef in warm pita bread with salad and a sauce of your choice.",ar:"لحم بقري متبّل في خبز البيتا الدافئ مع سلطة وصلصة حسب اختيارك."}},
   { id:"w2", cat:"wraps", price:99, image:"Chicken wrap", name:{sv:"Kyckling rulle",en:"Chicken wrap",ar:"لفائف دجاج"},
     desc:{sv:"Grillad kyckling i varmt pitabröd med sallad och valfri sås.",en:"Grilled chicken in warm pita bread with salad and a sauce of your choice.",ar:"دجاج مشوي في خبز البيتا الدافئ مع سلطة وصلصة حسب اختيارك."}},
-  { id:"w3", cat:"wraps", price:79, image:"Fries or Falafel Wrap", name:{sv:"Pommes eller falafel rulle",en:"Fries or falafel wrap",ar:"لفائف بطاطس أو فلافل"},
+  { id:"w3", cat:"wraps", price:79, image:"Fries or Falafel Wrap", options:OPT_WRAPFILL, name:{sv:"Pommes eller falafel rulle",en:"Fries or falafel wrap",ar:"لفائف بطاطس أو فلافل"},
     desc:{sv:"Krispiga pommes eller falafel med färska grönsaker och valfri sås.",en:"Crispy fries or falafel with fresh vegetables and a sauce of your choice.",ar:"بطاطس مقرمشة أو فلافل مع خضروات طازجة وصلصة حسب اختيارك."}},
 
   { id:"f1", cat:"fries", price:79, image:"Loaded Fries", name:{sv:"Loaded Pommes",en:"Loaded fries",ar:"بطاطس محمّلة"},
@@ -769,7 +799,7 @@ var MENU = [
   { id:"c2", cat:"chicken", price:49, image:"wings", name:{sv:"Kycklingvingar",en:"Chicken wings",ar:"أجنحة دجاج"},
     desc:{sv:"Saftiga och krispiga kycklingvingar med valfri dippsås.",en:"Juicy, crispy chicken wings with a dipping sauce of your choice.",ar:"أجنحة دجاج طرية ومقرمشة مع صلصة غمس حسب اختيارك."}},
 
-  { id:"d1", cat:"drinks", price:29, image:"coca cola", name:{sv:"Läsk / Kaffe / Te",en:"Soda / Coffee / Tea",ar:"مشروب غازي / قهوة / شاي"},
+  { id:"d1", cat:"drinks", price:29, image:"coca cola", options:OPT_DRINK, name:{sv:"Läsk / Kaffe / Te",en:"Soda / Coffee / Tea",ar:"مشروب غازي / قهوة / شاي"},
     desc:{sv:"Välj mellan iskall läsk, varmt kaffe eller te.",en:"Choose between ice-cold soda, hot coffee or tea.",ar:"اختر بين مشروب غازي بارد، قهوة ساخنة أو شاي."}}
 ];
 
@@ -910,12 +940,27 @@ function t(key){
 function fmt(n){ return n+" kr"; }
 function findItem(id){ return MENU.filter(function(m){return m.id===id;})[0]; }
 function findCat(id){ return CATEGORIES.filter(function(c){return c.id===id;})[0]; }
+
+/* ---------- cart keys: "itemId" for plain items, "itemId__choiceId" when the dish has a real selectable option ---------- */
+function makeCartKey(itemId, choiceId){
+  return choiceId ? (itemId+"__"+choiceId) : itemId;
+}
+function parseCartKey(key){
+  var idx = key.indexOf("__");
+  if(idx===-1) return { itemId:key, choiceId:null };
+  return { itemId:key.slice(0,idx), choiceId:key.slice(idx+2) };
+}
+function getChoiceLabel(item, choiceId){
+  if(!item || !item.options || !choiceId) return null;
+  var match = item.options.choices.filter(function(c){ return c.id===choiceId; })[0];
+  return match ? match.label[state.lang] : null;
+}
 function cartCount(){
-  return Object.keys(state.cart).reduce(function(sum,id){return sum+state.cart[id];},0);
+  return Object.keys(state.cart).reduce(function(sum,key){return sum+state.cart[key];},0);
 }
 function cartTotal(){
-  return Object.keys(state.cart).reduce(function(sum,id){
-    var item=findItem(id); return sum + (item?item.price*state.cart[id]:0);
+  return Object.keys(state.cart).reduce(function(sum,key){
+    var item=findItem(parseCartKey(key).itemId); return sum + (item?item.price*state.cart[key]:0);
   },0);
 }
 function deliveryFee(){
@@ -998,10 +1043,15 @@ function renderMenu(){
   var open = isOpenNow();
   var items = MENU.filter(function(m){return m.cat===state.activeCat;});
   items.forEach(function(item){
-    var qty = state.cart[item.id]||0;
+    var hasOptions = !!item.options;
     var cat = findCat(item.cat);
     var card = document.createElement("div");
     card.className = "dish";
+    if(hasOptions) card.dataset.selectedChoice = item.options.choices[0].id;
+    function currentKey(){
+      return hasOptions ? makeCartKey(item.id, card.dataset.selectedChoice) : item.id;
+    }
+    var qty = state.cart[currentKey()]||0;
     var iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[cat.icon]+'</svg>';
     var mediaHtml;
     if(item.image){
@@ -1015,6 +1065,14 @@ function renderMenu(){
     }
     var addLabel = open ? t("add_to_cart") : t("closed_add_label");
     var disabledAttr = open ? "" : " disabled";
+    var optionsHtml = "";
+    if(hasOptions){
+      optionsHtml = '<div class="dish-options" role="group">' +
+        item.options.choices.map(function(c, idx){
+          return '<button type="button" class="dish-opt'+(idx===0?" active":"")+'" data-choice="'+c.id+'">'+c.label[state.lang]+'</button>';
+        }).join("") +
+        '</div>';
+    }
     card.innerHTML =
       '<div class="dish-media">'+
         mediaHtml+
@@ -1023,6 +1081,7 @@ function renderMenu(){
       '<div class="dish-body">'+
         '<h3 class="dish-name">'+item.name[state.lang]+'</h3>'+
         '<p class="dish-desc">'+item.desc[state.lang]+'</p>'+
+        optionsHtml+
         '<div class="dish-foot">'+
           '<div class="stepper">'+
             '<button type="button" class="qty-minus" aria-label="-"'+disabledAttr+'>\u2212</button>'+
@@ -1034,27 +1093,43 @@ function renderMenu(){
       '</div>';
     var qtyEl = card.querySelector(".qty");
     var addBtn = card.querySelector(".dish-add");
+    function refreshQtyDisplay(){
+      qtyEl.textContent = state.cart[currentKey()]||0;
+    }
+    if(hasOptions){
+      var optButtons = card.querySelectorAll(".dish-opt");
+      optButtons.forEach(function(btn){
+        btn.addEventListener("click", function(){
+          for(var i=0;i<optButtons.length;i++) optButtons[i].classList.remove("active");
+          btn.classList.add("active");
+          card.dataset.selectedChoice = btn.getAttribute("data-choice");
+          refreshQtyDisplay();
+        });
+      });
+    }
     card.querySelector(".qty-minus").addEventListener("click", function(){
-      if(!state.cart[item.id]) return;
-      state.cart[item.id]--;
-      if(state.cart[item.id]<=0) delete state.cart[item.id];
-      qtyEl.textContent = state.cart[item.id]||0;
+      var key = currentKey();
+      if(!state.cart[key]) return;
+      state.cart[key]--;
+      if(state.cart[key]<=0) delete state.cart[key];
+      refreshQtyDisplay();
       renderCart();
     });
     card.querySelector(".qty-plus").addEventListener("click", function(){
-      state.cart[item.id] = (state.cart[item.id]||0)+1;
-      qtyEl.textContent = state.cart[item.id];
+      var key = currentKey();
+      state.cart[key] = (state.cart[key]||0)+1;
+      refreshQtyDisplay();
       renderCart();
     });
     addBtn.addEventListener("click", function(){
-      state.cart[item.id] = (state.cart[item.id]||0)+1;
-      qtyEl.textContent = state.cart[item.id];
+      var key = currentKey();
+      state.cart[key] = (state.cart[key]||0)+1;
+      refreshQtyDisplay();
       renderCart();
       pulseCart();
-      var label = addBtn.textContent;
       addBtn.classList.add("added");
       addBtn.textContent = "\u2713";
-      setTimeout(function(){ addBtn.classList.remove("added"); addBtn.textContent = t("add_to_cart"); }, 650);
+      setTimeout(function(){ addBtn.classList.remove("added"); addBtn.textContent = isOpenNow()?t("add_to_cart"):t("closed_add_label"); }, 650);
     });
     menuGridEl.appendChild(card);
   });
@@ -1111,20 +1186,23 @@ function renderCart(){
 
   var list = document.getElementById("cartItemsList");
   list.innerHTML = "";
-  var ids = Object.keys(state.cart);
-  if(ids.length===0){
+  var keys = Object.keys(state.cart);
+  if(keys.length===0){
     list.innerHTML = '<div class="cart-empty-msg">'+t("cart_empty")+'</div>';
   } else {
-    ids.forEach(function(id){
-      var item = findItem(id); if(!item) return;
-      var qty = state.cart[id];
+    keys.forEach(function(key){
+      var parsed = parseCartKey(key);
+      var item = findItem(parsed.itemId); if(!item) return;
+      var qty = state.cart[key];
       var cat = findCat(item.cat);
+      var choiceLabel = getChoiceLabel(item, parsed.choiceId);
+      var displayName = item.name[state.lang] + (choiceLabel ? " ("+choiceLabel+")" : "");
       var row = document.createElement("div");
       row.className = "cart-item";
       row.innerHTML =
         '<svg class="cart-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[cat.icon]+'</svg>'+
         '<div class="cart-item-info">'+
-          '<div class="cart-item-name">'+item.name[state.lang]+'</div>'+
+          '<div class="cart-item-name">'+displayName+'</div>'+
           '<div class="cart-item-price">'+qty+' \u00d7 '+fmt(item.price)+' = '+fmt(item.price*qty)+'</div>'+
         '</div>'+
         '<div class="cart-item-side"><div class="stepper">'+
@@ -1133,11 +1211,11 @@ function renderCart(){
           '<button type="button" class="ci-plus" aria-label="+">+</button>'+
         '</div></div>';
       row.querySelector(".ci-minus").addEventListener("click", function(){
-        state.cart[id]--; if(state.cart[id]<=0) delete state.cart[id];
+        state.cart[key]--; if(state.cart[key]<=0) delete state.cart[key];
         renderCart(); renderMenu();
       });
       row.querySelector(".ci-plus").addEventListener("click", function(){
-        state.cart[id]++;
+        state.cart[key]++;
         renderCart(); renderMenu();
       });
       list.appendChild(row);
@@ -1390,13 +1468,17 @@ function submitOrder(){
   var linesEl = document.getElementById("ticketLines");
   linesEl.innerHTML = "";
   var plainLines = [];
-  ids.forEach(function(id){
-    var item = findItem(id); if(!item) return;
-    var qty = state.cart[id];
+  ids.forEach(function(key){
+    var parsed = parseCartKey(key);
+    var item = findItem(parsed.itemId); if(!item) return;
+    var qty = state.cart[key];
+    var choiceLabel = getChoiceLabel(item, parsed.choiceId);
+    var displayName = item.name[state.lang] + (choiceLabel ? " ("+choiceLabel+")" : "");
+    var plainName = item.name.sv + (getChoiceLabel(item, parsed.choiceId) ? " ("+item.options.choices.filter(function(c){return c.id===parsed.choiceId;})[0].label.sv+")" : "");
     var row = document.createElement("div");
-    row.innerHTML = "<span>"+qty+"\u00d7 "+item.name[state.lang]+"</span><span>"+fmt(item.price*qty)+"</span>";
+    row.innerHTML = "<span>"+qty+"\u00d7 "+displayName+"</span><span>"+fmt(item.price*qty)+"</span>";
     linesEl.appendChild(row);
-    plainLines.push(qty+"x "+item.name.sv+" \u2014 "+fmt(item.price*qty));
+    plainLines.push(qty+"x "+plainName+" \u2014 "+fmt(item.price*qty));
   });
   if(state.orderType==="delivery"){
     var feeRow = document.createElement("div");
@@ -1416,7 +1498,7 @@ function submitOrder(){
     "1_ATT_GORA": staffReminder,
     order_number: orderNum,
     order_type: state.orderType,
-    address: state.orderType==="delivery" ? (address+" ("+postcode+")") : "Avhämtning — Stationsgatan 6A",
+    address: state.orderType==="delivery" ? (address+" ("+postcode+")") : "Avhämtning — Stationsvägen 6A",
     name: name, phone: phone,
     payment_method: payMethod,
     items: plainLines.join(" | "),
