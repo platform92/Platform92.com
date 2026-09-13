@@ -399,7 +399,7 @@ a{color:inherit;}
 <!-- ============ MENU ============ -->
 <section class="wrap menu-section" id="menu">
   <div class="section-head"><span class="section-num">PLATFORM 02</span><h2 data-i18n="menu_headline">Menyn</h2></div>
-  <p class="menu-sub" data-i18n="menu_sub">Sex kategorier. Ingen krångel.</p>
+  <p class="menu-sub" data-i18n="menu_sub">Sju kategorier. Ingen krångel.</p>
   <div class="cattabs" id="catTabs" role="tablist"></div>
   <div class="menu-grid" id="menuGrid"></div>
 </section>
@@ -576,7 +576,7 @@ var STR = {
     about_headline:"Ingen krångel. Bara mat.",
     about_body:"God mat, lagad med omtanke. Tack för att du är här.",
     chip1:"Rakt på sak", chip2:"Alla brytningar välkomna", chip3:"Snabbt", chip4:"Varmt, inte fint",
-    menu_headline:"Menyn", menu_sub:"Sex kategorier. Ingen krångel.",
+    menu_headline:"Menyn", menu_sub:"Sju kategorier. Ingen krångel.",
     add_to_cart:"Lägg till",
     cart_empty:"Din korg är tom.",
     cart_subtotal:"Delsumma", cart_checkout:"Gå till beställning", cart_clear:"Töm korgen",
@@ -624,7 +624,7 @@ var STR = {
     about_headline:"No fuss. Just food.",
     about_body:"Good food, made with care. Thank you for being here.",
     chip1:"Straight talk", chip2:"Every accent welcome", chip3:"Fast", chip4:"Warm, not fancy",
-    menu_headline:"The menu", menu_sub:"Six categories. No fuss.",
+    menu_headline:"The menu", menu_sub:"Seven categories. No fuss.",
     add_to_cart:"Add",
     cart_empty:"Your cart is empty.",
     cart_subtotal:"Subtotal", cart_checkout:"Go to checkout", cart_clear:"Clear cart",
@@ -672,7 +672,7 @@ var STR = {
     about_headline:"بلا تعقيد. طعام فقط.",
     about_body:"طعام لذيذ، مُحضَّر بعناية. شكرًا لوجودك هنا.",
     chip1:"كلام واضح", chip2:"كل اللهجات مُرحَّب بها", chip3:"سريع", chip4:"دافئ، لا فخم",
-    menu_headline:"القائمة", menu_sub:"ست فئات. بلا تعقيد.",
+    menu_headline:"القائمة", menu_sub:"سبع فئات. بلا تعقيد.",
     add_to_cart:"أضف",
     cart_empty:"سلتك فارغة.",
     cart_subtotal:"المجموع الفرعي", cart_checkout:"المتابعة للطلب", cart_clear:"إفراغ السلة",
@@ -723,16 +723,18 @@ var ICONS = {
   wrap:'<path d="M6 5l13 13"/><path d="M9 4.2c6 0 10.8 4.8 10.8 10.8"/><path d="M4.2 9c0 6 4.8 10.8 10.8 10.8"/><circle cx="6" cy="5" r="1.6"/>',
   fries:'<path d="M5 20V9M9 20V6M13 20V7M17 20V9"/><path d="M3.5 20h17"/>',
   chicken:'<path d="M9 4c3 0 5 2.4 5 5.2 0 1.7-.8 2.8-1.8 3.8l3.6 5.4a1.6 1.6 0 0 1-2.3 2.2l-4.9-4.6c-2.4-.2-4.6-2.2-4.6-5C4 6.4 6 4 9 4z"/>',
-  drink:'<path d="M6 8h12l-1.3 11.2a2 2 0 0 1-2 1.8H9.3a2 2 0 0 1-2-1.8L6 8z"/><path d="M5 8h14"/><path d="M9.5 8 9 4h6l-.5 4"/>'
+  drink:'<path d="M6 8h12l-1.3 11.2a2 2 0 0 1-2 1.8H9.3a2 2 0 0 1-2-1.8L6 8z"/><path d="M5 8h14"/><path d="M9.5 8 9 4h6l-.5 4"/>',
+  milkshake:'<path d="M7.6 6h8.8l-1.3 13.6a1.8 1.8 0 0 1-1.8 1.6h-2.6a1.8 1.8 0 0 1-1.8-1.6L7.6 6z"/><path d="M7 6h10"/><path d="M14 6l2.6-3.4"/><path d="M9.3 10.6h5.4"/>'
 };
 
 var CATEGORIES = [
-  { id:"plates",  icon:"plate",   name:{ sv:"Tallrik", en:"Plates", ar:"أطباق" } },
-  { id:"burgers", icon:"burger",  name:{ sv:"Hamburgare", en:"Burgers", ar:"برجر" } },
-  { id:"wraps",   icon:"wrap",    name:{ sv:"Rulle", en:"Wraps", ar:"لفائف" } },
-  { id:"fries",   icon:"fries",   name:{ sv:"Pommes frites", en:"Fries", ar:"بطاطس مقلية" } },
-  { id:"chicken", icon:"chicken", name:{ sv:"Kyckling / Nuggets", en:"Chicken & Nuggets", ar:"دجاج ونجتس" } },
-  { id:"drinks",  icon:"drink",   name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } }
+  { id:"plates",    icon:"plate",     name:{ sv:"Tallrik", en:"Plates", ar:"أطباق" } },
+  { id:"burgers",   icon:"burger",    name:{ sv:"Hamburgare", en:"Burgers", ar:"برجر" } },
+  { id:"wraps",     icon:"wrap",      name:{ sv:"Rulle", en:"Wraps", ar:"لفائف" } },
+  { id:"fries",     icon:"fries",     name:{ sv:"Pommes frites", en:"Fries", ar:"بطاطس مقلية" } },
+  { id:"chicken",   icon:"chicken",   name:{ sv:"Kyckling / Nuggets", en:"Chicken & Nuggets", ar:"دجاج ونجتس" } },
+  { id:"drinks",    icon:"drink",     name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } },
+  { id:"milkshake", icon:"milkshake", name:{ sv:"Milkshake", en:"Milkshakes", ar:"ميلك شيك" } }
 ];
 
 /* ---------------------------------------------------------------
@@ -800,7 +802,20 @@ var MENU = [
     desc:{sv:"Saftiga och krispiga kycklingvingar med valfri dippsås.",en:"Juicy, crispy chicken wings with a dipping sauce of your choice.",ar:"أجنحة دجاج طرية ومقرمشة مع صلصة غمس حسب اختيارك."}},
 
   { id:"d1", cat:"drinks", price:29, image:"coca cola", options:OPT_DRINK, name:{sv:"Läsk / Kaffe / Te",en:"Soda / Coffee / Tea",ar:"مشروب غازي / قهوة / شاي"},
-    desc:{sv:"Välj mellan iskall läsk, varmt kaffe eller te.",en:"Choose between ice-cold soda, hot coffee or tea.",ar:"اختر بين مشروب غازي بارد، قهوة ساخنة أو شاي."}}
+    desc:{sv:"Välj mellan iskall läsk, varmt kaffe eller te.",en:"Choose between ice-cold soda, hot coffee or tea.",ar:"اختر بين مشروب غازي بارد، قهوة ساخنة أو شاي."}},
+
+  { id:"ms1", cat:"milkshake", price:49, image:"Banana Shake", name:{sv:"Bananshaké",en:"Banana Shake",ar:"ميلك شيك الموز"},
+    desc:{sv:"Krämig milkshake gjord på mogen banan.",en:"Creamy milkshake made with ripe banana.",ar:"ميلك شيك كريمي بطعم الموز الناضج."}},
+  { id:"ms2", cat:"milkshake", price:49, image:"Strawberry Shake", name:{sv:"Jordgubbsshaké",en:"Strawberry Shake",ar:"ميلك شيك الفراولة"},
+    desc:{sv:"Krämig milkshake med söta jordgubbar.",en:"Creamy milkshake with sweet strawberries.",ar:"ميلك شيك كريمي بالفراولة الحلوة."}},
+  { id:"ms3", cat:"milkshake", price:49, image:"Mixed Berry Shake", name:{sv:"Blandade Bär-shaké",en:"Mixed Berry Shake",ar:"ميلك شيك التوت المشكل"},
+    desc:{sv:"Krämig milkshake med en mix av bär.",en:"Creamy milkshake with a mix of berries.",ar:"ميلك شيك كريمي بخليط من التوت."}},
+  { id:"ms4", cat:"milkshake", price:49, image:"Banana Date Shake", name:{sv:"Banan- och dadelshaké",en:"Banana & Date Shake",ar:"ميلك شيك الموز والتمر"},
+    desc:{sv:"Krämig milkshake med banan och söta dadlar.",en:"Creamy milkshake with banana and sweet dates.",ar:"ميلك شيك كريمي بالموز والتمر الحلو."}},
+  { id:"ms5", cat:"milkshake", price:49, image:"Mango Shake", name:{sv:"Mangoshaké",en:"Mango Shake",ar:"ميلك شيك المانجو"},
+    desc:{sv:"Krämig milkshake med solmogen mango.",en:"Creamy milkshake with sun-ripened mango.",ar:"ميلك شيك كريمي بالمانجو الناضجة."}},
+  { id:"ms6", cat:"milkshake", price:49, image:"Oreo Shake", name:{sv:"Oreo Shaké",en:"Oreo Shake",ar:"ميلك شيك أوريو"},
+    desc:{sv:"Krämig milkshake med krossade Oreo-kakor.",en:"Creamy milkshake with crushed Oreo cookies.",ar:"ميلك شيك كريمي مع قطع بسكويت أوريو مطحونة."}}
 ];
 
 /* ============================================================
