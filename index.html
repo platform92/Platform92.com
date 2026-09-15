@@ -1070,7 +1070,7 @@ function renderMenu(){
     var iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[cat.icon]+'</svg>';
     var mediaHtml;
     if(item.image){
-      var imgSrc = encodeURIComponent(item.image)+".png";
+      var imgSrc = "Photos/"+encodeURIComponent(item.image)+".png";
       mediaHtml =
         '<img src="'+imgSrc+'" alt="'+item.name[state.lang]+'" loading="lazy" '+
         'onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">'+
