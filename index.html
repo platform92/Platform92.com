@@ -167,6 +167,9 @@ a{color:inherit;}
 .dish-media .dish-icon-fallback svg{width:46px;height:46px;color:var(--brass-bright);opacity:.55;}
 .dish-price-badge{position:absolute;bottom:9px;right:9px;background:rgba(20,17,13,.82);backdrop-filter:blur(4px);color:var(--brass-bright);font-family:var(--display);font-size:14px;letter-spacing:.03em;padding:5px 11px;border-radius:999px;border:1px solid var(--line-strong);}
 [dir="rtl"] .dish-price-badge{right:auto;left:9px;}
+.dish-price-badge .price-old{color:var(--ink-faint);text-decoration:line-through;text-decoration-thickness:1.5px;margin-inline-end:7px;font-size:12px;}
+.dish-discount-tag{position:absolute;top:9px;left:9px;background:var(--ember);color:#fff;font-family:var(--display);font-size:15px;letter-spacing:.05em;padding:4px 11px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.4);}
+[dir="rtl"] .dish-discount-tag{left:auto;right:9px;}
 .dish-body{padding:15px 18px 18px;display:flex;flex-direction:column;gap:9px;flex:1;}
 .dish-name{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.2;}
 .dish-desc{color:var(--ink-dim);font-size:13.8px;line-height:1.5;flex:1;}
@@ -733,8 +736,8 @@ var CATEGORIES = [
   { id:"wraps",     icon:"wrap",      name:{ sv:"Rulle", en:"Wraps", ar:"لفائف" } },
   { id:"fries",     icon:"fries",     name:{ sv:"Pommes frites", en:"Fries", ar:"بطاطس مقلية" } },
   { id:"chicken",   icon:"chicken",   name:{ sv:"Kyckling / Nuggets", en:"Chicken & Nuggets", ar:"دجاج ونجتس" } },
-  { id:"drinks",    icon:"drink",     name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } },
-  { id:"milkshake", icon:"milkshake", name:{ sv:"Milkshake", en:"Milkshakes", ar:"ميلك شيك" } }
+  { id:"milkshake", icon:"milkshake", name:{ sv:"Milkshake", en:"Milkshakes", ar:"ميلك شيك" } },
+  { id:"drinks",    icon:"drink",     name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } }
 ];
 
 /* ---------------------------------------------------------------
@@ -774,6 +777,8 @@ var MENU = [
     desc:{sv:"Panerad fiskfilé serverad med basmatiris eller pommes samt valfri sallad.",en:"Breaded fish fillet served with basmati rice or fries, plus a salad of your choice.",ar:"فيليه سمك مقرمش يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
   { id:"p5", cat:"plates", price:79, image:"Falafel Plate", options:OPT_STARCH, name:{sv:"Falafel med ris eller pommes",en:"Falafel with rice or fries",ar:"فلافل مع أرز أو بطاطس"},
     desc:{sv:"Krispiga falaflar serverade med basmatiris eller pommes samt valfri sallad.",en:"Crispy falafel served with basmati rice or fries, plus a salad of your choice.",ar:"فلافل مقرمشة تُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
+  { id:"p6", cat:"plates", price:119, image:"krispigkyckling", options:OPT_STARCH, name:{sv:"Krispig kyckling",en:"Crispy chicken",ar:"دجاج مقرمش"},
+    desc:{sv:"Krispig kyckling serverad med basmatiris eller pommes samt valfri sallad.",en:"Crispy chicken served with basmati rice or fries, plus a salad of your choice.",ar:"دجاج مقرمش يُقدَّم مع أرز بسمتي أو بطاطس، وسلطة حسب اختيارك."}},
 
   { id:"b1", cat:"burgers", price:119, image:"Cheeseburger", options:OPT_CHEESE, name:{sv:"Cheeseburgare",en:"Cheeseburger",ar:"تشيز برجر"},
     desc:{sv:"Nötköttsburgare grillad till perfektion, toppad med en smält skiva amerikansk ost. Eller utan ost.",en:"Beef patty grilled to perfection, topped with a melted slice of American cheese. Or without cheese.",ar:"قرص لحم بقري مشوي بإتقان مع شريحة جبن أمريكي ذائب، أو بدون جبن."}},
@@ -804,17 +809,17 @@ var MENU = [
   { id:"d1", cat:"drinks", price:29, image:"coca cola", options:OPT_DRINK, name:{sv:"Läsk / Kaffe / Te",en:"Soda / Coffee / Tea",ar:"مشروب غازي / قهوة / شاي"},
     desc:{sv:"Välj mellan iskall läsk, varmt kaffe eller te.",en:"Choose between ice-cold soda, hot coffee or tea.",ar:"اختر بين مشروب غازي بارد، قهوة ساخنة أو شاي."}},
 
-  { id:"ms1", cat:"milkshake", price:49, image:"Banana Shake", name:{sv:"Bananshaké",en:"Banana Shake",ar:"ميلك شيك الموز"},
+  { id:"ms1", cat:"milkshake", price:39, oldPrice:49, image:"Banana Shake", name:{sv:"Bananshaké",en:"Banana Shake",ar:"ميلك شيك الموز"},
     desc:{sv:"Krämig milkshake gjord på mogen banan.",en:"Creamy milkshake made with ripe banana.",ar:"ميلك شيك كريمي بطعم الموز الناضج."}},
-  { id:"ms2", cat:"milkshake", price:49, image:"Strawberry Shake", name:{sv:"Jordgubbsshaké",en:"Strawberry Shake",ar:"ميلك شيك الفراولة"},
+  { id:"ms2", cat:"milkshake", price:39, oldPrice:49, image:"Strawberry Shake", name:{sv:"Jordgubbsshaké",en:"Strawberry Shake",ar:"ميلك شيك الفراولة"},
     desc:{sv:"Krämig milkshake med söta jordgubbar.",en:"Creamy milkshake with sweet strawberries.",ar:"ميلك شيك كريمي بالفراولة الحلوة."}},
-  { id:"ms3", cat:"milkshake", price:49, image:"Mixed Berry Shake", name:{sv:"Blandade Bär-shaké",en:"Mixed Berry Shake",ar:"ميلك شيك التوت المشكل"},
+  { id:"ms3", cat:"milkshake", price:39, oldPrice:49, image:"Mixed Berry Shake", name:{sv:"Blandade Bär-shaké",en:"Mixed Berry Shake",ar:"ميلك شيك التوت المشكل"},
     desc:{sv:"Krämig milkshake med en mix av bär.",en:"Creamy milkshake with a mix of berries.",ar:"ميلك شيك كريمي بخليط من التوت."}},
-  { id:"ms4", cat:"milkshake", price:49, image:"Banana Date Shake", name:{sv:"Banan- och dadelshaké",en:"Banana & Date Shake",ar:"ميلك شيك الموز والتمر"},
+  { id:"ms4", cat:"milkshake", price:39, oldPrice:49, image:"Banana Date Shake", name:{sv:"Banan- och dadelshaké",en:"Banana & Date Shake",ar:"ميلك شيك الموز والتمر"},
     desc:{sv:"Krämig milkshake med banan och söta dadlar.",en:"Creamy milkshake with banana and sweet dates.",ar:"ميلك شيك كريمي بالموز والتمر الحلو."}},
-  { id:"ms5", cat:"milkshake", price:49, image:"Mango Shake", name:{sv:"Mangoshaké",en:"Mango Shake",ar:"ميلك شيك المانجو"},
+  { id:"ms5", cat:"milkshake", price:39, oldPrice:49, image:"Mango Shake", name:{sv:"Mangoshaké",en:"Mango Shake",ar:"ميلك شيك المانجو"},
     desc:{sv:"Krämig milkshake med solmogen mango.",en:"Creamy milkshake with sun-ripened mango.",ar:"ميلك شيك كريمي بالمانجو الناضجة."}},
-  { id:"ms6", cat:"milkshake", price:49, image:"Oreo Shake", name:{sv:"Oreo Shaké",en:"Oreo Shake",ar:"ميلك شيك أوريو"},
+  { id:"ms6", cat:"milkshake", price:39, oldPrice:49, image:"Oreo Shake", name:{sv:"Oreo Shaké",en:"Oreo Shake",ar:"ميلك شيك أوريو"},
     desc:{sv:"Krämig milkshake med krossade Oreo-kakor.",en:"Creamy milkshake with crushed Oreo cookies.",ar:"ميلك شيك كريمي مع قطع بسكويت أوريو مطحونة."}}
 ];
 
@@ -1091,7 +1096,8 @@ function renderMenu(){
     card.innerHTML =
       '<div class="dish-media">'+
         mediaHtml+
-        '<span class="dish-price-badge">'+fmt(item.price)+'</span>'+
+        (item.oldPrice ? '<span class="dish-discount-tag">-20%</span>' : '')+
+        '<span class="dish-price-badge">'+(item.oldPrice ? '<span class="price-old">'+fmt(item.oldPrice)+'</span>' : '')+fmt(item.price)+'</span>'+
       '</div>'+
       '<div class="dish-body">'+
         '<h3 class="dish-name">'+item.name[state.lang]+'</h3>'+
