@@ -859,8 +859,10 @@ function isPostcodeAllowed(raw){
    clock) so a tourist with a different timezone still sees the
    restaurant's real status, not their own local time.
    ============================================================ */
-var OPEN_HOUR = 11;
-var CLOSE_HOUR = 21;
+// var OPEN_HOUR = 11;
+// var CLOSE_HOUR = 21;
+   var OPEN_HOUR = 0;     // normal: 11
+var CLOSE_HOUR = 25;   // normal: 21
 var wasOpenLast = null; // tracks state so we only re-render menu/cart when status actually flips
 
 function getStockholmParts(){
