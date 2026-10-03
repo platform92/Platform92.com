@@ -2,7 +2,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
   try {
-    const { items } = JSON.parse(event.body);
+    const body = JSON.parse(event.body);
+    const { items, customer, orderType, notes } = body;
 
     const line_items = items.map(item => ({
       price_data: {
@@ -18,7 +19,15 @@ exports.handler = async (event) => {
       line_items,
       mode: 'payment',
       success_url: `${event.headers.origin}/tack.html`,
-      cancel_url: `${event.headers.origin}/`
+      cancel_url: `${event.headers.origin}/`,
+      metadata: {
+        customer_name: customer.name,
+        customer_phone: customer.phone,
+        customer_address: customer.address || '',
+        customer_postcode: customer.postcode || '',
+        order_type: orderType,
+        notes: notes || ''
+      }
     });
 
     return {
