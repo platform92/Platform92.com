@@ -1469,88 +1469,46 @@ function renderTicketPayPanel(orderNum, total){
 }
 
 /* ---------- submit order -> notify + ticket ---------- */
-function submitOrder(){
-  if(!isOpenNow()){ renderCart(); return; } // safety net — never process an order while closed
+   async function submitOrder(){
+  if(!isOpenNow()){ renderCart(); return; }
   if(!validateForm()) return;
-  var name = document.getElementById("custName").value.trim();
-  var phone = document.getElementById("custPhone").value.trim();
-  var address = document.getElementById("custAddress").value.trim();
-  var postcode = custPostcodeInput.value.trim();
-  var notes = document.getElementById("custNotes").value.trim();
-  var orderNum = genOrderNumber();
-  var sub = cartTotal();
-  var fee = deliveryFee();
-  var total = sub+fee;
-  var ids = Object.keys(state.cart);
-  var payMethod = state.paymentMethod;
 
-  document.getElementById("ticketOrderNum").textContent = orderNum;
-  var metaParts = [ state.orderType==="delivery" ? t("order_delivery_word") : t("order_pickup_word") ];
-  if(state.orderType==="delivery" && address) metaParts.push(address);
-  document.getElementById("ticketOrderMeta").textContent = metaParts.join(" \u00b7 ");
+  var keys = Object.keys(state.cart);
+  if(keys.length === 0){ alert("Cart empty"); return; }
 
-  var linesEl = document.getElementById("ticketLines");
-  linesEl.innerHTML = "";
-  var plainLines = [];
-  ids.forEach(function(key){
+  var items = keys.map(function(key){
     var parsed = parseCartKey(key);
-    var item = findItem(parsed.itemId); if(!item) return;
-    var qty = state.cart[key];
+    var item = findItem(parsed.itemId);
+    if(!item) return null;
     var choiceLabel = getChoiceLabel(item, parsed.choiceId);
-    var displayName = item.name[state.lang] + (choiceLabel ? " ("+choiceLabel+")" : "");
-    var plainName = item.name.sv + (getChoiceLabel(item, parsed.choiceId) ? " ("+item.options.choices.filter(function(c){return c.id===parsed.choiceId;})[0].label.sv+")" : "");
-    var row = document.createElement("div");
-    row.innerHTML = "<span>"+qty+"\u00d7 "+displayName+"</span><span>"+fmt(item.price*qty)+"</span>";
-    linesEl.appendChild(row);
-    plainLines.push(qty+"x "+plainName+" \u2014 "+fmt(item.price*qty));
-  });
-  if(state.orderType==="delivery"){
-    var feeRow = document.createElement("div");
-    feeRow.innerHTML = "<span>"+t("delivery_fee_label")+"</span><span>"+(fee===0?t("free_delivery_label"):fmt(fee))+"</span>";
-    linesEl.appendChild(feeRow);
-    plainLines.push(t("delivery_fee_label")+": "+(fee===0?t("free_delivery_label"):fmt(fee)));
+    return {
+      name: item.name.sv + (choiceLabel ? " (" + choiceLabel + ")" : ""),
+      price: item.price,
+      quantity: state.cart[key]
+    };
+  }).filter(Boolean);
+
+  try {
+    var response = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items })
+    });
+    var data = await response.json();
+    if(data && data.url){
+      window.location.href = data.url;
+    } else {
+      alert('Payment error: ' + (data && data.error ? data.error : 'unknown'));
+    }
+  } catch(e) {
+    alert('Could not connect to payment system: ' + e.message);
   }
-  document.getElementById("ticketTotalVal").textContent = fmt(total);
-  renderTicketPayPanel(orderNum, total);
-  document.getElementById("ticketCallBtn").setAttribute("href", "tel:"+RESTAURANT_TEL);
-
-  // fire the automatic notification to the restaurant (email via ORDER_NOTIFY_ENDPOINT once configured)
-  var staffReminder = payMethod==="swish"
-    ? "OBS: Kontrollera i Swish-appen att betalningen (" + fmt(total) + ") faktiskt kommit in INNAN ni börjar laga ordern."
-    : "OBS: Kontrollera på banken/Bankgirot att betalningen (" + fmt(total) + ") faktiskt kommit in INNAN ni börjar laga ordern.";
-  notifyRestaurant({
-    "1_ATT_GORA": staffReminder,
-    order_number: orderNum,
-    order_type: state.orderType,
-    address: state.orderType==="delivery" ? (address+" ("+postcode+")") : "Avhämtning — Stationsgatan 6A",
-    name: name, phone: phone,
-    payment_method: payMethod,
-    items: plainLines.join(" | "),
-    subtotal: fmt(sub),
-    delivery_fee: fee===0 ? "Free/0kr" : fmt(fee),
-    total: fmt(total),
-    notes: notes || "-"
-  });
-
-  // order is confirmed at this point — clear the cart and form so it can't be resent by accident
-  state.cart = {};
-  document.getElementById("custName").value = "";
-  document.getElementById("custPhone").value = "";
-  document.getElementById("custAddress").value = "";
-  custPostcodeInput.value = "";
-  fieldPostcodeEl.classList.remove("outofrange");
-  document.getElementById("custNotes").value = "";
-  state.paymentMethod = "swish";
-  hideCheckoutForm();
-  renderCart();
-  renderMenu();
-  renderPayPanel();
-
-  closeCart();
-  openTicket();
 }
 
 /* ---------- ticket modal ---------- */
+
+
+   
 function openTicket(){ ticketOverlay.classList.add("open"); document.body.style.overflow="hidden"; }
 function closeTicket(){ ticketOverlay.classList.remove("open"); document.body.style.overflow=""; }
 document.getElementById("ticketCloseBtn").addEventListener("click", closeTicket);
