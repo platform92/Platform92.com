@@ -1469,7 +1469,7 @@ function renderTicketPayPanel(orderNum, total){
 }
 
 /* ---------- submit order -> notify + ticket ---------- */
-   async function submitOrder(){
+  async function submitOrder(){
   if(!isOpenNow()){ renderCart(); return; }
   if(!validateForm()) return;
 
@@ -1488,14 +1488,29 @@ function renderTicketPayPanel(orderNum, total){
     };
   }).filter(Boolean);
 
+  var customer = {
+    name: document.getElementById("custName").value.trim(),
+    phone: document.getElementById("custPhone").value.trim(),
+    address: document.getElementById("custAddress").value.trim(),
+    postcode: custPostcodeInput.value.trim()
+  };
+  var notes = document.getElementById("custNotes").value.trim();
+
   try {
     var response = await fetch('/.netlify/functions/create-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: items })
+      body: JSON.stringify({
+        items: items,
+        customer: customer,
+        orderType: state.orderType,
+        notes: notes
+      })
     });
     var data = await response.json();
     if(data && data.url){
+      state.cart = {};
+      renderCart(); renderMenu();
       window.location.href = data.url;
     } else {
       alert('Payment error: ' + (data && data.error ? data.error : 'unknown'));
@@ -1504,7 +1519,6 @@ function renderTicketPayPanel(orderNum, total){
     alert('Could not connect to payment system: ' + e.message);
   }
 }
-
 /* ---------- ticket modal ---------- */
 
 
