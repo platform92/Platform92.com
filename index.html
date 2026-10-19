@@ -259,6 +259,31 @@ a{color:inherit;}
 .field.outofrange input{border-color:var(--ember);}
 .field.outofrange .field-warning{display:block;}
 
+/* ---------- coupon code ---------- */
+.coupon-box[hidden],.coupon-row[hidden],.coupon-applied[hidden],.discount-row[hidden],.coupon-msg[hidden]{display:none !important;}
+.coupon-box{margin:14px 0 0;padding:14px;background:rgba(201,162,39,.06);border:1px dashed var(--line-strong);border-radius:14px;}
+.coupon-label{font-family:var(--display);font-size:11.5px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:8px;display:block;}
+.coupon-row{display:flex;gap:8px;}
+.coupon-row input{flex:1;min-width:0;background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:10px 16px;color:var(--ink);font-family:var(--display);letter-spacing:.12em;font-size:16px;text-transform:uppercase;}
+.coupon-row input::placeholder{color:var(--ink-faint);letter-spacing:.06em;}
+.coupon-row input:focus{border-color:var(--brass);outline:none;}
+.coupon-row input.ok{border-color:var(--pine-light);color:var(--brass-bright);}
+.coupon-row.shake{animation:couponshake .4s ease;}
+.coupon-row.shake input{border-color:var(--ember);}
+@keyframes couponshake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.coupon-applied{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(201,162,39,.14);border:1px solid var(--brass);border-radius:12px;padding:10px 14px;}
+.coupon-applied .code{display:block;font-family:var(--display);letter-spacing:.12em;color:var(--brass-bright);font-size:17px;line-height:1.1;}
+.coupon-applied .desc{display:block;font-size:12px;color:var(--ink-dim);margin-top:2px;}
+@media (prefers-reduced-motion:no-preference){
+  .coupon-applied.pop{animation:couponpop .5s cubic-bezier(.3,1.6,.5,1);}
+  @keyframes couponpop{0%{transform:scale(.85);opacity:0;}100%{transform:scale(1);opacity:1;}}
+}
+.coupon-msg{font-size:12.5px;margin-top:8px;font-family:var(--body);}
+.coupon-msg.ok{color:var(--pine-light);}
+.coupon-msg.err{color:var(--ember-bright);}
+.discount-row{display:flex;align-items:baseline;justify-content:space-between;font-size:13px;color:var(--pine-light);font-family:var(--display);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+#confettiCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:400;}
+
 /* ---------- ticket / confirmation ---------- */
 .ticket-overlay{position:fixed;inset:0;background:rgba(10,8,5,.72);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 .ticket-overlay.open{display:flex;}
@@ -427,6 +452,15 @@ a{color:inherit;}
   <div class="drawer-body">
     <div id="cartItemsList"></div>
     <div class="delivery-incentive" id="deliveryIncentive" hidden></div>
+
+    <!-- COUPON CODE -->
+    <div class="coupon-box" id="couponBox" hidden>
+      <span class="coupon-label" data-i18n="coupon_label">Rabattkod</span>
+      <div class="coupon-row" id="couponRow">
+        <input type="text" id="couponInput" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="24" aria-label="Rabattkod">
+      </div>
+    </div>
+
     <form class="checkout-form" id="checkoutForm">
       <div class="ordertype" id="orderType">
         <button type="button" data-type="delivery" class="active" data-i18n="order_delivery">Leverans</button>
@@ -478,6 +512,10 @@ a{color:inherit;}
     </form>
   </div>
   <div class="drawer-foot">
+    <div class="discount-row" id="discountRow" hidden>
+      <span id="discountLabel"></span>
+      <span id="discountVal"></span>
+    </div>
     <div class="foot-total-row">
       <span class="lbl" data-i18n="cart_subtotal">Delsumma</span>
       <span class="val" id="drawerSubtotal">0 kr</span>
@@ -577,6 +615,9 @@ a{color:inherit;}
    ============================================================ */
 var STR = {
   sv:{
+    coupon_label:"Rabattkod", coupon_placeholder:"Ange kod", coupon_apply:"Använd", coupon_remove:"Ta bort",
+    coupon_success:"Rabattkoden är aktiverad!", coupon_invalid:"Ogiltig rabattkod.",
+    coupon_off:"{x}% rabatt på din beställning", coupon_discount_label:"Rabatt",
     nav_menu:"Meny", nav_order:"Beställ", nav_about:"Om oss", nav_contact:"Kontakt",
     cart_label:"Din korg",
     hero_headline:"En perrong. Alla välkomna.",
@@ -625,6 +666,9 @@ var STR = {
     cart_closed_notice:"Vi tar tyvärr inte emot beställningar just nu. Vi öppnar igen kl 11:00 varje dag."
   },
   en:{
+    coupon_label:"Discount code", coupon_placeholder:"Enter code", coupon_apply:"Apply", coupon_remove:"Remove",
+    coupon_success:"Discount code applied!", coupon_invalid:"Invalid discount code.",
+    coupon_off:"{x}% off your order", coupon_discount_label:"Discount",
     nav_menu:"Menu", nav_order:"Order", nav_about:"About", nav_contact:"Contact",
     cart_label:"Your cart",
     hero_headline:"One platform. Everyone welcome.",
@@ -673,6 +717,9 @@ var STR = {
     cart_closed_notice:"Sorry, we're not taking orders right now. We reopen at 11:00 every day."
   },
   ar:{
+    coupon_label:"كود الخصم", coupon_placeholder:"أدخل الكود", coupon_apply:"تطبيق", coupon_remove:"إزالة",
+    coupon_success:"تم تفعيل كود الخصم!", coupon_invalid:"كود الخصم غير صالح.",
+    coupon_off:"خصم {x}% على طلبك", coupon_discount_label:"خصم",
     nav_menu:"القائمة", nav_order:"اطلب", nav_about:"من نحن", nav_contact:"تواصل",
     cart_label:"سلتك",
     hero_headline:"رصيف واحد. الجميع مُرحَّب به.",
@@ -913,8 +960,11 @@ var MENU = [
 /* ============================================================
    APP STATE + LOGIC
    ============================================================ */
-var state = { lang:"sv", cart:{}, activeCat:CATEGORIES[0].id, orderType:"delivery", paymentMethod:"swish" };
+var state = { lang:"sv", cart:{}, activeCat:CATEGORIES[0].id, orderType:"delivery", paymentMethod:"swish", coupon:null };
 var RESTAURANT_TEL = "+4636719900";
+
+/* ---- Coupon codes (code -> percent off the food subtotal) ---- */
+var COUPONS = { "RABATT92": { pct:20 } };
 
 /* ---- Payment config ---- */
 var SWISH_NUMBER = "1231860709"; // Platform 92 Kitchen's Swish number
@@ -1085,6 +1135,12 @@ function cartTotal(){
     var item=findItem(parsed.itemId); return sum + (item?unitPrice(item,parsed.choiceId)*state.cart[key]:0);
   },0);
 }
+/* coupon discount: percent off the food subtotal (not the delivery fee) */
+function discountAmount(){
+  if(!state.coupon) return 0;
+  return Math.round(cartTotal()*state.coupon.pct/100);
+}
+/* free-delivery threshold is judged on the full (pre-discount) subtotal */
 function deliveryFee(){
   if(state.orderType!=="delivery") return 0;
   var sub = cartTotal();
@@ -1092,13 +1148,13 @@ function deliveryFee(){
   return sub>=FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
 }
 function grandTotal(){
-  return cartTotal()+deliveryFee();
+  return cartTotal()-discountAmount()+deliveryFee();
 }
 function meetsMinOrder(){
   if(state.orderType!=="delivery") return true;
   var sub = cartTotal();
   if(sub===0) return true;
-  return (sub+deliveryFee())>=MIN_ORDER_FOR_DELIVERY;
+  return (sub-discountAmount()+deliveryFee())>=MIN_ORDER_FOR_DELIVERY;
 }
 
 /* ---------- DOM refs ---------- */
@@ -1323,12 +1379,101 @@ function renderMenu(){
   }
 }
 
+/* ---------- render: coupon box + discount row ---------- */
+function updateCouponUI(sub, disc){
+  var input = document.getElementById("couponInput");
+  var discRow = document.getElementById("discountRow");
+  document.getElementById("couponBox").hidden = sub<=0;
+  input.placeholder = t("coupon_placeholder");
+  input.classList.toggle("ok", !!state.coupon);
+  discRow.hidden = !(state.coupon && disc>0);
+  if(state.coupon){
+    document.getElementById("discountLabel").textContent = t("coupon_discount_label")+" ("+state.coupon.code+" \u00b7 "+state.coupon.pct+"%)";
+    document.getElementById("discountVal").textContent = "\u2212"+fmt(disc);
+  }
+}
+
+/* ---------- coupon: applies automatically the moment the right code is typed; wrong text does nothing ---------- */
+function checkCouponInput(){
+  var code = document.getElementById("couponInput").value.trim().toUpperCase().replace(/\s+/g,"");
+  var valid = COUPONS.hasOwnProperty(code);
+  if(valid && !state.coupon){
+    state.coupon = { code:code, pct:COUPONS[code].pct };
+    renderCart();
+    launchConfetti();
+  } else if(!valid && state.coupon){
+    state.coupon = null;
+    renderCart();
+  }
+}
+
+/* ---------- confetti (canvas, brand colours, respects reduced motion) ---------- */
+function launchConfetti(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var old = document.getElementById("confettiCanvas");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+  var cv = document.createElement("canvas");
+  cv.id = "confettiCanvas";
+  cv.setAttribute("aria-hidden","true");
+  document.body.appendChild(cv);
+  var dpr = Math.min(window.devicePixelRatio||1, 2);
+  var W = window.innerWidth, H = window.innerHeight;
+  cv.width = W*dpr; cv.height = H*dpr;
+  var ctx = cv.getContext("2d");
+  ctx.scale(dpr, dpr);
+  var colors = ["#C9A227","#E9C766","#3A7458","#B4232A","#F4ECD8","#D6444B"];
+  var box = document.getElementById("couponBox").getBoundingClientRect();
+  var ox = box.left + box.width/2, oy = box.top + 30;
+  var ps = [];
+  function mk(x, y, vx, vy){
+    return { x:x, y:y, vx:vx, vy:vy, w:6+Math.random()*7, h:4+Math.random()*6,
+      rot:Math.random()*6.28, vr:(Math.random()-.5)*.45,
+      c:colors[Math.floor(Math.random()*colors.length)],
+      round:Math.random()<.28, wob:Math.random()*6.28, age:0 };
+  }
+  var i, a, s;
+  for(i=0;i<130;i++){ /* burst from the coupon box */
+    a = -Math.PI/2 + (Math.random()-.5)*Math.PI*1.25;
+    s = 6 + Math.random()*11;
+    ps.push(mk(ox, oy, Math.cos(a)*s, Math.sin(a)*s));
+  }
+  for(i=0;i<70;i++){ /* gentle rain from the top */
+    var p = mk(Math.random()*W, -20-Math.random()*H*.4, (Math.random()-.5)*2, 1+Math.random()*2.5);
+    ps.push(p);
+  }
+  var frames = 0, MAX = 190;
+  (function tick(){
+    frames++;
+    ctx.clearRect(0,0,W,H);
+    for(var j=0;j<ps.length;j++){
+      var q = ps[j];
+      q.age++;
+      q.vy += .26; q.vx *= .985; q.vy *= .985;
+      q.x += q.vx + Math.sin(q.wob + q.age*.12)*.6;
+      q.y += q.vy;
+      q.rot += q.vr;
+      var alpha = q.age > MAX-60 ? Math.max(0,(MAX-q.age)/60) : 1;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(q.x, q.y);
+      ctx.rotate(q.rot);
+      ctx.fillStyle = q.c;
+      if(q.round){ ctx.beginPath(); ctx.arc(0,0,q.w/2.2,0,6.283); ctx.fill(); }
+      else ctx.fillRect(-q.w/2, -q.h/2, q.w, q.h);
+      ctx.restore();
+    }
+    if(frames < MAX) requestAnimationFrame(tick);
+    else if(cv.parentNode) cv.parentNode.removeChild(cv);
+  })();
+}
+
 /* ---------- render: cart ---------- */
 function renderCart(){
   var count = cartCount();
   var sub = cartTotal();
+  var disc = discountAmount();
   var fee = deliveryFee();
-  var total = sub+fee;
+  var total = sub-disc+fee;
   document.getElementById("cartAmount").textContent = fmt(total);
   var countEl = document.getElementById("cartCount");
   countEl.textContent = count;
@@ -1366,6 +1511,8 @@ function renderCart(){
 
   var minWarnEl = document.getElementById("minOrderWarning");
   minWarnEl.hidden = meetsMinOrder();
+
+  updateCouponUI(sub, disc);
 
   var list = document.getElementById("cartItemsList");
   list.innerHTML = "";
@@ -1443,6 +1590,9 @@ for(var k=0;k<openCartLinks.length;k++){
     if(cartCount()>0) showCheckoutForm();
   });
 }
+
+/* ---------- coupon events ---------- */
+document.getElementById("couponInput").addEventListener("input", checkCouponInput);
 
 /* ---------- checkout form ---------- */
 function showCheckoutForm(){
@@ -1664,12 +1814,17 @@ function renderTicketPayPanel(orderNum, total){
         items: items,
         customer: customer,
         orderType: state.orderType,
-        notes: notes
+        notes: notes,
+        coupon: state.coupon ? state.coupon.code : null,
+        discountPercent: state.coupon ? state.coupon.pct : 0,
+        discountAmount: discountAmount()
       })
     });
     var data = await response.json();
     if(data && data.url){
       state.cart = {};
+      state.coupon = null;
+      document.getElementById("couponInput").value = "";
       renderCart(); renderMenu();
       window.location.href = data.url;
     } else {
