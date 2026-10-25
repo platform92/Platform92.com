@@ -798,10 +798,7 @@ var CATEGORIES = [
   { id:"burgers",   icon:"burger",    name:{ sv:"Hamburgare", en:"Burgers", ar:"برجر" } },
   { id:"salad",     icon:"salad",     name:{ sv:"Sallad", en:"Salad", ar:"سلطة" } },
   { id:"fries",     icon:"fries",     name:{ sv:"Pommes frites", en:"Fries", ar:"بطاطس مقلية" } },
-  { id:"paratha",   icon:"paratha",   name:{ sv:"Paratha", en:"Paratha", ar:"براتا" },
-    note:{ sv:"Eftermiddagsmeny: vardagar 14:00–17:00, lördag & söndag 12:00–17:00.",
-           en:"Afternoon menu: weekdays 14:00–17:00, Saturday & Sunday 12:00–17:00.",
-           ar:"قائمة بعد الظهر: أيام الأسبوع 14:00–17:00، السبت والأحد 12:00–17:00." } },
+  { id:"paratha",   icon:"paratha",   name:{ sv:"Paratha", en:"Paratha", ar:"براتا" } },
   { id:"drinks",    icon:"drink",     name:{ sv:"Drycker", en:"Drinks", ar:"مشروبات" } },
   { id:"milkshake", icon:"milkshake", name:{ sv:"Milkshake", en:"Milkshakes", ar:"ميلك شيك" } },
   { id:"extras",    icon:"extras",    name:{ sv:"Tillägg", en:"Extras", ar:"إضافات" } }
@@ -996,10 +993,8 @@ function isPostcodeAllowed(raw){
    clock) so a tourist with a different timezone still sees the
    restaurant's real status, not their own local time.
    ============================================================ */
-// var OPEN_HOUR = 11;
-// var CLOSE_HOUR = 21;
-   var OPEN_HOUR = 0;     // normal: 11
-var CLOSE_HOUR = 25;   // normal: 21
+var OPEN_HOUR = 11;
+var CLOSE_HOUR = 21;
 var wasOpenLast = null; // tracks state so we only re-render menu/cart when status actually flips
 
 function getStockholmParts(){
