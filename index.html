@@ -145,7 +145,7 @@ a{color:inherit;}
 /* ---------- menu ---------- */
 .menu-section{padding:56px 0 20px;}
 .menu-sub{color:var(--ink-dim);margin-top:8px;margin-bottom:28px;font-size:15.5px;}
-.cattabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:26px;scrollbar-width:none;}
+.cattabs{display:flex;gap:8px;overflow-x:auto;padding:10px 20px;margin:0 -20px;scrollbar-width:none;position:sticky;top:var(--nav-h);z-index:90;background:rgba(20,17,13,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
 .cattabs::-webkit-scrollbar{display:none;}
 .cattab{flex:none;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-family:var(--display);font-size:13px;letter-spacing:.05em;color:var(--ink-dim);text-transform:uppercase;transition:all .15s ease;}
 .cattab svg{width:18px;height:18px;color:var(--ink-faint);flex:none;}
@@ -154,13 +154,13 @@ a{color:inherit;}
 .cattab:hover:not(.active){border-color:var(--brass);color:var(--ink);}
 .cat-note{background:rgba(201,162,39,.08);border:1px solid var(--line-strong);border-radius:12px;padding:11px 16px;margin:-8px 0 18px;font-size:13.5px;color:var(--ink-dim);line-height:1.45;}
 .cat-note[hidden]{display:none;}
-.menu-grid{display:grid;grid-template-columns:1fr;gap:16px;}
-@media(min-width:680px){.menu-grid{grid-template-columns:1fr 1fr;}}
-@media(min-width:1040px){.menu-grid{grid-template-columns:1fr 1fr 1fr;}}
-@media (prefers-reduced-motion:no-preference){
-  .menu-grid.flip .dish{animation:dishflip .32s ease backwards;}
-  @keyframes dishflip{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
-}
+.cat-head{display:flex;align-items:center;gap:12px;margin:34px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+.menu-cat:first-child .cat-head{margin-top:26px;}
+.cat-head svg{width:24px;height:24px;color:var(--brass-bright);flex:none;}
+.cat-head h3{font-family:var(--serif);font-weight:700;font-size:clamp(22px,3.4vw,30px);line-height:1.15;}
+.menu-cat-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+@media(min-width:680px){.menu-cat-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:1040px){.menu-cat-grid{grid-template-columns:1fr 1fr 1fr;}}
 .dish{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s ease, transform .15s ease;}
 .dish:hover{border-color:var(--brass);transform:translateY(-2px);}
 .dish-media{position:relative;width:100%;aspect-ratio:4/3;background:var(--surface-2);overflow:hidden;flex:none;}
@@ -434,7 +434,7 @@ a{color:inherit;}
 <section class="wrap menu-section" id="menu">
   <div class="section-head"><span class="section-num">PLATFORM 02</span><h2 data-i18n="menu_headline">Menyn</h2></div>
   <p class="menu-sub" data-i18n="menu_sub">Välj kategori och beställ. Ingen krångel.</p>
-  <div class="cattabs" id="catTabs" role="tablist"></div>
+  <div class="cattabs" id="catTabs"></div>
   <div class="cat-note" id="catNote" hidden></div>
   <div class="menu-grid" id="menuGrid"></div>
 </section>
@@ -1215,40 +1215,105 @@ function applyLang(){
   if(typeof updateOpenStatus==="function") updateOpenStatus();
 }
 
-/* ---------- render: category tabs ---------- */
+/* ---------- render: category chips (jump links + scroll-spy) ---------- */
+var catSpyLock = false, catSpyLockTimer = null, catSpyTicking = false;
 function renderCatTabs(){
   catTabsEl.innerHTML = "";
   CATEGORIES.forEach(function(c){
     var b = document.createElement("button");
     b.type = "button";
     b.className = "cattab" + (c.id===state.activeCat ? " active":"");
-    b.setAttribute("role","tab");
-    b.setAttribute("aria-selected", c.id===state.activeCat ? "true":"false");
+    b.setAttribute("data-cat", c.id);
+    if(c.id===state.activeCat) b.setAttribute("aria-current","true");
     b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[c.icon]+'</svg><span>'+c.name[state.lang]+'</span>';
     b.addEventListener("click", function(catId){
-      return function(){
-        if(state.activeCat===catId) return;
-        state.activeCat = catId;
-        renderCatTabs();
-        renderMenu();
-      };
+      return function(){ goToCat(catId); };
     }(c.id));
     catTabsEl.appendChild(b);
   });
 }
+function markActiveCat(id, centerChip){
+  state.activeCat = id;
+  var btns = catTabsEl.querySelectorAll(".cattab");
+  for(var i=0;i<btns.length;i++){
+    var on = btns[i].getAttribute("data-cat")===id;
+    btns[i].classList.toggle("active", on);
+    if(on) btns[i].setAttribute("aria-current","true"); else btns[i].removeAttribute("aria-current");
+    if(on && centerChip){
+      var cr = btns[i].getBoundingClientRect(), pr = catTabsEl.getBoundingClientRect();
+      var d = (cr.left+cr.width/2)-(pr.left+pr.width/2);
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(catTabsEl.scrollBy) catTabsEl.scrollBy({left:d, behavior: reduce ? "auto" : "smooth"});
+      else catTabsEl.scrollLeft += d;
+    }
+  }
+}
+function goToCat(id){
+  var el = document.getElementById("cat-"+id);
+  if(!el) return;
+  markActiveCat(id, true);
+  catSpyLock = true;
+  clearTimeout(catSpyLockTimer);
+  catSpyLockTimer = setTimeout(function(){ catSpyLock = false; }, 600);
+  var nav = document.querySelector(".topnav");
+  var y = el.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 64) - catTabsEl.offsetHeight - 8;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({top:Math.max(0,y), behavior: reduceMotion ? "auto" : "smooth"});
+}
+function updateCatSpy(){
+  var secs = menuGridEl.querySelectorAll(".menu-cat");
+  if(!secs.length) return;
+  var nav = document.querySelector(".topnav");
+  var line = (nav ? nav.offsetHeight : 64) + catTabsEl.offsetHeight + 24;
+  var cur = secs[0];
+  for(var i=0;i<secs.length;i++){
+    if(secs[i].getBoundingClientRect().top - line <= 0) cur = secs[i];
+  }
+  var last = secs[secs.length-1];
+  var atEnd = window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4;
+  if(atEnd && last.getBoundingClientRect().top < window.innerHeight) cur = last;
+  var id = cur.getAttribute("data-cat");
+  if(id!==state.activeCat) markActiveCat(id, true);
+}
+window.addEventListener("scroll", function(){
+  if(catSpyLock){
+    clearTimeout(catSpyLockTimer);
+    catSpyLockTimer = setTimeout(function(){ catSpyLock = false; }, 150);
+    return;
+  }
+  if(!catSpyTicking){
+    catSpyTicking = true;
+    requestAnimationFrame(function(){ catSpyTicking = false; updateCatSpy(); });
+  }
+}, {passive:true});
 
 /* ---------- render: menu grid ---------- */
 function renderMenu(){
   menuGridEl.innerHTML = "";
+  catNoteEl.hidden = true; // category notes (if any) now render inside their own category section
   var open = isOpenNow();
-  var activeCat = findCat(state.activeCat);
-  if(activeCat && activeCat.note){
-    catNoteEl.textContent = activeCat.note[state.lang] || activeCat.note.sv;
-    catNoteEl.hidden = false;
-  } else {
-    catNoteEl.hidden = true;
+  var frag = document.createDocumentFragment();
+  CATEGORIES.forEach(function(catDef){
+  var items = MENU.filter(function(m){return m.cat===catDef.id;});
+  if(!items.length) return;
+  var sec = document.createElement("section");
+  sec.className = "menu-cat";
+  sec.id = "cat-"+catDef.id;
+  sec.setAttribute("data-cat", catDef.id);
+  sec.setAttribute("aria-labelledby", "cat-title-"+catDef.id);
+  var head = document.createElement("div");
+  head.className = "cat-head";
+  head.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[catDef.icon]+'</svg><h3 id="cat-title-'+catDef.id+'">'+esc(catDef.name[state.lang])+'</h3>';
+  sec.appendChild(head);
+  if(catDef.note){
+    var noteBox = document.createElement("div");
+    noteBox.className = "cat-note";
+    noteBox.textContent = catDef.note[state.lang] || catDef.note.sv;
+    sec.appendChild(noteBox);
   }
-  var items = MENU.filter(function(m){return m.cat===state.activeCat;});
+  var grid = document.createElement("div");
+  grid.className = "menu-cat-grid";
+  sec.appendChild(grid);
   items.forEach(function(item){
     var hasOptions = !!item.options;
     var isInfo = !!item.info;
@@ -1320,7 +1385,7 @@ function renderMenu(){
         footHtml+
       '</div>';
     if(isInfo){
-      menuGridEl.appendChild(card);
+      grid.appendChild(card);
       return;
     }
     var qtyEl = card.querySelector(".qty");
@@ -1365,13 +1430,11 @@ function renderMenu(){
       addBtn.textContent = "\u2713";
       setTimeout(function(){ addBtn.classList.remove("added"); addBtn.textContent = isOpenNow()?t("add_to_cart"):t("closed_add_label"); }, 650);
     });
-    menuGridEl.appendChild(card);
+    grid.appendChild(card);
   });
-  if(window.matchMedia("(prefers-reduced-motion: no-preference)").matches){
-    menuGridEl.classList.remove("flip");
-    void menuGridEl.offsetWidth;
-    menuGridEl.classList.add("flip");
-  }
+  frag.appendChild(sec);
+  });
+  menuGridEl.appendChild(frag);
 }
 
 /* ---------- render: coupon box + discount row ---------- */
