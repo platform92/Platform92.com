@@ -178,11 +178,11 @@ a{color:inherit;}
 .dish-name{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.2;}
 .dish-star{color:var(--brass-bright);margin-inline-end:5px;}
 .dish-desc{color:var(--ink-dim);font-size:13.8px;line-height:1.5;flex:1;}
-.dish-options{display:flex;flex-wrap:wrap;gap:6px;}
-.dish-opt{background:var(--surface-2);border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;font-family:var(--display);font-size:11px;letter-spacing:.03em;color:var(--ink-dim);text-transform:uppercase;transition:all .15s ease;}
-.dish-opt .opt-delta{opacity:.75;margin-inline-start:5px;}
-.dish-opt.active{background:var(--brass);border-color:var(--brass);color:#1a1508;}
-.dish-opt:hover:not(.active){border-color:var(--brass);color:var(--ink);}
+.dish-options,.dish-addons{display:flex;flex-wrap:wrap;gap:6px;}
+.dish-opt,.dish-addon{background:var(--surface-2);border:1px solid var(--line-strong);border-radius:999px;padding:5px 12px;font-family:var(--display);font-size:11px;letter-spacing:.03em;color:var(--ink-dim);text-transform:uppercase;transition:all .15s ease;}
+.dish-opt .opt-delta,.dish-addon .opt-delta{opacity:.75;margin-inline-start:5px;}
+.dish-opt.active,.dish-addon.active{background:var(--brass);border-color:var(--brass);color:#1a1508;}
+.dish-opt:hover:not(.active),.dish-addon:hover:not(.active){border-color:var(--brass);color:var(--ink);}
 .dish-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px;}
 .stepper{display:flex;align-items:center;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;}
 .stepper button{background:var(--surface-2);color:var(--ink);border:none;width:30px;height:30px;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;}
@@ -374,7 +374,7 @@ a{color:inherit;}
 <div class="closed-banner" id="closedBanner" hidden>
   <div class="wrap closed-banner-inner">
     <strong class="title" data-i18n="closed_banner_title">Vi är stängda just nu</strong>
-    <span data-i18n="closed_banner_hours">Vi tar emot beställningar 11:00–20:30 mån–tors, 11:00–21:00 fre–sön.</span>
+    <span data-i18n="closed_banner_hours">Vi tar emot beställningar 11:00–20:30 mån–fre, 12:00–20:00 lör–sön.</span>
     <span><span data-i18n="opens_in">Öppnar om</span> <strong class="countdown" id="countdownText">00:00:00</strong></span>
   </div>
 </div>
@@ -524,7 +524,7 @@ a{color:inherit;}
     <p class="min-order-warning" id="minOrderWarning" hidden data-i18n="delivery_min_alert">Minsta beställning för leverans är 150 kr.</p>
     <div class="cart-closed-notice" id="cartClosedNotice" hidden>
       <strong data-i18n="closed_banner_title">Vi är stängda just nu</strong>
-      <span data-i18n="cart_closed_notice">Vi tar tyvärr inte emot beställningar just nu. Vi öppnar igen kl 11:00 varje dag.</span>
+      <span data-i18n="cart_closed_notice">Vi tar tyvärr inte emot beställningar just nu. Öppettider: 11:00–20:30 mån–fre, 12:00–20:00 lör–sön.</span>
     </div>
     <button class="btn btn-brass btn-block" id="cartActionBtn">Gå till beställning</button>
     <div class="foot-links">
@@ -660,10 +660,10 @@ var STR = {
     nfc_link_label:"Digital meny & länkar",
     status_open_label:"ÖPPET", status_closed_label:"STÄNGT",
     closed_banner_title:"Vi är stängda just nu",
-    closed_banner_hours:"Vi tar emot beställningar 11:00–20:30 mån–tors, 11:00–21:00 fre–sön.",
+    closed_banner_hours:"Vi tar emot beställningar 11:00–20:30 mån–fre, 12:00–20:00 lör–sön.",
     opens_in:"Öppnar om",
     closed_add_label:"Stängt",
-    cart_closed_notice:"Vi tar tyvärr inte emot beställningar just nu. Vi öppnar igen kl 11:00 varje dag."
+    cart_closed_notice:"Vi tar tyvärr inte emot beställningar just nu. Öppettider: 11:00–20:30 mån–fre, 12:00–20:00 lör–sön."
   },
   en:{
     coupon_label:"Discount code", coupon_placeholder:"Enter code", coupon_apply:"Apply", coupon_remove:"Remove",
@@ -711,10 +711,10 @@ var STR = {
     nfc_link_label:"Digital menu & links",
     status_open_label:"OPEN", status_closed_label:"CLOSED",
     closed_banner_title:"We're closed right now",
-    closed_banner_hours:"We take orders 11:00–20:30 Mon–Thu, 11:00–21:00 Fri–Sun.",
+    closed_banner_hours:"We take orders 11:00–20:30 Mon–Fri, 12:00–20:00 Sat–Sun.",
     opens_in:"Opens in",
     closed_add_label:"Closed",
-    cart_closed_notice:"Sorry, we're not taking orders right now. We reopen at 11:00 every day."
+    cart_closed_notice:"Sorry, we're not taking orders right now. Hours: 11:00–20:30 Mon–Fri, 12:00–20:00 Sat–Sun."
   },
   ar:{
     coupon_label:"كود الخصم", coupon_placeholder:"أدخل الكود", coupon_apply:"تطبيق", coupon_remove:"إزالة",
@@ -762,10 +762,10 @@ var STR = {
     nfc_link_label:"القائمة الرقمية والروابط",
     status_open_label:"مفتوح", status_closed_label:"مغلق",
     closed_banner_title:"نحن مغلقون الآن",
-    closed_banner_hours:"نستقبل الطلبات من 11:00 حتى 20:30 من الاثنين إلى الخميس، ومن 11:00 حتى 21:00 من الجمعة إلى الأحد.",
+    closed_banner_hours:"نستقبل الطلبات من 11:00 حتى 20:30 من الاثنين إلى الجمعة، ومن 12:00 حتى 20:00 السبت والأحد.",
     opens_in:"يفتح خلال",
     closed_add_label:"مغلق",
-    cart_closed_notice:"عذرًا، لا نستقبل الطلبات حاليًا. نفتح مجددًا الساعة 11:00 كل يوم."
+    cart_closed_notice:"عذرًا، لا نستقبل الطلبات حاليًا. ساعات العمل: 11:00–20:30 من الاثنين إلى الجمعة، و12:00–20:00 السبت والأحد."
   }
 };
 
@@ -839,6 +839,11 @@ var OPT_DRINK = { key:"drink", choices:[
   {id:"tea",    label:{sv:"Te",en:"Tea",ar:"شاي"}}
 ]};
 
+/* ADD-ONS — toggle buttons on a dish (several can be on at once).
+   "delta" = adds that many kr; "price" = the dish costs exactly that much with the add-on on. */
+var ADDON_XCHEESE = { id:"xost", delta:10, label:{sv:"Extra ost",en:"Extra cheese",ar:"جبن إضافي"} };
+var ADDON_DOUBLE  = { id:"dbl",  price:209, label:{sv:"Dubbel patty",en:"Double patty",ar:"باتي مزدوج"} };
+
 var MENU = [
   /* ---------- FÖRRÄTTER / STARTERS ---------- */
   { id:"s1", cat:"starters", price:89, photo:"photosmenu1/a", name:{sv:"Kyckling 65",en:"Chicken 65",ar:"دجاج 65"},
@@ -885,7 +890,7 @@ var MENU = [
     desc:{sv:"Grillad kyckling & kryddat nötkött i varmt pitabröd med sallad & mild sås.",en:"Grilled chicken & spiced beef in warm pita bread with salad & mild sauce.",ar:"دجاج مشوي ولحم بقري متبّل في خبز بيتا دافئ مع السلطة وصلصة خفيفة."}},
 
   /* ---------- HAMBURGARE / BURGERS ---------- */
-  { id:"b1", cat:"burgers", price:119, image:"Cheeseburger", options:OPT_CHEESE, name:{sv:"Cheeseburgare",en:"Cheeseburger",ar:"تشيز برجر"},
+  { id:"b1", cat:"burgers", price:119, image:"Cheeseburger", options:OPT_CHEESE, addons:[ADDON_DOUBLE], name:{sv:"Cheeseburgare",en:"Cheeseburger",ar:"تشيز برجر"},
     desc:{sv:"Nötköttsburgare grillad till perfektion, toppad med smält ost, serveras med pommes.",en:"Beef burger grilled to perfection, topped with melted cheese, served with fries.",ar:"برغر لحم بقري مشوي بإتقان، مغطى بجبنة ذائبة، يُقدَّم مع البطاطس."}},
   { id:"b2", cat:"burgers", price:119, image:"Crispy Chicken Cheeseburger", options:OPT_CHEESE, name:{sv:"Krispig kyckling-cheeseburgare",en:"Crispy chicken cheeseburger",ar:"تشيز برجر دجاج مقرمش"},
     desc:{sv:"Krispigt friterad till gyllene perfektion, med smält ost, serveras med pommes.",en:"Crispy chicken fried to golden perfection, with melted cheese, served with fries.",ar:"دجاج مقرمش مقلي حتى يصبح ذهبياً، مع جبنة ذائبة، يُقدَّم مع البطاطس."}},
@@ -953,6 +958,15 @@ var MENU = [
   { id:"x3", cat:"extras", price:10, name:{sv:"Extra ost",en:"Extra cheese",ar:"جبن إضافي"},
     desc:{sv:"Lägg till extra smält ost.",en:"Add extra melted cheese.",ar:"أضف جبنة ذائبة إضافية."}}
 ];
+/* "Extra ost" (+10 kr) toggle on dishes where it makes sense */
+(function(){
+  var cheeseCats = ["plates","pasta","burgers","paratha"];
+  MENU.forEach(function(m){
+    if(m.info || m.price==null || cheeseCats.indexOf(m.cat)===-1) return;
+    if(m.id==="par7" || m.id==="par8") return; // these ARE the extras
+    m.addons = (m.addons||[]).concat([ADDON_XCHEESE]);
+  });
+})();
 
 /* ============================================================
    APP STATE + LOGIC
@@ -988,13 +1002,18 @@ function isPostcodeAllowed(raw){
 }
 
 /* ============================================================
-   ORDERING HOURS — Mon–Thu 11:00 to 20:30, Fri–Sun 11:00 to 21:00, Swedish time.
+   ORDERING HOURS — Mon–Fri 11:00 to 20:30, Sat–Sun 12:00 to 20:00, Swedish time.
    Uses Europe/Stockholm specifically (not the visitor's device
    clock) so a tourist with a different timezone still sees the
    restaurant's real status, not their own local time.
    ============================================================ */
-var OPEN_HOUR = 11;
-var CLOSE_HOUR = 21;
+// minutes since midnight
+var WEEKDAY_HOURS = {
+  Mon:{open:11*60, close:20*60+30}, Tue:{open:11*60, close:20*60+30}, Wed:{open:11*60, close:20*60+30},
+  Thu:{open:11*60, close:20*60+30}, Fri:{open:11*60, close:20*60+30},
+  Sat:{open:12*60, close:20*60}, Sun:{open:12*60, close:20*60}
+};
+var DAY_ORDER = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var wasOpenLast = null; // tracks state so we only re-render menu/cart when status actually flips
 
 function getStockholmParts(){
@@ -1010,17 +1029,18 @@ function getStockholmParts(){
 }
 function isOpenNow(){
   var t = getStockholmParts();
-  var closeMin = CLOSE_HOUR*60; // Fri–Sun: 21:00
-  if(["Mon","Tue","Wed","Thu"].indexOf(t.weekday)!==-1) closeMin = CLOSE_HOUR*60-30; // Mon–Thu: 20:30
-  var nowMin = t.hour*60+t.minute;
-  return t.hour>=OPEN_HOUR && nowMin<closeMin;
+  var h = WEEKDAY_HOURS[t.weekday];
+  if(!h) return false;
+  var nowMin = (t.hour%24)*60+t.minute;
+  return nowMin>=h.open && nowMin<h.close;
 }
 function secondsUntilOpen(){
   var t = getStockholmParts();
-  var current = t.hour*3600+t.minute*60+t.second;
-  var target = OPEN_HOUR*3600;
-  if(current<target) return target-current;
-  return (24*3600-current)+target;
+  var current = (t.hour%24)*3600+t.minute*60+t.second;
+  var today = WEEKDAY_HOURS[t.weekday];
+  if(today && current<today.open*60) return today.open*60-current;
+  var next = WEEKDAY_HOURS[DAY_ORDER[(DAY_ORDER.indexOf(t.weekday)+1)%7]];
+  return (24*3600-current)+next.open*60;
 }
 function formatCountdown(totalSeconds){
   var h = Math.floor(totalSeconds/3600);
@@ -1100,26 +1120,44 @@ function findItem(id){ return MENU.filter(function(m){return m.id===id;})[0]; }
 function findCat(id){ return CATEGORIES.filter(function(c){return c.id===id;})[0]; }
 
 /* ---------- cart keys: "itemId" for plain items, "itemId__choiceId" when the dish has a real selectable option ---------- */
-function makeCartKey(itemId, choiceId){
-  return choiceId ? (itemId+"__"+choiceId) : itemId;
+function makeCartKey(itemId, choiceId, addonIds){
+  var key = choiceId ? (itemId+"__"+choiceId) : itemId;
+  if(addonIds && addonIds.length) key += "+"+addonIds.slice().sort().join("+");
+  return key;
 }
 function parseCartKey(key){
+  var addons = [];
+  var plus = key.indexOf("+");
+  if(plus!==-1){ addons = key.slice(plus+1).split("+"); key = key.slice(0,plus); }
   var idx = key.indexOf("__");
-  if(idx===-1) return { itemId:key, choiceId:null };
-  return { itemId:key.slice(0,idx), choiceId:key.slice(idx+2) };
+  if(idx===-1) return { itemId:key, choiceId:null, addons:addons };
+  return { itemId:key.slice(0,idx), choiceId:key.slice(idx+2), addons:addons };
 }
 function getChoiceLabel(item, choiceId){
   if(!item || !item.options || !choiceId) return null;
   var match = item.options.choices.filter(function(c){ return c.id===choiceId; })[0];
   return match ? match.label[state.lang] : null;
 }
-/* price of one unit: a choice can override the dish's base price (plain / with cheese) */
-function unitPrice(item, choiceId){
-  if(item && item.options && choiceId){
+function findAddon(item, addonId){
+  return (item && item.addons) ? item.addons.filter(function(a){ return a.id===addonId; })[0] : null;
+}
+function getAddonLabels(item, addonIds, lang){
+  return (addonIds||[]).map(function(id){ var a=findAddon(item,id); return a ? a.label[lang||state.lang] : null; }).filter(Boolean);
+}
+/* price of one unit: a choice can override the dish's base price (plain / with cheese); an add-on either sets the price or adds to it */
+function unitPrice(item, choiceId, addonIds){
+  if(!item) return 0;
+  var price = item.price;
+  if(item.options && choiceId){
     var match = item.options.choices.filter(function(c){ return c.id===choiceId; })[0];
-    if(match && match.price!=null) return match.price;
+    if(match && match.price!=null) price = match.price;
   }
-  return item ? item.price : 0;
+  var extra = 0;
+  (addonIds||[]).forEach(function(id){
+    var a = findAddon(item, id); if(!a) return;
+    if(a.price!=null) price = a.price; else extra += (a.delta||0);
+  });
+  return price + extra;
 }
 function cartCount(){
   return Object.keys(state.cart).reduce(function(sum,key){return sum+state.cart[key];},0);
@@ -1127,7 +1165,7 @@ function cartCount(){
 function cartTotal(){
   return Object.keys(state.cart).reduce(function(sum,key){
     var parsed=parseCartKey(key);
-    var item=findItem(parsed.itemId); return sum + (item?unitPrice(item,parsed.choiceId)*state.cart[key]:0);
+    var item=findItem(parsed.itemId); return sum + (item?unitPrice(item,parsed.choiceId,parsed.addons)*state.cart[key]:0);
   },0);
 }
 /* coupon discount: percent off the food subtotal (not the delivery fee) */
@@ -1321,11 +1359,16 @@ function renderMenu(){
     var card = document.createElement("div");
     card.className = "dish";
     if(hasOptions) card.dataset.selectedChoice = item.options.choices[0].id;
+    var hasAddons = !!(item.addons && item.addons.length);
+    card.dataset.addons = "";
+    function currentAddons(){
+      return card.dataset.addons ? card.dataset.addons.split(",") : [];
+    }
     function currentChoice(){
       return hasOptions ? card.dataset.selectedChoice : null;
     }
     function currentKey(){
-      return hasOptions ? makeCartKey(item.id, card.dataset.selectedChoice) : item.id;
+      return makeCartKey(item.id, hasOptions ? card.dataset.selectedChoice : null, currentAddons());
     }
     var qty = state.cart[currentKey()]||0;
     var iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">'+ICONS[cat.icon]+'</svg>';
@@ -1357,11 +1400,21 @@ function renderMenu(){
         }).join("") +
         '</div>';
     }
+    var addonsHtml = "";
+    if(hasAddons){
+      var addonBase = unitPrice(item, hasOptions ? item.options.choices[0].id : null, []);
+      addonsHtml = '<div class="dish-addons" role="group">' +
+        item.addons.map(function(a){
+          var d = (a.price!=null) ? a.price-addonBase : (a.delta||0);
+          return '<button type="button" class="dish-addon" data-addon="'+a.id+'" aria-pressed="false">+ '+esc(a.label[state.lang])+(d>0 ? '<span class="opt-delta">+'+d+' kr</span>' : '')+'</button>';
+        }).join("") +
+        '</div>';
+    }
     var tagHtml = "";
     if(item.oldPrice) tagHtml = '<span class="dish-discount-tag">-20%</span>';
     else if(item.pop) tagHtml = '<span class="dish-pop-tag">'+esc(t("popular"))+'</span>';
     var priceHtml = isInfo ? "" :
-      '<span class="dish-price-badge">'+(item.oldPrice ? '<span class="price-old">'+fmt(item.oldPrice)+'</span>' : '')+'<span class="price-now">'+fmt(unitPrice(item, currentChoice()))+'</span></span>';
+      '<span class="dish-price-badge">'+(item.oldPrice ? '<span class="price-old">'+fmt(item.oldPrice)+'</span>' : '')+'<span class="price-now">'+fmt(unitPrice(item, currentChoice(), currentAddons()))+'</span></span>';
     var descText = item.desc ? item.desc[state.lang] : "";
     var footHtml = isInfo ? "" :
       '<div class="dish-foot">'+
@@ -1382,6 +1435,7 @@ function renderMenu(){
         '<h3 class="dish-name">'+(item.feat ? '<span class="dish-star" aria-hidden="true">\u2605</span>' : '')+esc(itemName)+'</h3>'+
         (descText ? '<p class="dish-desc">'+esc(descText)+'</p>' : '')+
         optionsHtml+
+        addonsHtml+
         footHtml+
       '</div>';
     if(isInfo){
@@ -1395,13 +1449,28 @@ function renderMenu(){
       qtyEl.textContent = state.cart[currentKey()]||0;
     }
     if(hasOptions){
-      var optButtons = card.querySelectorAll(".dish-opt");
+      var optButtons = card.querySelectorAll(".dish-options .dish-opt");
       optButtons.forEach(function(btn){
         btn.addEventListener("click", function(){
           for(var i=0;i<optButtons.length;i++) optButtons[i].classList.remove("active");
           btn.classList.add("active");
           card.dataset.selectedChoice = btn.getAttribute("data-choice");
-          if(priceNowEl) priceNowEl.textContent = fmt(unitPrice(item, currentChoice()));
+          if(priceNowEl) priceNowEl.textContent = fmt(unitPrice(item, currentChoice(), currentAddons()));
+          refreshQtyDisplay();
+        });
+      });
+    }
+    if(hasAddons){
+      card.querySelectorAll(".dish-addon").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          var id = btn.getAttribute("data-addon");
+          var on = currentAddons();
+          var pos = on.indexOf(id);
+          if(pos===-1) on.push(id); else on.splice(pos,1);
+          card.dataset.addons = on.join(",");
+          btn.classList.toggle("active", pos===-1);
+          btn.setAttribute("aria-pressed", pos===-1 ? "true" : "false");
+          if(priceNowEl) priceNowEl.textContent = fmt(unitPrice(item, currentChoice(), currentAddons()));
           refreshQtyDisplay();
         });
       });
@@ -1583,9 +1652,9 @@ function renderCart(){
       var item = findItem(parsed.itemId); if(!item) return;
       var qty = state.cart[key];
       var cat = findCat(item.cat);
-      var choiceLabel = getChoiceLabel(item, parsed.choiceId);
-      var displayName = item.name[state.lang] + (choiceLabel ? " ("+choiceLabel+")" : "");
-      var unit = unitPrice(item, parsed.choiceId);
+      var labelParts = [getChoiceLabel(item, parsed.choiceId)].concat(getAddonLabels(item, parsed.addons, state.lang)).filter(Boolean);
+      var displayName = item.name[state.lang] + (labelParts.length ? " ("+labelParts.join(", ")+")" : "");
+      var unit = unitPrice(item, parsed.choiceId, parsed.addons);
       var row = document.createElement("div");
       row.className = "cart-item";
       row.innerHTML =
@@ -1848,10 +1917,10 @@ function renderTicketPayPanel(orderNum, total){
     var parsed = parseCartKey(key);
     var item = findItem(parsed.itemId);
     if(!item) return null;
-    var choiceLabel = getChoiceLabel(item, parsed.choiceId);
+    var labelParts = [getChoiceLabel(item, parsed.choiceId)].concat(getAddonLabels(item, parsed.addons, "sv")).filter(Boolean);
     return {
-      name: item.name.sv + (choiceLabel ? " (" + choiceLabel + ")" : ""),
-      price: unitPrice(item, parsed.choiceId),
+      name: item.name.sv + (labelParts.length ? " (" + labelParts.join(", ") + ")" : ""),
+      price: unitPrice(item, parsed.choiceId, parsed.addons),
       quantity: state.cart[key]
     };
   }).filter(Boolean);
