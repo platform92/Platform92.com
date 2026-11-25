@@ -374,7 +374,7 @@ a{color:inherit;}
 <div class="closed-banner" id="closedBanner" hidden>
   <div class="wrap closed-banner-inner">
     <strong class="title" data-i18n="closed_banner_title">Vi är stängda just nu</strong>
-    <span data-i18n="closed_banner_hours">Vi tar emot beställningar 11:00–20:30 mån–fre, 12:00–20:00 lör–sön.</span>
+    <span data-i18n="closed_banner_hours">Vi tar emot beställningar 11:00–21:00 tis–fre, 12:00–21:00 lör–sön. Måndag stängt.</span>
     <span><span data-i18n="opens_in">Öppnar om</span> <strong class="countdown" id="countdownText">00:00:00</strong></span>
   </div>
 </div>
@@ -524,7 +524,7 @@ a{color:inherit;}
     <p class="min-order-warning" id="minOrderWarning" hidden data-i18n="delivery_min_alert">Minsta beställning för leverans är 150 kr.</p>
     <div class="cart-closed-notice" id="cartClosedNotice" hidden>
       <strong data-i18n="closed_banner_title">Vi är stängda just nu</strong>
-      <span data-i18n="cart_closed_notice">Vi tar tyvärr inte emot beställningar just nu. Öppettider: 11:00–20:30 mån–fre, 12:00–20:00 lör–sön.</span>
+      <span data-i18n="cart_closed_notice">Vi tar tyvärr inte emot beställningar just nu. Öppettider: 11:00–21:00 tis–fre, 12:00–21:00 lör–sön. Måndag stängt.</span>
     </div>
     <button class="btn btn-brass btn-block" id="cartActionBtn">Gå till beställning</button>
     <div class="foot-links">
@@ -660,10 +660,10 @@ var STR = {
     nfc_link_label:"Digital meny & länkar",
     status_open_label:"ÖPPET", status_closed_label:"STÄNGT",
     closed_banner_title:"Vi är stängda just nu",
-    closed_banner_hours:"Vi tar emot beställningar 11:00–20:30 mån–fre, 12:00–20:00 lör–sön.",
+    closed_banner_hours:"Vi tar emot beställningar 11:00–21:00 tis–fre, 12:00–21:00 lör–sön. Måndag stängt.",
     opens_in:"Öppnar om",
     closed_add_label:"Stängt",
-    cart_closed_notice:"Vi tar tyvärr inte emot beställningar just nu. Öppettider: 11:00–20:30 mån–fre, 12:00–20:00 lör–sön."
+    cart_closed_notice:"Vi tar tyvärr inte emot beställningar just nu. Öppettider: 11:00–21:00 tis–fre, 12:00–21:00 lör–sön. Måndag stängt."
   },
   en:{
     coupon_label:"Discount code", coupon_placeholder:"Enter code", coupon_apply:"Apply", coupon_remove:"Remove",
@@ -711,10 +711,10 @@ var STR = {
     nfc_link_label:"Digital menu & links",
     status_open_label:"OPEN", status_closed_label:"CLOSED",
     closed_banner_title:"We're closed right now",
-    closed_banner_hours:"We take orders 11:00–20:30 Mon–Fri, 12:00–20:00 Sat–Sun.",
+    closed_banner_hours:"We take orders 11:00–21:00 Tue–Fri, 12:00–21:00 Sat–Sun. Closed Monday.",
     opens_in:"Opens in",
     closed_add_label:"Closed",
-    cart_closed_notice:"Sorry, we're not taking orders right now. Hours: 11:00–20:30 Mon–Fri, 12:00–20:00 Sat–Sun."
+    cart_closed_notice:"Sorry, we're not taking orders right now. Hours: 11:00–21:00 Tue–Fri, 12:00–21:00 Sat–Sun. Closed Monday."
   },
   ar:{
     coupon_label:"كود الخصم", coupon_placeholder:"أدخل الكود", coupon_apply:"تطبيق", coupon_remove:"إزالة",
@@ -762,10 +762,10 @@ var STR = {
     nfc_link_label:"القائمة الرقمية والروابط",
     status_open_label:"مفتوح", status_closed_label:"مغلق",
     closed_banner_title:"نحن مغلقون الآن",
-    closed_banner_hours:"نستقبل الطلبات من 11:00 حتى 20:30 من الاثنين إلى الجمعة، ومن 12:00 حتى 20:00 السبت والأحد.",
+    closed_banner_hours:"نستقبل الطلبات من 11:00 حتى 21:00 من الثلاثاء إلى الجمعة، ومن 12:00 حتى 21:00 السبت والأحد. مغلق يوم الاثنين.",
     opens_in:"يفتح خلال",
     closed_add_label:"مغلق",
-    cart_closed_notice:"عذرًا، لا نستقبل الطلبات حاليًا. ساعات العمل: 11:00–20:30 من الاثنين إلى الجمعة، و12:00–20:00 السبت والأحد."
+    cart_closed_notice:"عذرًا، لا نستقبل الطلبات حاليًا. ساعات العمل: 11:00–21:00 من الثلاثاء إلى الجمعة، و12:00–21:00 السبت والأحد. مغلق يوم الاثنين."
   }
 };
 
@@ -1002,17 +1002,17 @@ function isPostcodeAllowed(raw){
 }
 
 /* ============================================================
-   ORDERING HOURS — Mon–Fri 11:00 to 20:30, Sat–Sun 12:00 to 20:00, Swedish time.
+   ORDERING HOURS — Mon closed, Tue–Fri 11:00 to 21:00, Sat–Sun 12:00 to 21:00, Swedish time.
    Uses Europe/Stockholm specifically (not the visitor's device
    clock) so a tourist with a different timezone still sees the
    restaurant's real status, not their own local time.
    ============================================================ */
 // minutes since midnight
 var WEEKDAY_HOURS = {
-  Mon:{open:11*60, close:20*60+30}, Tue:{open:11*60, close:20*60+30}, Wed:{open:11*60, close:20*60+30},
-  Thu:{open:11*60, close:20*60+30}, Fri:{open:11*60, close:20*60+30},
-  Sat:{open:12*60, close:20*60}, Sun:{open:12*60, close:20*60}
-};
+  Tue:{open:11*60, close:21*60}, Wed:{open:11*60, close:21*60},
+  Thu:{open:11*60, close:21*60}, Fri:{open:11*60, close:21*60},
+  Sat:{open:12*60, close:21*60}, Sun:{open:12*60, close:21*60}
+}; // Monday closed
 var DAY_ORDER = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var wasOpenLast = null; // tracks state so we only re-render menu/cart when status actually flips
 
@@ -1039,8 +1039,11 @@ function secondsUntilOpen(){
   var current = (t.hour%24)*3600+t.minute*60+t.second;
   var today = WEEKDAY_HOURS[t.weekday];
   if(today && current<today.open*60) return today.open*60-current;
-  var next = WEEKDAY_HOURS[DAY_ORDER[(DAY_ORDER.indexOf(t.weekday)+1)%7]];
-  return (24*3600-current)+next.open*60;
+  for(var i=1;i<=7;i++){
+    var nx = WEEKDAY_HOURS[DAY_ORDER[(DAY_ORDER.indexOf(t.weekday)+i)%7]];
+    if(nx) return (i*24*3600-current)+nx.open*60;
+  }
+  return 0;
 }
 function formatCountdown(totalSeconds){
   var h = Math.floor(totalSeconds/3600);
